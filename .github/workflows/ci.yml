@@ -14,16 +14,10 @@ jobs:
             - run: npm run lint
             - run: npm run build
             - run: npm run test:ci
-            - run: npm run cy:test-snapshots:ci
+            - run: npm run cy:test
             - name: Upload Cypress screenshots
               uses: actions/upload-artifact@v4
               if: ${{ failure() }}
               with:
                   name: cypress_screenshots
                   path: cypress/screenshots
-            - name: Upload Cypress snapshots
-              uses: actions/upload-artifact@v4
-              if: ${{ failure() }}
-              with:
-                  name: cypress_snapshots
-                  path: cypress/snapshots
