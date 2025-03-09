@@ -1,0 +1,67 @@
+{
+    "name": "calories-tracker",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "build": "vite build",
+        "cy:dev": "concurrently --kill-others \"npm run test:serve-app\" \"npm run cy:open\"",
+        "cy:open": "cypress open --config-file ./cypress/cypress.config.ts --e2e --browser chromium",
+        "cy:run": "cypress run --config-file ./cypress/cypress.config.ts",
+        "cy:test": "start-server-and-test test:serve-app http-get://localhost:5001 cy:run",
+        "cy:test-snapshots": "docker run -it -u `id -u ${whoami}` -e CYPRESS_SNAPSHOTS=true -v ./:/app -w /app cypress/base:18.16.0 sh -c \"npx cypress install && npm run cy:test\"",
+        "cy:test-snapshots:ci": "docker run -e CYPRESS_SNAPSHOTS=true -v ./:/app -w /app cypress/base:18.16.0 sh -c \"npx cypress install && npm run cy:test\"",
+        "dev": "vite",
+        "lint": "noeldemartin-lint src cypress",
+        "test": "vitest --run",
+        "test:ci": "vitest --run --reporter verbose",
+        "test:serve-app": "vite --port 5001 --mode testing"
+    },
+    "dependencies": {
+        "@aerogel/core": "next",
+        "@aerogel/plugin-i18n": "next",
+        "@aerogel/plugin-soukai": "next",
+        "@intlify/unplugin-vue-i18n": "^0.12.2",
+        "@noeldemartin/utils": "next",
+        "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/typography": "^0.5.9",
+        "soukai": "next",
+        "tailwindcss": "^3.3.2",
+        "vue": "^3.3.0",
+        "vue-i18n": "9.3.0-beta.19"
+    },
+    "devDependencies": {
+        "@aerogel/cli": "next",
+        "@aerogel/cypress": "next",
+        "@aerogel/vite": "next",
+        "@iconify/json": "^2.2.134",
+        "@noeldemartin/eslint-config-vue": "next",
+        "@noeldemartin/scripts": "next",
+        "@total-typescript/ts-reset": "^0.4.2",
+        "@types/node": "^20.3.1",
+        "autoprefixer": "^10.4.14",
+        "concurrently": "^8.2.0",
+        "cypress": "^12.17.0",
+        "eslint": "^8.40.0",
+        "prettier": "^2.8.8",
+        "prettier-eslint-cli": "^7.1.0",
+        "prettier-plugin-tailwindcss": "^0.2.8",
+        "start-server-and-test": "^2.0.0",
+        "typescript": "~5.4",
+        "unplugin-icons": "^0.16.3",
+        "unplugin-vue-components": "^0.24.1",
+        "vite": "^4.3.0",
+        "vitest": "^0.33.0",
+        "vue-tsc": "^1.8.15"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@noeldemartin/eslint-config-vue"
+        ]
+    },
+    "prettier": {
+        "plugins": [
+            "prettier-plugin-tailwindcss"
+        ],
+        "printWidth": 120
+    }
+}
