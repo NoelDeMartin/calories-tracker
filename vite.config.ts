@@ -13,8 +13,9 @@ export default defineConfig({
     plugins: [
         Aerogel({ name: 'Calories Tracker' }),
         Components({
-            dts: false,
+            dts: 'src/types/components.d.ts',
             resolvers: [AerogelResolver(), IconsResolver()],
+            dirs: ['src/components'],
         }),
         I18n({ include: fileURLToPath(new URL('./src/lang/**/*.yaml', import.meta.url)) }),
         Icons({

@@ -1,3 +1,10 @@
 home:
-  title: Aerogel
-  getStarted: Get started
+    title: Calories Tracker
+    welcome: 'Hi there! In order to start tracking your calories, log in to your Solid POD:'
+    today: Today's meals
+    footer: Made by [Noel De Martin](https://noeldemartin.com)
+    recipesMissing: No recipes were found in your POD, please come back when you have some!
+
+logs:
+    add: Log meal
+    log: Log

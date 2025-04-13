@@ -1,5 +1,3 @@
 @import '@aerogel/core';
-
-@theme {
-    --color-background: var(--color-blue-50);
-}
+@import '@aerogel/plugin-solid';
+@import '@aerogel/plugin-local-first';

@@ -1,0 +1,42 @@
+diff --git a/dist/Select/SelectValue.cjs b/dist/Select/SelectValue.cjs
+index cd0382f4484c2d038b8f6b1878df42faa1ee7648..f87542d193e935cd52ef9af312415d8fb680bd95 100644
+--- a/dist/Select/SelectValue.cjs
++++ b/dist/Select/SelectValue.cjs
+@@ -1,6 +1,7 @@
+ 'use strict';
+ 
+ const vue = require('vue');
++const Select_utils = require('./utils.cjs');
+ const shared_useForwardExpose = require('../shared/useForwardExpose.cjs');
+ const Primitive_Primitive = require('../Primitive/Primitive.cjs');
+ const Select_SelectRoot = require('./SelectRoot.cjs');
+@@ -22,7 +23,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
+     const selectedLabel = vue.computed(() => {
+       let list = [];
+       const options = Array.from(rootContext.optionsSet.value);
+-      const getOption = (value) => options.find((option) => option.value === value);
++      const getOption = (value) => options.find((option) => typeof value !== 'undefined' && Select_utils.valueComparator(option.value, value, rootContext.by));
+       if (Array.isArray(rootContext.modelValue.value)) {
+         list = rootContext.modelValue.value.map((value) => getOption(value)?.textContent ?? "");
+       } else {
+diff --git a/dist/Select/SelectValue.js b/dist/Select/SelectValue.js
+index d5d3167500d07d6efe77f8b8bc8a144183c0971f..49dd3b4410f117f54caddfc723e73fa71bc7bed0 100644
+--- a/dist/Select/SelectValue.js
++++ b/dist/Select/SelectValue.js
+@@ -2,6 +2,7 @@ import { defineComponent, onMounted, computed, createBlock, openBlock, unref, wi
+ import { u as useForwardExpose } from '../shared/useForwardExpose.js';
+ import { P as Primitive } from '../Primitive/Primitive.js';
+ import { i as injectSelectRootContext } from './SelectRoot.js';
++import { v as valueComparator } from './utils.js';
+ 
+ const _sfc_main = /* @__PURE__ */ defineComponent({
+   __name: "SelectValue",
+@@ -20,7 +21,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
+     const selectedLabel = computed(() => {
+       let list = [];
+       const options = Array.from(rootContext.optionsSet.value);
+-      const getOption = (value) => options.find((option) => option.value === value);
++      const getOption = (value) => options.find((option) => typeof value !== 'undefined' && valueComparator(option.value, value, rootContext.by));
+       if (Array.isArray(rootContext.modelValue.value)) {
+         list = rootContext.modelValue.value.map((value) => getOption(value)?.textContent ?? "");
+       } else {
