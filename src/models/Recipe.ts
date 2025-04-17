@@ -1,3 +1,7 @@
+import type { BelongsToOneRelation, Relation } from 'soukai';
+
+import NutritionInformation from '@/models/NutritionInformation';
+
 import Model from './Recipe.schema';
 
 export interface RecipeServingsBreakdown {
@@ -8,6 +12,9 @@ export interface RecipeServingsBreakdown {
 }
 
 export default class Recipe extends Model {
+
+    declare public nutrition?: NutritionInformation;
+    declare public relatedNutrition: BelongsToOneRelation<Recipe, NutritionInformation, typeof NutritionInformation>;
 
     public get servingsBreakdown(): RecipeServingsBreakdown | null {
         const original = this.servings;
@@ -22,6 +29,10 @@ export default class Recipe extends Model {
             quantity: parseInt(quantityMatch),
             renderQuantity: (quantity) => original.replace(quantityMatch, quantity.toString()),
         };
+    }
+
+    public nutritionRelationship(): Relation {
+        return this.belongsToOne(NutritionInformation, 'nutritionUrl').usingSameDocument();
     }
 
 }

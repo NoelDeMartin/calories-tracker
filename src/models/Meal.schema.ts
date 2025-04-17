@@ -2,11 +2,12 @@ import { defineSolidModelSchema } from 'soukai-solid';
 import { FieldType } from 'soukai';
 
 export default defineSolidModelSchema({
+    rdfContext: 'https://schema.org/',
+    rdfsClass: 'ConsumeAction',
     fields: {
-        recipeUrl: FieldType.Key,
-        calories: FieldType.Number,
-        protein: FieldType.Number,
-        carbs: FieldType.Number,
-        fat: FieldType.Number,
+        recipeUrl: {
+            type: FieldType.Key,
+            rdfProperty: 'schema:object',
+        },
     },
 });

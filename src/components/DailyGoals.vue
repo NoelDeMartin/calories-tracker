@@ -38,8 +38,11 @@ import type Meal from '@/models/Meal';
 
 const { meals } = defineProps<{ meals: Meal[] }>();
 
-const totalCalories = computed(() => meals.reduce((total, meal) => total + (meal.calories ?? 0), 0));
-const totalProtein = computed(() => meals.reduce((total, meal) => total + (meal.protein ?? 0), 0));
-const totalCarbs = computed(() => meals.reduce((total, meal) => total + (meal.carbs ?? 0), 0));
-const totalFat = computed(() => meals.reduce((total, meal) => total + (meal.fat ?? 0), 0));
+const totalCalories = computed(() =>
+    meals.reduce((total, meal) => total + (meal.recipe?.nutrition?.caloriesValue() ?? 0), 0));
+const totalProtein = computed(() =>
+    meals.reduce((total, meal) => total + (meal.recipe?.nutrition?.proteinValue() ?? 0), 0));
+const totalCarbs = computed(() =>
+    meals.reduce((total, meal) => total + (meal.recipe?.nutrition?.carbsValue() ?? 0), 0));
+const totalFat = computed(() => meals.reduce((total, meal) => total + (meal.recipe?.nutrition?.fatValue() ?? 0), 0));
 </script>

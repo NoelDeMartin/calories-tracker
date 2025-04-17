@@ -1,10 +1,12 @@
 home:
     title: Calories Tracker
-    welcome: 'Hi there! In order to start tracking your calories, log in to your Solid POD:'
+    welcome: 'Hi there! Are you ready to start tracking your calories?'
     today: Today's meals
     footer: Made by [Noel De Martin](https://noeldemartin.com)
-    recipesMissing: No recipes were found in your POD, please come back when you have some!
+    recipesMissing: We couldn't find any recipes in your POD, please come back when you have some!
+    recipesMissingInfo: (not sure where to start? Check out out [Umai](https://umai.noeldemartin.com) or [learn to make Ramen](https://ramen.noeldemartin.com).)
 
 logs:
     add: Log meal
     log: Log
+    delete: Delete meal

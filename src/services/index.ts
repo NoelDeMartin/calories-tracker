@@ -1,7 +1,9 @@
 import Cookbook from './Cookbook';
+import Meals from './Meals';
 
 export const services = {
     $cookbook: Cookbook,
+    $meals: Meals,
 };
 
 export type AppServices = typeof services;

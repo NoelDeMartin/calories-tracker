@@ -1,6 +1,9 @@
 <template>
-    <AppLayout class="px-4">
-        <header class="mx-auto flex w-full max-w-screen-md justify-between pt-8">
+    <AppLayout class="items-center px-4">
+        <header
+            v-if="$solid.hasLoggedIn() && !$solid.loginOngoing"
+            class="mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 pt-8"
+        >
             <div>
                 <h1 class="text-2xl font-semibold tracking-tight">
                     {{ $t('home.title') }}
@@ -9,12 +12,13 @@
                     {{ $t('home.today') }}
                 </h2>
             </div>
-            <Account v-if="$solid.hasLoggedIn()" />
+            <div class="grow" />
+            <ErrorLogs />
+            <Account />
         </header>
-        <main class="mx-auto flex w-full max-w-screen-md flex-grow flex-col items-center pt-4">
-            <DailyLogs v-if="$cookbook.ready" />
-            <RecipesMissing v-else />
-        </main>
+        <DailyLogs v-if="$cookbook.ready" />
+        <RecipesMissing v-else-if="$solid.hasLoggedIn() && !$solid.loginOngoing" />
+        <Welcome v-else />
         <footer class="prose prose-sm mx-auto w-full max-w-screen-md py-4 text-center">
             <Markdown lang-key="home.footer" class="text-sm opacity-50" inline />
         </footer>

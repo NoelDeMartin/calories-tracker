@@ -1,7 +1,6 @@
 <template>
-    <!-- @vue-generic {Recipe} -->
-    <Modal v-slot="{ close }" :title="$t('logs.add')">
-        <Form :form="form" class="space-y-2" @submit="close(form.recipe)">
+    <Modal ref="$modalRef" :title="$t('logs.add')">
+        <Form :form="form" class="space-y-2" @submit="submit()">
             <Select
                 name="recipe"
                 :options="recipes"
@@ -18,13 +17,14 @@
 
 <script setup lang="ts">
 import { arraySorted, arrayUnique, range, toString } from '@noeldemartin/utils';
-import { computed, watchEffect } from 'vue';
+import { computed, useTemplateRef, watchEffect } from 'vue';
 import { numberInput, requiredObjectInput, useForm } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-soukai';
-import type { ModalExpose } from '@aerogel/core';
 
 import Recipe from '@/models/Recipe';
+import Meal from '@/models/Meal';
 
+const $modal = useTemplateRef('$modalRef');
 const recipes = useModelCollection(Recipe);
 const form = useForm({
     recipe: requiredObjectInput(recipes.value[0]),
@@ -58,5 +58,19 @@ watchEffect(() => {
     form.servings = null;
 });
 
-defineExpose<ModalExpose<Recipe>>();
+async function submit() {
+    const meal = new Meal();
+    const mealRecipe = meal.relatedRecipe.attach({ name: form.recipe.name, sameAs: [form.recipe.url] });
+
+    mealRecipe.relatedNutrition.attach({
+        calories: '350 calories',
+        protein: '12 grams',
+        carbs: '65 grams',
+        fat: '6 grams',
+    });
+
+    await meal.save();
+
+    $modal.value?.close();
+}
 </script>
