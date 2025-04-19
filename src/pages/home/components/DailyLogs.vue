@@ -14,5 +14,5 @@
 </template>
 
 <script setup lang="ts">
-import LogMealModal from '@/components/LogMealModal.vue';
+import LogMealModal from './LogMealModal.vue';
 </script>

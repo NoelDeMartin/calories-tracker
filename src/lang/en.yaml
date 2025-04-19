@@ -1,10 +1,16 @@
-home:
+app:
     title: Calories Tracker
-    welcome: 'Hi there! Are you ready to start tracking your calories?'
-    today: Today's meals
+    navigation: Navigate
     footer: Made by [Noel De Martin](https://noeldemartin.com)
+
+home:
+    title: Today's meals
+    welcome: 'Hi there! Are you ready to start tracking your calories?'
     recipesMissing: We couldn't find any recipes in your POD, please come back when you have some!
     recipesMissingInfo: (not sure where to start? Check out out [Umai](https://umai.noeldemartin.com) or [learn to make Ramen](https://ramen.noeldemartin.com).)
+
+ingredients:
+    title: Ingredients
 
 logs:
     add: Log meal

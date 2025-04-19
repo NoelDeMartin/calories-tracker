@@ -15,7 +15,7 @@ export default defineConfig({
         Components({
             dts: 'src/types/components.d.ts',
             resolvers: [AerogelResolver(), IconsResolver()],
-            dirs: ['src/components'],
+            dirs: ['src/components', 'src/pages'],
         }),
         I18n({ include: fileURLToPath(new URL('./src/lang/**/*.yaml', import.meta.url)) }),
         Icons({
