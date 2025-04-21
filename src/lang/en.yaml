@@ -11,8 +11,27 @@ home:
 
 ingredients:
     title: Ingredients
+    search: Search ingredients...
+    noIngredients: You haven't used any ingredients yet, [log some meals](#route:home) to get started.
+    noSearchResults: No ingredients match your search
+    name: Ingredient
+    calories: Calories (per 100g)
+    protein: Protein (g)
+    carbs: Carbs (g)
+    fat: Fat (g)
+
+notFound:
+    title: This page doesn't exist!
+    home: Go home
 
 logs:
     add: Log meal
     log: Log
     delete: Delete meal
+
+units:
+    calories: '{n} kcal'
+    grams: '{n}g'
+    protein: '{protein} protein'
+    carbs: '{carbs} carbs'
+    fat: '{fat} fat'

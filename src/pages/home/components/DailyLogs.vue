@@ -1,5 +1,5 @@
 <template>
-    <main class="mx-auto flex w-full max-w-screen-md flex-grow flex-col items-center pt-4">
+    <main class="mx-auto flex w-full max-w-screen-md grow flex-col items-center pt-4">
         <DailyGoals :meals="$meals.all" />
 
         <div class="mt-6 w-full space-y-4">

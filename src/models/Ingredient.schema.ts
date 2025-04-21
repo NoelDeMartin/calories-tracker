@@ -3,11 +3,15 @@ import { FieldType } from 'soukai';
 
 export default defineSolidModelSchema({
     rdfContext: 'https://schema.org/',
-    rdfsClass: 'ConsumeAction',
+    rdfsClasses: ['Substance', 'MenuItem'],
     fields: {
-        recipeUrl: {
+        name: {
+            type: FieldType.String,
+            required: true,
+        },
+        nutritionUrl: {
             type: FieldType.Key,
-            rdfProperty: 'object',
+            rdfProperty: 'nutrition',
         },
     },
 });

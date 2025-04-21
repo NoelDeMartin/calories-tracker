@@ -11,11 +11,16 @@ export default defineSolidModelSchema({
         },
         servings: {
             type: FieldType.String,
-            rdfProperty: 'schema:recipeYield',
+            rdfProperty: 'recipeYield',
+        },
+        ingredients: {
+            type: FieldType.Array,
+            items: FieldType.String,
+            rdfProperty: 'schema:recipeIngredient',
         },
         nutritionUrl: {
             type: FieldType.Key,
-            rdfProperty: 'schema:nutrition',
+            rdfProperty: 'nutrition',
         },
         sameAs: {
             type: FieldType.Array,

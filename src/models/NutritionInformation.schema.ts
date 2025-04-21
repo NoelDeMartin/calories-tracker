@@ -5,18 +5,25 @@ export default defineSolidModelSchema({
     rdfContext: 'https://schema.org/',
     timestamps: false,
     fields: {
-        calories: FieldType.String,
-        protein: {
+        serving: {
             type: FieldType.String,
-            rdfProperty: 'schema:proteinContent',
+            rdfProperty: 'servingSize',
         },
-        carbs: {
+        rawCalories: {
             type: FieldType.String,
-            rdfProperty: 'schema:carbohydrateContent',
+            rdfProperty: 'calories',
         },
-        fat: {
+        rawProtein: {
             type: FieldType.String,
-            rdfProperty: 'schema:fatContent',
+            rdfProperty: 'proteinContent',
+        },
+        rawCarbs: {
+            type: FieldType.String,
+            rdfProperty: 'carbohydrateContent',
+        },
+        rawFat: {
+            type: FieldType.String,
+            rdfProperty: 'fatContent',
         },
     },
 });

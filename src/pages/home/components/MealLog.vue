@@ -5,8 +5,10 @@
                 {{ meal.recipe.name }}
             </h3>
             <p v-if="nutrition" class="text-sm text-gray-500">
-                {{ nutrition.calories }} kcal · {{ nutrition.protein }}g protein · {{ nutrition.carbs }}g carbs ·
-                {{ nutrition.fat }}g fat
+                {{ $t('units.calories', nutrition.calories ?? 0) }} ·
+                {{ $t('units.protein', { protein: $t('units.grams', nutrition.protein ?? 0) }) }} ·
+                {{ $t('units.carbs', { carbs: $t('units.grams', nutrition.carbs ?? 0) }) }} ·
+                {{ $t('units.fat', { fat: $t('units.grams', nutrition.fat ?? 0) }) }}
             </p>
             <p class="text-xs text-gray-400">
                 {{ date }}
@@ -39,10 +41,10 @@ const nutrition = computed(() => {
     }
 
     return {
-        calories: mealNutrition.caloriesValue(),
-        protein: mealNutrition.proteinValue(),
-        carbs: mealNutrition.carbsValue(),
-        fat: mealNutrition.fatValue(),
+        calories: mealNutrition.calories,
+        protein: mealNutrition.protein,
+        carbs: mealNutrition.carbs,
+        fat: mealNutrition.fat,
     };
 });
 </script>

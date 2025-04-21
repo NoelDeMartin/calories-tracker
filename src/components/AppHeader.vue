@@ -37,7 +37,7 @@ import { translate } from '@aerogel/core';
 
 const ROUTES = ['home', 'ingredients'];
 const title = computed(() => {
-    if (!Router.currentRoute.value) {
+    if (!Router.currentRoute.value?.name) {
         return;
     }
 
@@ -45,6 +45,10 @@ const title = computed(() => {
 });
 const options = computed(() => {
     const currentRoute = Router.currentRoute.value?.name;
+
+    if (!currentRoute) {
+        return [];
+    }
 
     return ROUTES.map((route) => ({
         route,

@@ -5,6 +5,7 @@ import Cookbook from '@/services/Cookbook';
 
 import Home from './home/Home.vue';
 import Ingredients from './Ingredients.vue';
+import NotFound from './NotFound.vue';
 
 export default defineRoutes([
     {
@@ -23,5 +24,10 @@ export default defineRoutes([
 
             next({ name: 'home' });
         },
+    },
+    {
+        name: '404',
+        path: '/:pathMatch(.*)*',
+        component: NotFound,
     },
 ]);

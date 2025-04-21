@@ -2,4 +2,5 @@
 
 <#it>
     a schema:Recipe ;
-    schema:name "Ramen" .
+    schema:name "Ramen" ;
+    schema:recipeIngredient "Broth", "Noodles", "Toppings" .

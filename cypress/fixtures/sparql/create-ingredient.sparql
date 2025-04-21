@@ -1,0 +1,26 @@
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it>
+        a schema:Substance, schema:MenuItem ;
+        schema:name "{{ name }}" ;
+        schema:nutrition <#[[nutrition][.*]]> .
+
+    <#it-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#it> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[nutrition][.*]]>
+        a schema:NutritionInformation ;
+        schema:servingSize "100 grams" ;
+        schema:calories "[[.*]] calories" ;
+        schema:carbohydrateContent "[[.*]] grams" ;
+        schema:fatContent "[[.*]] grams" ;
+        schema:proteinContent "[[.*]] grams" .
+
+}
