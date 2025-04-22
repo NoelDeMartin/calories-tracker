@@ -10,8 +10,8 @@ import Service from './Meals.state';
 export class MealsService extends Service {
 
     protected async boot(): Promise<void> {
-        await Cloud.register(Meal, { path: '/meals/' });
-        await Cloud.register(Ingredient, { path: '/ingredients/' });
+        await Cloud.register(Meal);
+        await Cloud.register(Ingredient);
         await trackModels(Meal, { service: this, property: 'all' });
     }
 
