@@ -32,6 +32,3 @@ logs:
 units:
     calories: '{n} kcal'
     grams: '{n}g'
-    protein: '{protein} protein'
-    carbs: '{carbs} carbs'
-    fat: '{fat} fat'

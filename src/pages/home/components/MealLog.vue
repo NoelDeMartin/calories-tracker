@@ -5,10 +5,10 @@
                 {{ meal.recipe.name }}
             </h3>
             <p v-if="nutrition" class="text-sm text-gray-500">
-                {{ $t('units.calories', nutrition.calories ?? 0) }} ·
-                {{ $t('units.protein', { protein: $t('units.grams', nutrition.protein ?? 0) }) }} ·
-                {{ $t('units.carbs', { carbs: $t('units.grams', nutrition.carbs ?? 0) }) }} ·
-                {{ $t('units.fat', { fat: $t('units.grams', nutrition.fat ?? 0) }) }}
+                <NutritionalValue :value="nutrition.calories" unit="calories" /> ·
+                <NutritionalValue :value="nutrition.protein" unit="grams" /> ·
+                <NutritionalValue :value="nutrition.carbs" unit="grams" /> ·
+                <NutritionalValue :value="nutrition.fat" unit="grams" />
             </p>
             <p class="text-xs text-gray-400">
                 {{ date }}

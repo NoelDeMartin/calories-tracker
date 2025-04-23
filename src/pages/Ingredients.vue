@@ -31,16 +31,16 @@
                             {{ ingredient.name }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ $t('units.calories', ingredient.nutrition?.calories ?? 0) }}
+                            <NutritionalValue :value="ingredient.nutrition?.calories" unit="calories" fallback="-" />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ $t('units.grams', ingredient.nutrition?.protein ?? 0) }}
+                            <NutritionalValue :value="ingredient.nutrition?.protein" unit="grams" fallback="-" />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ $t('units.grams', ingredient.nutrition?.carbs ?? 0) }}
+                            <NutritionalValue :value="ingredient.nutrition?.carbs" unit="grams" fallback="-" />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ $t('units.grams', ingredient.nutrition?.fat ?? 0) }}
+                            <NutritionalValue :value="ingredient.nutrition?.fat" unit="grams" fallback="-" />
                         </td>
                     </tr>
                 </tbody>
