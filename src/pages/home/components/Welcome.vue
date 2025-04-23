@@ -5,6 +5,6 @@
             {{ $t('home.title') }}
         </h1>
         <Markdown class="mt-4 text-center" lang-key="home.welcome" />
-        <SolidLogin class="mt-2 md:flex-col" button-class="md:w-full" />
+        <SolidLogin class="mt-2" layout="vertical" />
     </main>
 </template>
