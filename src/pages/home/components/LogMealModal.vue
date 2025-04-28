@@ -124,6 +124,7 @@ async function calculateNutrition(): Promise<Nutrition> {
 
     for (const ingredientBreakdown of form.recipe.ingredientsBreakdown) {
         if (ingredientBreakdown.unit !== 'grams' || typeof ingredientBreakdown.quantity !== 'number') {
+            // eslint-disable-next-line no-console
             console.warn('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original);
 
             continue;

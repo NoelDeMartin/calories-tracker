@@ -30,7 +30,7 @@ export interface NutritionixIngredient {
 
 export class NutritionixService extends Service {
 
-    async getNutrition(ingredient: string): Promise<NutritionixIngredient | undefined> {
+    public async getNutrition(ingredient: string): Promise<NutritionixIngredient | undefined> {
         const food = await this.findIngredient(ingredient);
 
         if (!food || !food.serving_weight_grams) {
@@ -47,7 +47,7 @@ export class NutritionixService extends Service {
         };
     }
 
-    protected async boot() {
+    protected async boot(): Promise<void> {
         Events.on('auth:logout', () => {
             this.appId = import.meta.env.VITE_NUTRITIONIX_APP_ID || null;
             this.appKey = import.meta.env.VITE_NUTRITIONIX_APP_KEY || null;
