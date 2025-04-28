@@ -13,5 +13,10 @@ export default defineSolidModelSchema({
             type: FieldType.Key,
             rdfProperty: 'nutrition',
         },
+        externalUrls: {
+            type: FieldType.Array,
+            items: FieldType.Key,
+            rdfProperty: 'sameAs',
+        },
     },
 });

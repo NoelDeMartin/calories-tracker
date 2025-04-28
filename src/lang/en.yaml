@@ -26,9 +26,19 @@ notFound:
 
 logs:
     add: Log meal
+    adding: Logging meal...
     log: Log
     delete: Delete meal
 
 units:
     calories: '{n} kcal'
     grams: '{n}g'
+    protein: '{protein} protein'
+    carbs: '{carbs} carbs'
+    fat: '{fat} fat'
+
+settings:
+    nutritionix: Nutritionix
+    nutritionixDescription: If you want to get nutrition information for all the ingredients, you'll need to obtain a [Nutritionix API Key](https://www.nutritionix.com/business/api).
+    nutritionixAppId: App ID
+    nutritionixAppKey: App Key

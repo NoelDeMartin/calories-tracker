@@ -22,9 +22,9 @@ INSERT DATA {
 
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
-        schema:calories "[[.*]] calories" ;
-        schema:carbohydrateContent "[[.*]] grams" ;
-        schema:fatContent "[[.*]] grams" ;
-        schema:proteinContent "[[.*]] grams" .
+        schema:calories "{{ calories }}" ;
+        schema:carbohydrateContent "{{ carbs }}" ;
+        schema:fatContent "{{ fat }}" ;
+        schema:proteinContent "{{ protein }}" .
 
 }

@@ -7,7 +7,8 @@ INSERT DATA {
     <#it>
         a schema:Substance, schema:MenuItem ;
         schema:name "{{ name }}" ;
-        schema:nutrition <#[[nutrition][.*]]> .
+        schema:nutrition <#[[nutrition][.*]]> ;
+        schema:sameAs <{{ sameAs }}> .
 
     <#it-metadata>
         a crdt:Metadata ;
@@ -17,10 +18,10 @@ INSERT DATA {
 
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
-        schema:servingSize "100 grams" ;
-        schema:calories "[[.*]] calories" ;
-        schema:carbohydrateContent "[[.*]] grams" ;
-        schema:fatContent "[[.*]] grams" ;
-        schema:proteinContent "[[.*]] grams" .
+        schema:servingSize "{{ serving }}" ;
+        schema:calories "{{ calories }}" ;
+        schema:carbohydrateContent "{{ carbs }}" ;
+        schema:fatContent "{{ fat }}" ;
+        schema:proteinContent "{{ protein }}" .
 
 }

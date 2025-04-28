@@ -1,3 +1,5 @@
+import { round } from '@noeldemartin/utils';
+
 import Model from './NutritionInformation.schema';
 
 export default class NutritionInformation extends Model {
@@ -36,21 +38,28 @@ export default class NutritionInformation extends Model {
 
     private parseValues(): Record<string, number> {
         const values: Record<string, number> = {};
+        const quantityMultiplier =
+            this.serving && this.serving.includes('grams')
+                ? 100 / parseFloat(this.serving.replace('grams', '').trim())
+                : 1;
 
         if (this.rawCalories) {
-            values.calories = parseFloat(this.rawCalories.replace('calories', '').trim());
+            values.calories = round(
+                parseFloat(this.rawCalories.replace('calories', '').trim()) * quantityMultiplier,
+                2,
+            );
         }
 
         if (this.rawProtein) {
-            values.protein = parseFloat(this.rawProtein.replace('grams', '').trim());
+            values.protein = round(parseFloat(this.rawProtein.replace('grams', '').trim()) * quantityMultiplier, 2);
         }
 
         if (this.rawCarbs) {
-            values.carbs = parseFloat(this.rawCarbs.replace('grams', '').trim());
+            values.carbs = round(parseFloat(this.rawCarbs.replace('grams', '').trim()) * quantityMultiplier, 2);
         }
 
         if (this.rawFat) {
-            values.fat = parseFloat(this.rawFat.replace('grams', '').trim());
+            values.fat = round(parseFloat(this.rawFat.replace('grams', '').trim()) * quantityMultiplier, 2);
         }
 
         return values;

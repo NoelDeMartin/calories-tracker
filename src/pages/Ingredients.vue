@@ -31,16 +31,16 @@
                             {{ ingredient.name }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            <NutritionalValue :value="ingredient.nutrition?.calories" unit="calories" fallback="-" />
+                            {{ nutritionalValue(ingredient.nutrition?.calories, 'calories', '-') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            <NutritionalValue :value="ingredient.nutrition?.protein" unit="grams" fallback="-" />
+                            {{ nutritionalValue(ingredient.nutrition?.protein, 'grams', '-') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            <NutritionalValue :value="ingredient.nutrition?.carbs" unit="grams" fallback="-" />
+                            {{ nutritionalValue(ingredient.nutrition?.carbs, 'grams', '-') }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            <NutritionalValue :value="ingredient.nutrition?.fat" unit="grams" fallback="-" />
+                            {{ nutritionalValue(ingredient.nutrition?.fat, 'grams', '-') }}
                         </td>
                     </tr>
                 </tbody>
@@ -57,6 +57,7 @@ import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { DeepKeyOf } from '@noeldemartin/utils';
 
 import Ingredient from '@/models/Ingredient';
+import { nutritionalValue } from '@/utils/ingredients';
 
 const COLUMNS: { label: string; field: DeepKeyOf<Ingredient> }[] = [
     { label: translate('ingredients.name'), field: 'name' },

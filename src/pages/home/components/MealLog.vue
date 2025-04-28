@@ -3,12 +3,13 @@
         <div>
             <h3 v-if="meal.recipe?.name" class="font-medium">
                 {{ meal.recipe.name }}
+                <span v-if="meal.recipe.servings" class="text-xs text-gray-500">({{ meal.recipe.servings }})</span>
             </h3>
             <p v-if="nutrition" class="text-sm text-gray-500">
-                <NutritionalValue :value="nutrition.calories" unit="calories" /> ·
-                <NutritionalValue :value="nutrition.protein" unit="grams" /> ·
-                <NutritionalValue :value="nutrition.carbs" unit="grams" /> ·
-                <NutritionalValue :value="nutrition.fat" unit="grams" />
+                {{ nutritionalValue(nutrition.calories, 'calories') }} ·
+                {{ $t('units.protein', { protein: nutritionalValue(nutrition.protein, 'grams') }) }} ·
+                {{ $t('units.carbs', { carbs: nutritionalValue(nutrition.carbs, 'grams') }) }} ·
+                {{ $t('units.fat', { fat: nutritionalValue(nutrition.fat, 'grams') }) }}
             </p>
             <p class="text-xs text-gray-400">
                 {{ date }}
@@ -28,8 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import type Meal from '@/models/Meal';
 import { computed } from 'vue';
+
+import { nutritionalValue } from '@/utils/ingredients';
+import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
 const date = computed(() => meal.createdAt.toLocaleString());

@@ -1,4 +1,6 @@
+import { translate } from '@aerogel/core';
 import { compare, objectWithoutEmpty } from '@noeldemartin/utils';
+import type { Nullable } from '@noeldemartin/utils';
 
 export type IngredientQuantity = number | [number, number];
 
@@ -201,4 +203,12 @@ export function sortIngredients(ingredients: IngredientBreakdown[]): IngredientB
     ingredients.sort((a, b) => compareIngredients(b, a));
 
     return ingredients;
+}
+
+export function nutritionalValue(value: Nullable<number>, unit: 'grams' | 'calories', fallback?: string): string {
+    if (typeof value !== 'number') {
+        return fallback ?? translate(`units.${unit}`, { n: '?' });
+    }
+
+    return translate(`units.${unit}`, value);
 }
