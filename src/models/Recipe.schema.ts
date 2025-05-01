@@ -3,7 +3,6 @@ import { FieldType } from 'soukai';
 
 export default defineSolidModelSchema({
     rdfContext: 'https://schema.org/',
-    timestamps: false,
     fields: {
         name: {
             type: FieldType.String,

@@ -1,5 +1,5 @@
 <template>
-    <AppLayout class="items-center px-4">
+    <AppLayout>
         <AppHeader />
         <router-view />
         <AppFooter />

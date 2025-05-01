@@ -1,5 +1,5 @@
 <template>
-    <main class="mx-auto flex w-full max-w-screen-md grow flex-col items-center pt-4">
+    <Page>
         <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
 
         <Markdown
@@ -46,7 +46,7 @@
                 </tbody>
             </table>
         </div>
-    </main>
+    </Page>
 </template>
 
 <script setup lang="ts">

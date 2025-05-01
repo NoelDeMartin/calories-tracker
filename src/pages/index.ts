@@ -1,11 +1,11 @@
 import { defineRoutes } from '@aerogel/plugin-routing';
+import { getTrackedModels } from '@aerogel/plugin-soukai';
 import { Solid } from '@aerogel/plugin-solid';
 
-import Cookbook from '@/services/Cookbook';
+import Recipe from '@/models/Recipe';
 
 import Home from './home/Home.vue';
 import Ingredients from './Ingredients.vue';
-import NotFound from './NotFound.vue';
 
 export default defineRoutes([
     {
@@ -18,16 +18,13 @@ export default defineRoutes([
         path: '/ingredients',
         component: Ingredients,
         beforeEnter(_, __, next) {
-            if (Cookbook.ready && Solid.hasLoggedIn()) {
+            const recipes = getTrackedModels(Recipe);
+
+            if (recipes.length > 0 && Solid.hasLoggedIn()) {
                 return;
             }
 
             next({ name: 'home' });
         },
-    },
-    {
-        name: '404',
-        path: '/:pathMatch(.*)*',
-        component: NotFound,
     },
 ]);

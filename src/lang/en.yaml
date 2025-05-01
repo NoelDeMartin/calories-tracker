@@ -20,10 +20,6 @@ ingredients:
     carbs: Carbs (g)
     fat: Fat (g)
 
-notFound:
-    title: This page doesn't exist!
-    home: Go home
-
 logs:
     add: Log meal
     adding: Logging meal...

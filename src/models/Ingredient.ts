@@ -6,6 +6,8 @@ import Model from './Ingredient.schema';
 
 export default class Ingredient extends Model {
 
+    public static cloud = true;
+
     declare public nutrition?: NutritionInformation;
     declare public relatedNutrition: BelongsToOneRelation<
         Ingredient,

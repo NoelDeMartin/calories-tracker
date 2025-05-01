@@ -6,6 +6,8 @@ import Model from './Meal.schema';
 
 export default class Meal extends Model {
 
+    public static cloud = true;
+
     declare public recipe?: Recipe;
     declare public relatedRecipe: BelongsToOneRelation<Meal, Recipe, typeof Recipe>;
 

@@ -1,7 +1,7 @@
 <template>
     <header
         v-if="$solid.hasLoggedIn() && !$solid.loginOngoing"
-        class="mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 pt-8"
+        class="mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 px-4 pt-8 md:px-0"
     >
         <div>
             <div class="flex flex-row items-center">
@@ -19,7 +19,7 @@
                     {{ $t('app.title') }}
                 </h1>
             </div>
-            <h2 v-if="$cookbook.ready" class="text-lg text-gray-500">
+            <h2 v-if="recipes.length > 0" class="text-lg text-gray-500">
                 {{ title }}
             </h2>
         </div>
@@ -34,8 +34,12 @@ import { computed } from 'vue';
 import { Router } from '@aerogel/plugin-routing';
 import { toString } from '@noeldemartin/utils';
 import { translate } from '@aerogel/core';
+import { useModelCollection } from '@aerogel/plugin-soukai';
+
+import Recipe from '@/models/Recipe';
 
 const ROUTES = ['home', 'ingredients'];
+const recipes = useModelCollection(Recipe);
 const title = computed(() => {
     if (!Router.currentRoute.value?.name) {
         return;
