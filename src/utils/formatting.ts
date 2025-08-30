@@ -28,7 +28,7 @@ export interface FormatOptions {
     digits?: number;
 }
 
-export function formatPercentage(value: number, all: number[] = []) {
+export function formatPercentage(value: number, all: number[] = []): string {
     return formatNumber(
         applyBankerRounding(
             value * 100,
@@ -48,13 +48,14 @@ export function formatNumber(value: Nullable<number>, unitOrOptions: FormatUnit 
     }
 
     switch (options.unit) {
-        case 'percentage':
+        case 'percentage': {
             const formatter = new Intl.NumberFormat(undefined, {
                 style: 'percent',
                 maximumFractionDigits: 0,
             });
 
             return formatter.format(value);
+        }
 
         case 'grams':
             return translate('units.grams', { n: Math.round(value).toLocaleString() });

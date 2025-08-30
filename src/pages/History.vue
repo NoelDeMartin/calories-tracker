@@ -74,7 +74,9 @@
                             background: `conic-gradient(
                                 from 0deg,
                                 var(--color-protein-500) 0deg var(--protein-deg, 108deg),
-                                var(--color-carbs-500) var(--protein-deg, 108deg) calc(var(--protein-deg, 108deg) + var(--carbs-deg, 126deg)),
+                                var(--color-carbs-500)
+                                    var(--protein-deg, 108deg)
+                                    calc(var(--protein-deg, 108deg) + var(--carbs-deg, 126deg)),
                                 var(--color-fat-500) calc(var(--carbs-deg, 126deg) + var(--protein-deg, 108deg)) 360deg
                             )`,
                             '--carbs-deg': `${selectedDayData.carbsPercentage * 360}deg`,
@@ -174,11 +176,11 @@ const mealsByDay = computed(() => {
 const macrosByDay = computed(() =>
     Object.fromEntries(
         days.value.map((day) => {
-            const meals = mealsByDay.value[day];
-            const calories = meals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.calories ?? 0), 0);
-            const carbs = meals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.carbs ?? 0), 0);
-            const protein = meals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.protein ?? 0), 0);
-            const fat = meals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.fat ?? 0), 0);
+            const dayMeals = mealsByDay.value[day];
+            const calories = dayMeals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.calories ?? 0), 0);
+            const carbs = dayMeals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.carbs ?? 0), 0);
+            const protein = dayMeals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.protein ?? 0), 0);
+            const fat = dayMeals.reduce((acc, meal) => acc + (meal.recipe?.nutrition?.fat ?? 0), 0);
 
             return [day, { calories, carbs, protein, fat } as Macros];
         }),
@@ -195,7 +197,7 @@ const caloriesSteps = computed(() =>
 const history = computed(() =>
     Object.fromEntries(
         days.value.map((day) => {
-            const meals = mealsByDay.value[day];
+            const dayMeals = mealsByDay.value[day];
             const macros = macrosByDay.value[day];
             const weekday = new Date(selectedMonth.value.year, selectedMonth.value.month, day).toLocaleDateString(
                 undefined,
@@ -213,10 +215,10 @@ const history = computed(() =>
 
             return [
                 day,
-                meals.length === 0
+                dayMeals.length === 0
                     ? null
                     : {
-                        meals,
+                        meals: dayMeals,
                         weekday,
                         calories: macros.calories,
                         carbs: macros.carbs,
