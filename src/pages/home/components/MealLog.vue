@@ -6,10 +6,10 @@
                 <span v-if="meal.recipe.servings" class="text-xs text-gray-500">({{ meal.recipe.servings }})</span>
             </h3>
             <p v-if="nutrition" class="text-sm text-gray-500">
-                {{ nutritionalValue(nutrition.calories, 'calories') }} ·
-                {{ $t('units.protein', { protein: nutritionalValue(nutrition.protein, 'grams') }) }} ·
-                {{ $t('units.carbs', { carbs: nutritionalValue(nutrition.carbs, 'grams') }) }} ·
-                {{ $t('units.fat', { fat: nutritionalValue(nutrition.fat, 'grams') }) }}
+                {{ formatNumber(nutrition.calories, 'calories') }} ·
+                {{ $t('units.protein', { protein: formatNumber(nutrition.protein, 'grams') }) }} ·
+                {{ $t('units.carbs', { carbs: formatNumber(nutrition.carbs, 'grams') }) }} ·
+                {{ $t('units.fat', { fat: formatNumber(nutrition.fat, 'grams') }) }}
             </p>
             <p class="text-xs text-gray-400">
                 {{ date }}
@@ -30,8 +30,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-
-import { nutritionalValue } from '@/utils/ingredients';
+import { formatNumber } from '@/utils/formatting';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();

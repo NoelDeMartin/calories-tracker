@@ -1,9 +1,9 @@
 <template>
     <Page>
-        <DailyGoals :meals />
+        <DailyGoals :meals="todayMeals" />
 
         <div class="mt-6 w-full space-y-4">
-            <MealLog v-for="meal of meals" :key="meal.url" :meal />
+            <MealLog v-for="meal of todayMeals" :key="meal.url" :meal />
         </div>
 
         <Button class="mt-4" @click="$ui.modal(LogMealModal)">
@@ -14,11 +14,18 @@
 </template>
 
 <script setup lang="ts">
-import { useModelCollection } from '@aerogel/plugin-soukai';
-
 import Meal from '@/models/Meal';
-
 import LogMealModal from './LogMealModal.vue';
+import { useModelCollection } from '@aerogel/plugin-soukai';
+import { computed } from 'vue';
 
 const meals = useModelCollection(Meal);
+const today = new Date();
+const todayMeals = computed(() =>
+    meals.value.filter(
+        (meal) =>
+            meal.createdAt.getFullYear() === today.getFullYear() &&
+            meal.createdAt.getMonth() === today.getMonth() &&
+            meal.createdAt.getDate() === today.getDate(),
+    ));
 </script>

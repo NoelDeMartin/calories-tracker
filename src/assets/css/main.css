@@ -2,3 +2,10 @@
 @import '@aerogel/plugin-solid';
 @import '@aerogel/plugin-local-first';
 @import '@aerogel/plugin-routing';
+
+@theme {
+    --color-carbs-500: var(--color-green-500);
+    --color-protein-500: var(--color-red-500);
+    --color-fat-500: var(--color-yellow-500);
+    --color-calories-500: var(--color-blue-500);
+}

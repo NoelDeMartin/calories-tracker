@@ -204,11 +204,3 @@ export function sortIngredients(ingredients: IngredientBreakdown[]): IngredientB
 
     return ingredients;
 }
-
-export function nutritionalValue(value: Nullable<number>, unit: 'grams' | 'calories', fallback?: string): string {
-    if (typeof value !== 'number') {
-        return fallback ?? translate(`units.${unit}`, { n: '?' });
-    }
-
-    return translate(`units.${unit}`, value);
-}

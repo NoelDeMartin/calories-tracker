@@ -1,5 +1,5 @@
 <template>
-    <Modal ref="$modalRef" :title="$t('logs.add')">
+    <Modal :title="$t('logs.add')">
         <Form :form="form" class="space-y-2" @submit="submit()">
             <Select
                 name="recipe"
@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import { arraySorted, arrayUnique, map, range, round, stringToSlug, toString } from '@noeldemartin/utils';
-import { computed, useTemplateRef, watchEffect } from 'vue';
-import { UI, numberInput, requiredObjectInput, translate, useForm } from '@aerogel/core';
+import { computed, watchEffect } from 'vue';
+import { UI, numberInput, requiredObjectInput, translate, useForm, useModal } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { Nullable } from '@noeldemartin/utils';
 
@@ -35,7 +35,7 @@ interface Nutrition {
     carbs: Nullable<number>;
 }
 
-const $modal = useTemplateRef('$modalRef');
+const { close } = useModal();
 const recipes = useModelCollection(Recipe);
 const ingredients = useModelCollection(Ingredient);
 const form = useForm({
@@ -148,7 +148,7 @@ async function calculateNutrition(): Promise<Nutrition> {
 }
 
 async function submit() {
-    $modal.value?.close();
+    close();
 
     UI.loading(
         {

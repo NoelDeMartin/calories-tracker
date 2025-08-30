@@ -9,6 +9,14 @@ home:
     recipesMissing: We couldn't find any recipes in your POD, please come back when you have some!
     recipesMissingInfo: (not sure where to start? Check out out [Umai](https://umai.noeldemartin.com) or [learn to make Ramen](https://ramen.noeldemartin.com).)
 
+history:
+    title: History
+    emptyMonth: No meals for this month.
+    meals: '1 meal on {day} ({calories})|{n} meals on {day} ({calories})'
+    carbs: Carbs
+    protein: Protein
+    fat: Fat
+
 ingredients:
     title: Ingredients
     search: Search ingredients...

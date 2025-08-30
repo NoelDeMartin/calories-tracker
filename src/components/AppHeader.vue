@@ -1,7 +1,7 @@
 <template>
     <header
         v-if="$solid.hasLoggedIn() && !$solid.loginOngoing"
-        class="mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 px-4 pt-8 md:px-0"
+        class="px-edge mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 pt-8"
     >
         <div>
             <div class="flex flex-row items-center">
@@ -38,7 +38,7 @@ import { useModelCollection } from '@aerogel/plugin-soukai';
 
 import Recipe from '@/models/Recipe';
 
-const ROUTES = ['home', 'ingredients'];
+const ROUTES = ['home', 'history', 'ingredients'];
 const recipes = useModelCollection(Recipe);
 const title = computed(() => {
     if (!Router.currentRoute.value?.name) {

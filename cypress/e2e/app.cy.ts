@@ -19,21 +19,10 @@ describe('App', () => {
 
     it('Logs meals', () => {
         // Arrange
-        cy.solidCreateDocument('/cookbook/ramen', 'turtle/ramen.ttl');
-        cy.solidCreateDocument('/settings/privateTypeIndex', '<> a <http://www.w3.org/ns/solid/terms#TypeIndex> .');
-        cy.solidUpdateDocument('/settings/privateTypeIndex', 'sparql/register-cookbook.sparql');
-        cy.solidUpdateDocument('/profile/card', 'sparql/declare-type-index.sparql');
-        cy.ariaInput('Login url').type(`${webId()}{enter}`);
+        setupAccount();
+
         cy.solidLogin();
         cy.waitSync();
-
-        cy.service('$nutritionix').then((Nutritionix) => {
-            Nutritionix.appId = uuid();
-            Nutritionix.appKey = uuid();
-        });
-        cy.intercept('POST', 'https://trackapi.nutritionix.com/v2/natural/nutrients', {
-            fixture: 'json/wheat-noodles.json',
-        });
 
         cy.intercept('PATCH', podUrl('/meals/*')).as('createMeal');
         cy.intercept('PATCH', podUrl('/ingredients/*')).as('createIngredient');
@@ -79,4 +68,46 @@ describe('App', () => {
         });
     });
 
+    it('Shows history', () => {
+        // Arrange
+        setupAccount();
+
+        cy.solidLogin();
+        cy.waitSync();
+
+        cy.press('Log meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        // Act
+        cy.ariaLabel('Navigate').click();
+        cy.press('History');
+
+        // Assert
+        const now = new Date().toLocaleDateString(undefined, {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+        });
+
+        cy.see(`1 meal on ${now} (357 kcal)`);
+    });
+
 });
+
+function setupAccount() {
+    cy.solidCreateDocument('/cookbook/ramen', 'turtle/ramen.ttl');
+    cy.solidCreateDocument('/settings/privateTypeIndex', '<> a <http://www.w3.org/ns/solid/terms#TypeIndex> .');
+    cy.solidUpdateDocument('/settings/privateTypeIndex', 'sparql/register-cookbook.sparql');
+    cy.solidUpdateDocument('/profile/card', 'sparql/declare-type-index.sparql');
+    cy.ariaInput('Login url').type(`${webId()}{enter}`);
+
+    cy.service('$nutritionix').then((Nutritionix) => {
+        Nutritionix.appId = uuid();
+        Nutritionix.appKey = uuid();
+    });
+    cy.intercept('POST', 'https://trackapi.nutritionix.com/v2/natural/nutrients', {
+        fixture: 'json/wheat-noodles.json',
+    });
+}
