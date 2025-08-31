@@ -2,8 +2,9 @@ import { FieldType } from 'soukai';
 import { defineSolidModelSchema } from 'soukai-solid';
 
 export default defineSolidModelSchema({
+    history: true,
+    tombstone: false,
     rdfContext: 'https://schema.org/',
-    timestamps: false,
     fields: {
         serving: {
             type: FieldType.String,

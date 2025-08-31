@@ -1,10 +1,33 @@
 import { round } from '@noeldemartin/utils';
 
+import Ingredient from '@/models/Ingredient';
+import Recipe from '@/models/Recipe';
+
 import Model from './NutritionInformation.schema';
 
 export default class NutritionInformation extends Model {
 
     private values: Record<string, number> | null = null;
+
+    public static boot(name?: string): void {
+        super.boot(name);
+
+        Ingredient.on('updated', (ingredient) => {
+            if (!ingredient.nutrition) {
+                return;
+            }
+
+            ingredient.nutrition.values = null;
+        });
+
+        Recipe.on('updated', (recipe) => {
+            if (!recipe.nutrition) {
+                return;
+            }
+
+            recipe.nutrition.values = null;
+        });
+    }
 
     public get calories(): number | undefined {
         return this.value('calories');

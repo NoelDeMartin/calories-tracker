@@ -8,7 +8,7 @@
             :lang-key="filter ? 'ingredients.noSearchResults' : 'ingredients.noIngredients'"
         />
 
-        <div v-else class="mt-4 w-full overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <div v-else class="mt-4 w-full overflow-x-auto rounded-lg border border-gray-200 bg-white">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
@@ -16,7 +16,7 @@
                             v-for="column in COLUMNS"
                             :key="column.field"
                             class="cursor-pointer px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
-                            @click="sortBy(column.field)"
+                            @click="column.field && sortBy(column.field)"
                         >
                             {{ column.label }}
                             <span v-if="sortField === column.field" class="ml-1">
@@ -26,7 +26,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr v-for="ingredient of sortedIngredients" :key="ingredient.name" class="hover:bg-gray-50">
+                    <tr v-for="ingredient of sortedIngredients" :key="ingredient.name">
                         <td class="px-6 py-4 font-medium whitespace-nowrap text-gray-900">
                             {{ ingredient.name }}
                         </td>
@@ -45,6 +45,12 @@
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(ingredient.nutrition?.fat, { unit: 'grams', fallback: '-' }) }}
                         </td>
+                        <td class="px-6 py-4 text-right whitespace-nowrap">
+                            <Button variant="ghost" @click="$ui.modal(IngredientFormModal, { ingredient })">
+                                <i-zondicons-edit-pencil class="size-4" />
+                                <span class="sr-only">{{ $t('ingredients.edit') }}</span>
+                            </Button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -60,15 +66,17 @@ import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { DeepKeyOf } from '@noeldemartin/utils';
 
 import Ingredient from '@/models/Ingredient';
+import IngredientFormModal from './components/IngredientFormModal.vue';
 import { formatNumber } from '@/utils/formatting';
 
-const COLUMNS: { label: string; field: DeepKeyOf<Ingredient> }[] = [
+const COLUMNS: { label: string; field?: DeepKeyOf<Ingredient> }[] = [
     { label: translate('ingredients.name'), field: 'name' },
     { label: translate('ingredients.serving'), field: 'nutrition.servingGrams' },
     { label: translate('ingredients.calories'), field: 'nutrition.calories' },
     { label: translate('ingredients.protein'), field: 'nutrition.protein' },
     { label: translate('ingredients.carbs'), field: 'nutrition.carbs' },
     { label: translate('ingredients.fat'), field: 'nutrition.fat' },
+    { label: '' },
 ];
 
 const filter = ref('');

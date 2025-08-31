@@ -28,6 +28,11 @@ ingredients:
     protein: Protein
     carbs: Carbs
     fat: Fat
+    editTitle: Edit {name}
+    editName: Name
+    editSubmit: Save
+    editCancel: Cancel
+    editUpdating: Updating ingredient...
 
 logs:
     add: Log meal

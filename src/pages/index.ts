@@ -5,7 +5,7 @@ import { Solid } from '@aerogel/plugin-solid';
 import Recipe from '@/models/Recipe';
 
 import Home from './home/Home.vue';
-import Ingredients from './Ingredients.vue';
+import Ingredients from './ingredients/Ingredients.vue';
 import History from './History.vue';
 
 export default defineRoutes([
