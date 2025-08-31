@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { round } from '@noeldemartin/utils';
-import { UI, numberInput, requiredStringInput, translate, useForm, useModal } from '@aerogel/core';
+import { numberInput, requiredStringInput, useForm, useModal } from '@aerogel/core';
 
 import type Ingredient from '@/models/Ingredient';
 
@@ -40,32 +40,19 @@ const form = useForm({
 async function submit() {
     close();
 
-    UI.loading(
-        {
-            delay: 300,
-            message: translate('ingredients.editUpdating'),
-        },
-        async () => {
-            const nutrition = ingredient.nutrition ?? ingredient.relatedNutrition.attach({});
-            const servingsMultiplier = typeof form.serving === 'number' ? form.serving / 100 : 1;
+    const nutrition = ingredient.nutrition ?? ingredient.relatedNutrition.attach({});
+    const servingsMultiplier = typeof form.serving === 'number' ? form.serving / 100 : 1;
 
-            nutrition.setAttributes({
-                serving: typeof form.serving === 'number' ? `${round(form.serving, 2)} grams` : undefined,
-                rawCalories:
-                    typeof form.calories === 'number'
-                        ? `${round(form.calories * servingsMultiplier)} calories`
-                        : undefined,
-                rawProtein:
-                    typeof form.protein === 'number'
-                        ? `${round(form.protein * servingsMultiplier, 2)} grams`
-                        : undefined,
-                rawCarbs:
-                    typeof form.carbs === 'number' ? `${round(form.carbs * servingsMultiplier, 2)} grams` : undefined,
-                rawFat: typeof form.fat === 'number' ? `${round(form.fat * servingsMultiplier, 2)} grams` : undefined,
-            });
+    nutrition.setAttributes({
+        serving: typeof form.serving === 'number' ? `${round(form.serving, 2)} grams` : undefined,
+        rawCalories:
+            typeof form.calories === 'number' ? `${round(form.calories * servingsMultiplier)} calories` : undefined,
+        rawProtein:
+            typeof form.protein === 'number' ? `${round(form.protein * servingsMultiplier, 2)} grams` : undefined,
+        rawCarbs: typeof form.carbs === 'number' ? `${round(form.carbs * servingsMultiplier, 2)} grams` : undefined,
+        rawFat: typeof form.fat === 'number' ? `${round(form.fat * servingsMultiplier, 2)} grams` : undefined,
+    });
 
-            await ingredient.update({ name: form.name });
-        },
-    );
+    await ingredient.update({ name: form.name });
 }
 </script>

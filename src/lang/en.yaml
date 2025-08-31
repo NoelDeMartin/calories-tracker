@@ -48,6 +48,7 @@ logs:
     adding: Logging meal...
     log: Log
     delete: Delete meal
+    deleteConfirm: Delete {name}?
 
 units:
     calories: '{n} kcal'

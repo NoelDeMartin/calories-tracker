@@ -21,7 +21,7 @@
             class="text-gray-400 transition-colors hover:text-red-500"
             :title="$t('logs.delete')"
             :aria-label="$t('logs.delete')"
-            @click="$ui.alert('Not implemented!')"
+            @click="deleteMeal()"
         >
             <i-lucide-trash2 class="size-5" />
         </Button>
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { formatNumber } from '@/utils/formatting';
+import { translate } from '@aerogel/core';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
@@ -49,4 +50,12 @@ const nutrition = computed(() => {
         fat: mealNutrition.fat,
     };
 });
+
+async function deleteMeal() {
+    if (!confirm(translate('logs.deleteConfirm', { name: meal.recipe?.name }))) {
+        return;
+    }
+
+    await meal.delete();
+}
 </script>
