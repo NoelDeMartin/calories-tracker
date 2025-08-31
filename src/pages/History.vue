@@ -156,7 +156,7 @@ interface Macros {
 const meals = useModelCollection(Meal);
 const selectedMonth = ref({ month: new Date().getMonth(), year: new Date().getFullYear() });
 const daysInMonth = computed(() => new Date(selectedMonth.value.year, selectedMonth.value.month + 1, 0).getDate());
-const days = computed(() => range(daysInMonth.value));
+const days = computed(() => range(daysInMonth.value).map((day) => day + 1));
 const mealsByDay = computed(() => {
     const values = Object.fromEntries(days.value.map((day) => [day, [] as Meal[]]));
 
