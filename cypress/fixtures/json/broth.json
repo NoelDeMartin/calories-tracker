@@ -1,0 +1,354 @@
+{
+    "foods": [
+        {
+            "food_name": "broth",
+            "brand_name": null,
+            "serving_qty": 1,
+            "serving_unit": "cup",
+            "serving_weight_grams": 240,
+            "nf_calories": 86.4,
+            "nf_total_fat": 2.88,
+            "nf_saturated_fat": 0.77,
+            "nf_cholesterol": 7.2,
+            "nf_sodium": 343.2,
+            "nf_total_carbohydrate": 8.47,
+            "nf_dietary_fiber": 0,
+            "nf_sugars": 3.79,
+            "nf_protein": 6.05,
+            "nf_potassium": 252,
+            "nf_p": 64.8,
+            "full_nutrients": [
+                {
+                    "attr_id": 203,
+                    "value": 6.048
+                },
+                {
+                    "attr_id": 204,
+                    "value": 2.88
+                },
+                {
+                    "attr_id": 205,
+                    "value": 8.472
+                },
+                {
+                    "attr_id": 207,
+                    "value": 1.512
+                },
+                {
+                    "attr_id": 208,
+                    "value": 86.4
+                },
+                {
+                    "attr_id": 221,
+                    "value": 0
+                },
+                {
+                    "attr_id": 255,
+                    "value": 221.16
+                },
+                {
+                    "attr_id": 262,
+                    "value": 0
+                },
+                {
+                    "attr_id": 263,
+                    "value": 0
+                },
+                {
+                    "attr_id": 268,
+                    "value": 362.4
+                },
+                {
+                    "attr_id": 269,
+                    "value": 3.792
+                },
+                {
+                    "attr_id": 291,
+                    "value": 0
+                },
+                {
+                    "attr_id": 301,
+                    "value": 7.2
+                },
+                {
+                    "attr_id": 303,
+                    "value": 0.504
+                },
+                {
+                    "attr_id": 304,
+                    "value": 9.6
+                },
+                {
+                    "attr_id": 305,
+                    "value": 64.8
+                },
+                {
+                    "attr_id": 306,
+                    "value": 252
+                },
+                {
+                    "attr_id": 307,
+                    "value": 343.2
+                },
+                {
+                    "attr_id": 309,
+                    "value": 0.336
+                },
+                {
+                    "attr_id": 312,
+                    "value": 0.1296
+                },
+                {
+                    "attr_id": 317,
+                    "value": 5.28
+                },
+                {
+                    "attr_id": 318,
+                    "value": 7.2
+                },
+                {
+                    "attr_id": 319,
+                    "value": 2.4
+                },
+                {
+                    "attr_id": 320,
+                    "value": 2.4
+                },
+                {
+                    "attr_id": 321,
+                    "value": 0
+                },
+                {
+                    "attr_id": 322,
+                    "value": 0
+                },
+                {
+                    "attr_id": 323,
+                    "value": 0.072
+                },
+                {
+                    "attr_id": 324,
+                    "value": 0
+                },
+                {
+                    "attr_id": 328,
+                    "value": 0
+                },
+                {
+                    "attr_id": 334,
+                    "value": 0
+                },
+                {
+                    "attr_id": 337,
+                    "value": 0
+                },
+                {
+                    "attr_id": 338,
+                    "value": 2.4
+                },
+                {
+                    "attr_id": 401,
+                    "value": 0.48
+                },
+                {
+                    "attr_id": 404,
+                    "value": 0.084
+                },
+                {
+                    "attr_id": 405,
+                    "value": 0.204
+                },
+                {
+                    "attr_id": 406,
+                    "value": 3.8016
+                },
+                {
+                    "attr_id": 415,
+                    "value": 0.1464
+                },
+                {
+                    "attr_id": 417,
+                    "value": 12
+                },
+                {
+                    "attr_id": 418,
+                    "value": 0
+                },
+                {
+                    "attr_id": 421,
+                    "value": 22.08
+                },
+                {
+                    "attr_id": 430,
+                    "value": 0.48
+                },
+                {
+                    "attr_id": 431,
+                    "value": 0
+                },
+                {
+                    "attr_id": 432,
+                    "value": 12
+                },
+                {
+                    "attr_id": 435,
+                    "value": 12
+                },
+                {
+                    "attr_id": 601,
+                    "value": 7.2
+                },
+                {
+                    "attr_id": 606,
+                    "value": 0.7704
+                },
+                {
+                    "attr_id": 607,
+                    "value": 0
+                },
+                {
+                    "attr_id": 608,
+                    "value": 0
+                },
+                {
+                    "attr_id": 609,
+                    "value": 0
+                },
+                {
+                    "attr_id": 610,
+                    "value": 0
+                },
+                {
+                    "attr_id": 611,
+                    "value": 0
+                },
+                {
+                    "attr_id": 612,
+                    "value": 0.0192
+                },
+                {
+                    "attr_id": 613,
+                    "value": 0.6048
+                },
+                {
+                    "attr_id": 614,
+                    "value": 0.1344
+                },
+                {
+                    "attr_id": 617,
+                    "value": 1.1616
+                },
+                {
+                    "attr_id": 618,
+                    "value": 0.4896
+                },
+                {
+                    "attr_id": 619,
+                    "value": 0.0216
+                },
+                {
+                    "attr_id": 620,
+                    "value": 0
+                },
+                {
+                    "attr_id": 621,
+                    "value": 0
+                },
+                {
+                    "attr_id": 626,
+                    "value": 0.2136
+                },
+                {
+                    "attr_id": 627,
+                    "value": 0
+                },
+                {
+                    "attr_id": 628,
+                    "value": 0.0096
+                },
+                {
+                    "attr_id": 629,
+                    "value": 0
+                },
+                {
+                    "attr_id": 630,
+                    "value": 0
+                },
+                {
+                    "attr_id": 631,
+                    "value": 0
+                },
+                {
+                    "attr_id": 645,
+                    "value": 1.3968
+                },
+                {
+                    "attr_id": 646,
+                    "value": 0.5112
+                }
+            ],
+            "nix_brand_name": null,
+            "nix_brand_id": null,
+            "nix_item_name": null,
+            "nix_item_id": null,
+            "upc": null,
+            "consumed_at": "2025-08-31T09:13:13+00:00",
+            "metadata": {
+                "is_raw_food": false
+            },
+            "source": 1,
+            "ndb_no": 6172,
+            "tags": {
+                "item": "broth stock",
+                "measure": null,
+                "quantity": "1.0",
+                "food_group": 0,
+                "tag_id": 1089
+            },
+            "alt_measures": [
+                {
+                    "serving_weight": 240,
+                    "measure": "cup",
+                    "seq": 1,
+                    "qty": 1
+                },
+                {
+                    "serving_weight": 30,
+                    "measure": "fl oz",
+                    "seq": 80,
+                    "qty": 1
+                },
+                {
+                    "serving_weight": 100,
+                    "measure": "g",
+                    "seq": null,
+                    "qty": 100
+                },
+                {
+                    "serving_weight": 5,
+                    "measure": "tsp",
+                    "seq": 101,
+                    "qty": 1
+                },
+                {
+                    "serving_weight": 15,
+                    "measure": "tbsp",
+                    "seq": 102,
+                    "qty": 1
+                }
+            ],
+            "lat": null,
+            "lng": null,
+            "meal_type": 1,
+            "photo": {
+                "thumb": "https://nix-tag-images.s3.amazonaws.com/1089_thumb.jpg",
+                "highres": "https://nix-tag-images.s3.amazonaws.com/1089_highres.jpg",
+                "is_user_uploaded": false
+            },
+            "sub_recipe": null,
+            "class_code": null,
+            "brick_code": null,
+            "tag_id": null
+        }
+    ]
+}

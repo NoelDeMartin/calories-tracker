@@ -12,6 +12,7 @@ const FoodSchema = object({
     nf_total_fat: optional(number()),
     nf_protein: optional(number()),
     nf_total_carbohydrate: optional(number()),
+    serving_qty: optional(number()),
     serving_weight_grams: optional(number()),
 });
 
@@ -39,7 +40,7 @@ export class NutritionixService extends Service {
 
         return {
             name: food.food_name,
-            serving: `${food.serving_weight_grams} grams`,
+            serving: `${food.serving_weight_grams / (food.serving_qty ?? 1)} grams`,
             calories: food.nf_calories,
             protein: food.nf_protein,
             carbs: food.nf_total_carbohydrate,

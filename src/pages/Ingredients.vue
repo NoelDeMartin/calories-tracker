@@ -31,6 +31,9 @@
                             {{ ingredient.name }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {{ formatNumber(ingredient.nutrition?.servingGrams, { unit: 'grams', fallback: '-' }) }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(ingredient.nutrition?.calories, { unit: 'calories', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
@@ -61,6 +64,7 @@ import { formatNumber } from '@/utils/formatting';
 
 const COLUMNS: { label: string; field: DeepKeyOf<Ingredient> }[] = [
     { label: translate('ingredients.name'), field: 'name' },
+    { label: translate('ingredients.serving'), field: 'nutrition.servingGrams' },
     { label: translate('ingredients.calories'), field: 'nutrition.calories' },
     { label: translate('ingredients.protein'), field: 'nutrition.protein' },
     { label: translate('ingredients.carbs'), field: 'nutrition.carbs' },

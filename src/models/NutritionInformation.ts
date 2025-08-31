@@ -22,6 +22,10 @@ export default class NutritionInformation extends Model {
         return this.value('fat');
     }
 
+    public get servingGrams(): number | undefined {
+        return this.value('servingGrams');
+    }
+
     protected async afterSave(): Promise<void> {
         await super.afterSave();
 
@@ -60,6 +64,10 @@ export default class NutritionInformation extends Model {
 
         if (this.rawFat) {
             values.fat = round(parseFloat(this.rawFat.replace('grams', '').trim()) * quantityMultiplier, 2);
+        }
+
+        if (this.serving && this.serving.includes('grams')) {
+            values.servingGrams = parseFloat(this.serving.replace('grams', '').trim());
         }
 
         return values;

@@ -24,12 +24,22 @@ ingredients:
     noSearchResults: No ingredients match your search
     name: Ingredient
     calories: Calories (per 100g)
-    protein: Protein (g)
-    carbs: Carbs (g)
-    fat: Fat (g)
+    serving: Serving
+    protein: Protein
+    carbs: Carbs
+    fat: Fat
 
 logs:
     add: Log meal
+    addNew: Other
+    meal: Meal
+    addName: Name
+    addServings: Servings
+    addCalories: Calories (kcal)
+    addProtein: Protein (g)
+    addCarbs: Carbs (g)
+    addFat: Fat (g)
+    addMissingData: Please, complete all the fields.
     adding: Logging meal...
     log: Log
     delete: Delete meal

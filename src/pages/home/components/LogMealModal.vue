@@ -1,13 +1,36 @@
 <template>
     <Modal :title="$t('logs.add')">
-        <Form :form="form" class="space-y-2" @submit="submit()">
+        <Form :form class="space-y-2" @submit="submit()">
             <Select
-                name="recipe"
-                :options="recipes"
-                :render-option="(recipe) => recipe.name"
-                :compare-options="(a, b) => a.url === b.url"
+                name="meal"
+                label-class="sr-only"
+                :label="$t('logs.meal')"
+                :options="mealOptions"
+                :render-option="renderMeal"
+                :compare-options="(a, b) => a.id === b.id"
             />
-            <Select name="servings" :options="servings" :render-option="renderServing" />
+            <Select
+                v-if="isInstanceOf(form.meal, Recipe)"
+                name="servings"
+                :options="servingsOptions"
+                :render-option="renderServing"
+            />
+            <Input
+                v-else-if="isInstanceOf(form.meal, Meal)"
+                name="mealServings"
+                step="0.1"
+                :placeholder="$t('logs.addServings')"
+            />
+            <template v-else>
+                <Input name="name" :placeholder="$t('logs.addName')" />
+                <Input name="calories" :placeholder="$t('logs.addCalories')" />
+                <Input name="protein" :placeholder="$t('logs.addProtein')" />
+                <Input name="carbs" :placeholder="$t('logs.addCarbs')" />
+                <Input name="fat" :placeholder="$t('logs.addFat')" />
+            </template>
+            <div v-if="error" class="rounded-md bg-red-50 p-2 text-sm text-red-500">
+                {{ error }}
+            </div>
             <Button submit class="w-full">
                 {{ $t('logs.log') }}
             </Button>
@@ -16,9 +39,19 @@
 </template>
 
 <script setup lang="ts">
-import { arraySorted, arrayUnique, map, range, round, stringToSlug, toString } from '@noeldemartin/utils';
-import { computed, watchEffect } from 'vue';
-import { UI, numberInput, requiredObjectInput, translate, useForm, useModal } from '@aerogel/core';
+import {
+    arraySorted,
+    arrayUnique,
+    isInstanceOf,
+    map,
+    range,
+    required,
+    round,
+    stringToSlug,
+    toString,
+} from '@noeldemartin/utils';
+import { computed, ref, watchEffect } from 'vue';
+import { UI, numberInput, requiredObjectInput, stringInput, translate, useForm, useModal } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { Nullable } from '@noeldemartin/utils';
 
@@ -26,6 +59,7 @@ import Recipe from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Ingredient from '@/models/Ingredient';
 import Nutritionix from '@/services/Nutritionix';
+import { formatNumber } from '@/utils/formatting';
 import type { IngredientBreakdown } from '@/utils/ingredients';
 
 interface Nutrition {
@@ -36,20 +70,48 @@ interface Nutrition {
 }
 
 const { close } = useModal();
+const error = ref('');
 const recipes = useModelCollection(Recipe);
+const meals = useModelCollection(Meal);
 const ingredients = useModelCollection(Ingredient);
-const form = useForm({
-    recipe: requiredObjectInput(recipes.value[0]),
-    servings: numberInput(),
+const mealOptions = computed(() => {
+    const mealNames = new Set<string>();
+    const uniqueMeals: Meal[] = [];
+
+    for (const meal of meals.value) {
+        if (!meal.recipe || meal.recipe.externalUrls.length > 0 || mealNames.has(meal.recipe.name)) {
+            continue;
+        }
+
+        mealNames.add(meal.recipe.name);
+        uniqueMeals.push(meal);
+    }
+
+    return (recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals).concat({ id: 'new' });
 });
-const renderServing = computed(() => form.recipe.servingsBreakdown?.renderQuantity ?? toString);
+const form = useForm({
+    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(recipes.value[0]),
+    name: stringInput(),
+    servings: numberInput(),
+    mealServings: numberInput(),
+    calories: numberInput(),
+    protein: numberInput(),
+    carbs: numberInput(),
+    fat: numberInput(),
+});
+const renderServing = computed(() =>
+    form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString);
 const ingredientsMap = computed(() => map(ingredients.value, 'name'));
-const servings = computed(() => {
-    const servingsBreakdown = form.recipe.servingsBreakdown;
+const servingsOptions = computed(() => {
+    if (!isInstanceOf(form.meal, Recipe)) {
+        return [];
+    }
+
+    const servingsBreakdown = form.meal.servingsBreakdown;
     const defaultQuantity = servingsBreakdown?.quantity ?? 1;
 
     if (!servingsBreakdown) {
-        return range(10);
+        return range(10).map((quantity) => quantity + 1);
     }
 
     return arraySorted(
@@ -64,15 +126,48 @@ const servings = computed(() => {
 });
 
 watchEffect(() => {
-    if (!form.servings || servings.value.includes(form.servings)) {
+    if (!form.servings || servingsOptions.value.includes(form.servings)) {
         return;
     }
 
     form.servings = null;
 });
 
+async function submit() {
+    error.value = '';
+
+    if (form.meal instanceof Recipe) {
+        await logRecipe(form.meal);
+
+        return;
+    }
+
+    if (form.meal instanceof Meal) {
+        await logMeal(form.meal);
+
+        return;
+    }
+
+    await logNewMeal();
+}
+
+function renderMeal(meal: Recipe | Meal | { id: 'new' }) {
+    if (meal instanceof Meal) {
+        return meal.recipe?.name ?? '';
+    }
+
+    if (meal instanceof Recipe) {
+        return meal.name;
+    }
+
+    return translate('logs.addNew');
+}
+
 async function resolveIngredient({ template }: IngredientBreakdown): Promise<Ingredient> {
-    const name = template.replace('{quantity}', '').trim();
+    const name = template
+        .replace('{quantity}', '')
+        .trim()
+        .replace(/\s*\(optional\)/, '');
 
     if (ingredientsMap.value.hasKey(name)) {
         return ingredientsMap.value.require(name);
@@ -111,7 +206,16 @@ function applyIngredientNutrition(
     nutrition[property] += ingredient.nutrition[property] * multiplier;
 }
 
-async function calculateNutrition(): Promise<Nutrition> {
+function ingredientNotFound(ingredientBreakdown: IngredientBreakdown) {
+    // eslint-disable-next-line no-console
+    console.warn('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original);
+
+    UI.toast('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original, {
+        variant: 'warning',
+    });
+}
+
+async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
     const nutrition: Nutrition = {
         calories: null,
         fat: null,
@@ -119,19 +223,31 @@ async function calculateNutrition(): Promise<Nutrition> {
         carbs: null,
     };
 
-    const originalServings = form.recipe.servingsBreakdown?.quantity;
-    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? form.servings) : 1;
+    const originalServings = recipe.servingsBreakdown?.quantity;
+    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
 
-    for (const ingredientBreakdown of form.recipe.ingredientsBreakdown) {
-        if (ingredientBreakdown.unit !== 'grams' || typeof ingredientBreakdown.quantity !== 'number') {
-            // eslint-disable-next-line no-console
-            console.warn('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original);
+    for (const ingredientBreakdown of recipe.ingredientsBreakdown) {
+        if (ingredientBreakdown.unit && ingredientBreakdown.unit !== 'grams') {
+            ingredientNotFound(ingredientBreakdown);
 
             continue;
         }
 
+        let multiplier: number;
         const ingredient = await resolveIngredient(ingredientBreakdown);
-        const multiplier = ingredientsMultiplier * (ingredientBreakdown.quantity / 100);
+        const quantity = typeof ingredientBreakdown.quantity === 'number' ? ingredientBreakdown.quantity : 1;
+
+        if (ingredientBreakdown.unit === 'grams') {
+            multiplier = ingredientsMultiplier * (quantity / 100);
+        } else {
+            if (!ingredient.nutrition?.servingGrams) {
+                ingredientNotFound(ingredientBreakdown);
+
+                continue;
+            }
+
+            multiplier = (ingredientsMultiplier * (quantity * ingredient.nutrition.servingGrams)) / 100;
+        }
 
         applyIngredientNutrition(ingredient, nutrition, 'calories', multiplier);
         applyIngredientNutrition(ingredient, nutrition, 'fat', multiplier);
@@ -147,7 +263,15 @@ async function calculateNutrition(): Promise<Nutrition> {
     return nutrition;
 }
 
-async function submit() {
+async function logNewMeal() {
+    const { name, calories, protein, carbs, fat } = form;
+
+    if (!name || !calories || !protein || !carbs || !fat) {
+        error.value = translate('logs.addMissingData');
+
+        return;
+    }
+
     close();
 
     UI.loading(
@@ -156,28 +280,78 @@ async function submit() {
             message: translate('logs.adding'),
         },
         async () => {
-            const nutrition = await calculateNutrition();
-            const meal = new Meal();
-            const mealRecipe = meal.relatedRecipe.attach({
-                name: form.recipe.name,
-                servings:
-                    form.servings && form.recipe.servingsBreakdown
-                        ? form.recipe.servingsBreakdown.renderQuantity(form.servings)
-                        : form.recipe.servings,
-                externalUrls: [form.recipe.url],
+            await createMeal(name, {
+                calories,
+                fat,
+                protein,
+                carbs,
             });
-
-            if (nutrition.calories || nutrition.protein || nutrition.carbs || nutrition.fat) {
-                mealRecipe.relatedNutrition.attach({
-                    rawCalories: nutrition.calories ? `${nutrition.calories} calories` : undefined,
-                    rawProtein: nutrition.protein ? `${nutrition.protein} grams` : undefined,
-                    rawCarbs: nutrition.carbs ? `${nutrition.carbs} grams` : undefined,
-                    rawFat: nutrition.fat ? `${nutrition.fat} grams` : undefined,
-                });
-            }
-
-            await meal.save();
         },
     );
+}
+
+async function logMeal(meal: Meal) {
+    close();
+
+    UI.loading(
+        {
+            delay: 300,
+            message: translate('logs.adding'),
+        },
+        async () => {
+            const servings = form.mealServings ?? 1;
+            const nutrition = {
+                calories: meal.recipe?.nutrition?.calories ? meal.recipe?.nutrition?.calories * servings : undefined,
+                protein: meal.recipe?.nutrition?.protein ? meal.recipe?.nutrition?.protein * servings : undefined,
+                carbs: meal.recipe?.nutrition?.carbs ? meal.recipe?.nutrition?.carbs * servings : undefined,
+                fat: meal.recipe?.nutrition?.fat ? meal.recipe?.nutrition?.fat * servings : undefined,
+            };
+
+            await createMeal(
+                required(meal.recipe?.name),
+                nutrition,
+                servings !== 1 ? formatNumber(servings) : undefined,
+            );
+        },
+    );
+}
+
+async function logRecipe(recipe: Recipe) {
+    close();
+
+    UI.loading(
+        {
+            delay: 300,
+            message: translate('logs.adding'),
+        },
+        async () => {
+            const nutrition = await calculateRecipeNutrition(recipe);
+
+            await createMeal(
+                recipe.name,
+                nutrition,
+                form.servings && recipe.servingsBreakdown
+                    ? recipe.servingsBreakdown.renderQuantity(form.servings)
+                    : (form.servings ?? recipe.servings)?.toString(),
+                [recipe.url],
+            );
+        },
+    );
+}
+
+async function createMeal(name: string, nutrition: Nutrition, servings?: string, externalUrls?: string[]) {
+    const meal = new Meal();
+    const mealRecipe = meal.relatedRecipe.attach({ name, servings, externalUrls });
+
+    if (nutrition.calories || nutrition.protein || nutrition.carbs || nutrition.fat) {
+        mealRecipe.relatedNutrition.attach({
+            rawCalories: nutrition.calories ? `${nutrition.calories} calories` : undefined,
+            rawProtein: nutrition.protein ? `${nutrition.protein} grams` : undefined,
+            rawCarbs: nutrition.carbs ? `${nutrition.carbs} grams` : undefined,
+            rawFat: nutrition.fat ? `${nutrition.fat} grams` : undefined,
+        });
+    }
+
+    await meal.save();
 }
 </script>

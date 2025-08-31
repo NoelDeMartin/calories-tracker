@@ -1,5 +1,5 @@
 import { translate } from '@aerogel/core';
-import type { Nullable } from '@noeldemartin/utils';
+import { type Nullable, isObject } from '@noeldemartin/utils';
 
 function applyBankerRounding(value: number, all: number[] = []) {
     if (all.length === 0) {
@@ -23,7 +23,7 @@ function applyBankerRounding(value: number, all: number[] = []) {
 export type FormatUnit = 'percentage' | 'grams' | 'calories';
 
 export interface FormatOptions {
-    unit: FormatUnit;
+    unit?: FormatUnit;
     fallback?: string;
     digits?: number;
 }
@@ -38,13 +38,13 @@ export function formatPercentage(value: number, all: number[] = []): string {
     );
 }
 
-export function formatNumber(value: Nullable<number>, unit: FormatUnit): string;
+export function formatNumber(value: Nullable<number>, unit?: FormatUnit): string;
 export function formatNumber(value: Nullable<number>, options: FormatOptions): string;
-export function formatNumber(value: Nullable<number>, unitOrOptions: FormatUnit | FormatOptions): string {
-    const options = typeof unitOrOptions === 'string' ? { unit: unitOrOptions } : unitOrOptions;
+export function formatNumber(value: Nullable<number>, unitOrOptions?: FormatUnit | FormatOptions): string {
+    const options: FormatOptions = isObject(unitOrOptions) ? unitOrOptions : { unit: unitOrOptions };
 
     if (typeof value !== 'number') {
-        return options.fallback ?? translate(`units.${options.unit}`, { n: '?' });
+        return options.fallback ?? (options.unit ? translate(`units.${options.unit}`, { n: '?' }) : '?');
     }
 
     switch (options.unit) {
@@ -62,5 +62,8 @@ export function formatNumber(value: Nullable<number>, unitOrOptions: FormatUnit 
 
         case 'calories':
             return translate('units.calories', { n: Math.round(value).toLocaleString() });
+
+        default:
+            return value.toLocaleString();
     }
 }
