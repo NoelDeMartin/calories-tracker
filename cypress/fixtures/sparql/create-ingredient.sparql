@@ -24,4 +24,10 @@ INSERT DATA {
         schema:fatContent "{{ fat }}" ;
         schema:proteinContent "{{ protein }}" .
 
+    <#[[nutrition][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
 }
