@@ -9,9 +9,19 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     build: { sourcemap: true },
+    base: process.env.NODE_ENV === 'production' ? '/calories-tracker/' : '/',
     publicDir: fileURLToPath(new URL('./src/assets/public/', import.meta.url)),
     plugins: [
-        Aerogel({ name: 'Calories Tracker' }),
+        Aerogel({
+            name: 'Calories Tracker',
+            description: 'Watch your calories!',
+            baseUrl: 'https://noeldemartin.github.io/calories-tracker/',
+            themeColor: '#fff',
+            icons: {
+                '192x192': 'android-chrome-192x192.png',
+                '512x512': 'android-chrome-512x512.png',
+            },
+        }),
         Components({
             dts: 'src/types/components.d.ts',
             resolvers: [AerogelResolver(), IconsResolver()],
