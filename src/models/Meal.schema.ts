@@ -7,6 +7,10 @@ export default defineSolidModelSchema({
     rdfContext: 'https://schema.org/',
     rdfsClass: 'ConsumeAction',
     fields: {
+        consumedAt: {
+            type: FieldType.Date,
+            rdfProperty: 'endTime',
+        },
         recipeUrl: {
             type: FieldType.Key,
             rdfProperty: 'object',

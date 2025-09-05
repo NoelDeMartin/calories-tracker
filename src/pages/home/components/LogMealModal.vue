@@ -29,6 +29,8 @@
                 <Input name="fat" :placeholder="$t('logs.addFat')" />
             </template>
 
+            <Input name="consumedAt" type="datetime-local" />
+
             <template v-if="caloriesBreakdown?.length">
                 <span class="self-end text-sm text-gray-600">
                     {{ $t('logs.totalCalories') }}: {{ formatNumber(totalCalories, 'calories') }}
@@ -61,8 +63,17 @@ import {
     stringToSlug,
     toString,
 } from '@noeldemartin/utils';
-import { computed, ref, watchEffect } from 'vue';
-import { UI, numberInput, requiredObjectInput, stringInput, translate, useForm, useModal } from '@aerogel/core';
+import {
+    UI,
+    numberInput,
+    requiredDateInput,
+    requiredObjectInput,
+    stringInput,
+    translate,
+    useForm,
+    useModal,
+} from '@aerogel/core';
+import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { Nullable } from '@noeldemartin/utils';
 
@@ -101,14 +112,15 @@ const mealOptions = computed(() => {
     return (recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals).concat({ id: 'new' });
 });
 const form = useForm({
-    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(recipes.value[0]),
+    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(recipes.value[0] ?? meals.value[0] ?? { id: 'new' }),
     name: stringInput(),
     servings: numberInput(),
-    mealServings: numberInput(),
+    mealServings: numberInput(1),
     calories: numberInput(),
     protein: numberInput(),
     carbs: numberInput(),
     fat: numberInput(),
+    consumedAt: requiredDateInput(new Date()),
 });
 const renderServing = computed(() =>
     form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString);
@@ -148,13 +160,18 @@ const caloriesBreakdown = computed(() => {
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
 
-watchEffect(() => {
-    if (!form.servings || servingsOptions.value.includes(form.servings)) {
-        return;
-    }
+watch(
+    () => form.meal,
+    () => {
+        if (!isInstanceOf(form.meal, Recipe)) {
+            return;
+        }
 
-    form.servings = null;
-});
+        const defaultQuantity = form.meal.servingsBreakdown?.quantity ?? 1;
+        form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
+    },
+    { immediate: true },
+);
 
 async function submit() {
     error.value = '';
@@ -343,7 +360,9 @@ async function logRecipe(recipe: Recipe) {
                 nutrition,
                 form.servings && recipe.servingsBreakdown
                     ? recipe.servingsBreakdown.renderQuantity(form.servings)
-                    : (form.servings ?? recipe.servings)?.toString(),
+                    : form.servings !== 1
+                        ? (form.servings ?? recipe.servings)?.toString()
+                        : undefined,
                 [recipe.url],
             );
         },
@@ -351,7 +370,7 @@ async function logRecipe(recipe: Recipe) {
 }
 
 async function createMeal(name: string, nutrition: Nutrition, servings?: string, externalUrls?: string[]) {
-    const meal = new Meal();
+    const meal = new Meal({ consumedAt: form.consumedAt });
     const mealRecipe = meal.relatedRecipe.attach({ name, servings, externalUrls });
 
     if (nutrition.calories || nutrition.protein || nutrition.carbs || nutrition.fat) {

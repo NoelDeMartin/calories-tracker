@@ -145,6 +145,7 @@ import { range } from '@noeldemartin/utils';
 import { computed, ref } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import { formatNumber, formatPercentage } from '@/utils/formatting';
+import { sortedMeals } from '@/utils/meals';
 
 interface Macros {
     protein: number;
@@ -197,7 +198,7 @@ const caloriesSteps = computed(() =>
 const history = computed(() =>
     Object.fromEntries(
         days.value.map((day) => {
-            const dayMeals = mealsByDay.value[day];
+            const dayMeals = sortedMeals(mealsByDay.value[day]);
             const macros = macrosByDay.value[day];
             const weekday = new Date(selectedMonth.value.year, selectedMonth.value.month, day).toLocaleDateString(
                 undefined,

@@ -128,7 +128,7 @@ describe('App', () => {
         // Act - repeated meal
         cy.press('Log meal');
         cy.comboboxSelect('Meal', 'Pisto');
-        cy.get('input[name="mealServings"]').type('2');
+        cy.get('input[name="mealServings"]').clear().type('2');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
