@@ -6,7 +6,8 @@ INSERT DATA {
 
     <#it>
         a schema:ConsumeAction ;
-        schema:object <#[[recipe][.*]]> .
+        schema:object <#[[recipe][.*]]> ;
+        schema:endTime "[[.*]]"^^xsd:dateTime .
 
     <#it-metadata>
         a crdt:Metadata ;

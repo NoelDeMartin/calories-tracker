@@ -14,7 +14,7 @@ describe('App', () => {
         cy.solidLogin();
 
         // Assert
-        cy.see('We couldn\'t find any recipes in your POD');
+        cy.see('Today\'s meals');
     });
 
     it('Logs recipes', () => {

@@ -1,13 +1,12 @@
 <template>
-    <DailyLogs v-if="recipes.length > 0" />
-    <RecipesMissing v-else-if="$solid.hasLoggedIn() && !$solid.loginOngoing" />
-    <Welcome v-else />
+    <Welcome v-if="meals.length == 0 && !$solid.hasLoggedIn()" />
+    <DailyLogs v-else />
 </template>
 
 <script setup lang="ts">
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
-import Recipe from '@/models/Recipe';
+import Meal from '@/models/Meal';
 
-const recipes = useModelCollection(Recipe);
+const meals = useModelCollection(Meal);
 </script>

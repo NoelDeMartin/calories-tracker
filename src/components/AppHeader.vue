@@ -1,6 +1,6 @@
 <template>
     <header
-        v-if="$solid.hasLoggedIn() && !$solid.loginOngoing"
+        v-if="meals.length > 0 || $solid.hasLoggedIn()"
         class="px-edge mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 pt-8"
     >
         <div>
@@ -19,7 +19,7 @@
                     {{ $t('app.title') }}
                 </h1>
             </div>
-            <h2 v-if="recipes.length > 0" class="text-lg text-gray-500">
+            <h2 v-if="meals.length > 0 || $solid.hasLoggedIn()" class="text-lg text-gray-500">
                 {{ title }}
             </h2>
         </div>
@@ -36,10 +36,10 @@ import { toString } from '@noeldemartin/utils';
 import { translate } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
-import Recipe from '@/models/Recipe';
+import Meal from '@/models/Meal';
 
 const ROUTES = ['home', 'history', 'ingredients'];
-const recipes = useModelCollection(Recipe);
+const meals = useModelCollection(Meal);
 const title = computed(() => {
     if (!Router.currentRoute.value?.name) {
         return;

@@ -6,8 +6,7 @@ app:
 home:
     title: Today's meals
     welcome: 'Hi there! Are you ready to start tracking your calories?'
-    recipesMissing: We couldn't find any recipes in your POD, please come back when you have some!
-    recipesMissingInfo: (not sure where to start? Check out out [Umai](https://umai.noeldemartin.com) or [learn to make Ramen](https://ramen.noeldemartin.com).)
+    orGetStarted: or get started right away
 
 history:
     title: History

@@ -4,7 +4,7 @@
 
         <Markdown
             v-if="filteredIngredients.length === 0"
-            class="py-8 text-center text-gray-500"
+            class="mx-auto py-8 text-center text-gray-500"
             :lang-key="filter ? 'ingredients.noSearchResults' : 'ingredients.noIngredients'"
         />
 
