@@ -49,6 +49,10 @@ logs:
     log: Log
     delete: Delete meal
     deleteConfirm: Delete {name}?
+    viewBreakdown: View calories breakdown
+    caloriesBreakdown: '{name} Calories Breakdown'
+    noIngredients: No ingredients found
+    totalCalories: Total
 
 units:
     calories: '{n} kcal'

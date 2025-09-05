@@ -15,20 +15,33 @@
                 {{ date }}
             </p>
         </div>
-        <Button
-            size="icon"
-            variant="ghost"
-            class="text-gray-400 transition-colors hover:text-red-500"
-            :title="$t('logs.delete')"
-            :aria-label="$t('logs.delete')"
-            @click="deleteMeal()"
-        >
-            <i-lucide-trash2 class="size-5" />
-        </Button>
+        <div class="flex space-x-1">
+            <Button
+                size="icon"
+                variant="ghost"
+                class="text-gray-400 transition-colors hover:text-green-500"
+                :title="$t('logs.viewBreakdown')"
+                :aria-label="$t('logs.viewBreakdown')"
+                @click="$ui.modal(CaloriesBreakdownModal, { meal })"
+            >
+                <i-lucide-eye class="size-4" />
+            </Button>
+            <Button
+                size="icon"
+                variant="ghost"
+                class="text-gray-400 transition-colors hover:text-red-500"
+                :title="$t('logs.delete')"
+                :aria-label="$t('logs.delete')"
+                @click="deleteMeal()"
+            >
+                <i-lucide-trash2 class="size-5" />
+            </Button>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import CaloriesBreakdownModal from './CaloriesBreakdownModal.vue';
 import { computed } from 'vue';
 import { formatNumber } from '@/utils/formatting';
 import { translate } from '@aerogel/core';

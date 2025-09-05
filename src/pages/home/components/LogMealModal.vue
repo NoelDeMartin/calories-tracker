@@ -1,6 +1,6 @@
 <template>
-    <Modal :title="$t('logs.add')">
-        <Form :form class="space-y-2" @submit="submit()">
+    <Modal :title="$t('logs.add')" class="flex flex-col">
+        <Form :form class="flex flex-col space-y-2 overflow-y-auto" @submit="submit()">
             <Select
                 name="meal"
                 label-class="sr-only"
@@ -22,12 +22,23 @@
                 :placeholder="$t('logs.addServings')"
             />
             <template v-else>
-                <Input name="name" :placeholder="$t('logs.addName')" />
-                <Input name="calories" :placeholder="$t('logs.addCalories')" />
+                <Input name="name" :placeholder="$t('logs.addName')" required />
+                <Input name="calories" :placeholder="$t('logs.addCalories')" required />
                 <Input name="protein" :placeholder="$t('logs.addProtein')" />
                 <Input name="carbs" :placeholder="$t('logs.addCarbs')" />
                 <Input name="fat" :placeholder="$t('logs.addFat')" />
             </template>
+
+            <template v-if="caloriesBreakdown?.length">
+                <span class="self-end text-sm text-gray-600">
+                    {{ $t('logs.totalCalories') }}: {{ formatNumber(totalCalories, 'calories') }}
+                </span>
+
+                <Details :label="$t('logs.viewBreakdown')" class="overflow-y-auto">
+                    <CaloriesBreakdown :breakdown="caloriesBreakdown" />
+                </Details>
+            </template>
+
             <div v-if="error" class="rounded-md bg-red-50 p-2 text-sm text-red-500">
                 {{ error }}
             </div>
@@ -55,7 +66,7 @@ import { UI, numberInput, requiredObjectInput, stringInput, translate, useForm, 
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import type { Nullable } from '@noeldemartin/utils';
 
-import Recipe from '@/models/Recipe';
+import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Ingredient from '@/models/Ingredient';
 import Nutritionix from '@/services/Nutritionix';
@@ -124,6 +135,18 @@ const servingsOptions = computed(() => {
         (a, b) => (a > b ? 1 : -1),
     );
 });
+const caloriesBreakdown = computed(() => {
+    if (!isInstanceOf(form.meal, Recipe)) {
+        return;
+    }
+
+    const originalServings = form.meal.servingsBreakdown?.quantity;
+    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
+
+    return form.meal.getCaloriesBreakdown(ingredientsMultiplier, ingredientsMap.value);
+});
+const totalCalories = computed(() =>
+    caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
 
 watchEffect(() => {
     if (!form.servings || servingsOptions.value.includes(form.servings)) {
@@ -193,29 +216,35 @@ async function resolveIngredient({ template }: IngredientBreakdown): Promise<Ing
 }
 
 function applyIngredientNutrition(
-    ingredient: Ingredient,
+    ingredient: CaloriesBreakdown[number],
     nutrition: Nutrition,
     property: keyof Nutrition,
-    multiplier: number,
 ) {
-    if (typeof ingredient.nutrition?.[property] !== 'number') {
+    if (typeof ingredient?.[property] !== 'number') {
         return;
     }
 
     nutrition[property] ??= 0;
-    nutrition[property] += ingredient.nutrition[property] * multiplier;
+    nutrition[property] += ingredient[property];
 }
-
-function ingredientNotFound(ingredientBreakdown: IngredientBreakdown) {
+function ingredientNotFound(name: string) {
     // eslint-disable-next-line no-console
-    console.warn('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original);
+    console.warn(`Cannot calculate nutrition for ingredient: ${name}`);
 
-    UI.toast('Cannot calculate nutrition for ingredient: ' + ingredientBreakdown.original, {
+    UI.toast(`Cannot calculate nutrition for ingredient: ${name}`, {
         variant: 'warning',
     });
 }
 
 async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
+    for (const breakdown of recipe.ingredientsBreakdown) {
+        await resolveIngredient(breakdown);
+    }
+
+    const originalServings = recipe.servingsBreakdown?.quantity;
+    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
+
+    const breakdown = recipe.getCaloriesBreakdown(ingredientsMultiplier, ingredientsMap.value);
     const nutrition: Nutrition = {
         calories: null,
         fat: null,
@@ -223,36 +252,17 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
         carbs: null,
     };
 
-    const originalServings = recipe.servingsBreakdown?.quantity;
-    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
-
-    for (const ingredientBreakdown of recipe.ingredientsBreakdown) {
-        if (ingredientBreakdown.unit && ingredientBreakdown.unit !== 'grams') {
-            ingredientNotFound(ingredientBreakdown);
+    for (const ingredient of breakdown) {
+        if (typeof ingredient.calories !== 'number') {
+            ingredientNotFound(ingredient.name);
 
             continue;
         }
 
-        let multiplier: number;
-        const ingredient = await resolveIngredient(ingredientBreakdown);
-        const quantity = typeof ingredientBreakdown.quantity === 'number' ? ingredientBreakdown.quantity : 1;
-
-        if (ingredientBreakdown.unit === 'grams') {
-            multiplier = ingredientsMultiplier * (quantity / 100);
-        } else {
-            if (!ingredient.nutrition?.servingGrams) {
-                ingredientNotFound(ingredientBreakdown);
-
-                continue;
-            }
-
-            multiplier = (ingredientsMultiplier * (quantity * ingredient.nutrition.servingGrams)) / 100;
-        }
-
-        applyIngredientNutrition(ingredient, nutrition, 'calories', multiplier);
-        applyIngredientNutrition(ingredient, nutrition, 'fat', multiplier);
-        applyIngredientNutrition(ingredient, nutrition, 'protein', multiplier);
-        applyIngredientNutrition(ingredient, nutrition, 'carbs', multiplier);
+        applyIngredientNutrition(ingredient, nutrition, 'calories');
+        applyIngredientNutrition(ingredient, nutrition, 'fat');
+        applyIngredientNutrition(ingredient, nutrition, 'protein');
+        applyIngredientNutrition(ingredient, nutrition, 'carbs');
     }
 
     nutrition.calories = nutrition.calories && round(nutrition.calories);
@@ -266,9 +276,10 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
 async function logNewMeal() {
     const { name, calories, protein, carbs, fat } = form;
 
-    if (!name || !calories || !protein || !carbs || !fat) {
-        error.value = translate('logs.addMissingData');
+    name || form.setFieldErrors('name', ['required']);
+    calories || form.setFieldErrors('calories', ['required']);
 
+    if (!name || !calories) {
         return;
     }
 
@@ -282,9 +293,9 @@ async function logNewMeal() {
         async () => {
             await createMeal(name, {
                 calories,
-                fat,
-                protein,
-                carbs,
+                fat: fat || 0,
+                protein: protein || 0,
+                carbs: carbs || 0,
             });
         },
     );
@@ -345,10 +356,10 @@ async function createMeal(name: string, nutrition: Nutrition, servings?: string,
 
     if (nutrition.calories || nutrition.protein || nutrition.carbs || nutrition.fat) {
         mealRecipe.relatedNutrition.attach({
-            rawCalories: nutrition.calories ? `${nutrition.calories} calories` : undefined,
-            rawProtein: nutrition.protein ? `${nutrition.protein} grams` : undefined,
-            rawCarbs: nutrition.carbs ? `${nutrition.carbs} grams` : undefined,
-            rawFat: nutrition.fat ? `${nutrition.fat} grams` : undefined,
+            rawCalories: typeof nutrition.calories === 'number' ? `${nutrition.calories} calories` : undefined,
+            rawProtein: typeof nutrition.protein === 'number' ? `${nutrition.protein} grams` : undefined,
+            rawCarbs: typeof nutrition.carbs === 'number' ? `${nutrition.carbs} grams` : undefined,
+            rawFat: typeof nutrition.fat === 'number' ? `${nutrition.fat} grams` : undefined,
         });
     }
 

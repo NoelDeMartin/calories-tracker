@@ -1,7 +1,9 @@
 import { round } from '@noeldemartin/utils';
 
 import Ingredient from '@/models/Ingredient';
+import Meal from '@/models/Meal';
 import Recipe from '@/models/Recipe';
+import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './NutritionInformation.schema';
 
@@ -12,12 +14,22 @@ export default class NutritionInformation extends Model {
     public static boot(name?: string): void {
         super.boot(name);
 
+        // FIXME should be able to listen to nutrition events directly,
+        // even if it the update is performed by a related model.
         Ingredient.on('updated', (ingredient) => {
             if (!ingredient.nutrition) {
                 return;
             }
 
             ingredient.nutrition.values = null;
+        });
+
+        Meal.on('updated', (meal) => {
+            if (!meal.recipe?.nutrition) {
+                return;
+            }
+
+            meal.recipe.nutrition.values = null;
         });
 
         Recipe.on('updated', (recipe) => {
@@ -47,6 +59,44 @@ export default class NutritionInformation extends Model {
 
     public get servingGrams(): number | undefined {
         return this.value('servingGrams');
+    }
+
+    public getMacroClass(): string {
+        const atwaterProtein = (this.protein ?? 0) * 4;
+        const atwaterCarbs = (this.carbs ?? 0) * 4;
+        const atwaterFat = (this.fat ?? 0) * 9;
+        const maxCalories = Math.max(atwaterProtein, atwaterCarbs, atwaterFat);
+
+        return {
+            [atwaterProtein]: 'bg-protein-500',
+            [atwaterCarbs]: 'bg-carbs-500',
+            [atwaterFat]: 'bg-fat-500',
+        }[maxCalories];
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    public getIngredientMacrosAndCalories(servings: number, breakdown: IngredientBreakdown) {
+        let multiplier: number;
+        const quantity = typeof breakdown.quantity === 'number' ? breakdown.quantity : 1;
+
+        if (breakdown.unit === 'grams') {
+            multiplier = servings * (quantity / 100);
+        } else if (!breakdown.unit) {
+            if (!this.servingGrams) {
+                return null;
+            }
+
+            multiplier = (servings * (quantity * this.servingGrams)) / 100;
+        } else {
+            return null;
+        }
+
+        return {
+            calories: typeof this.calories === 'number' ? this.calories * multiplier : null,
+            protein: typeof this.protein === 'number' ? this.protein * multiplier : null,
+            carbs: typeof this.carbs === 'number' ? this.carbs * multiplier : null,
+            fat: typeof this.fat === 'number' ? this.fat * multiplier : null,
+        };
     }
 
     protected async afterSave(): Promise<void> {
