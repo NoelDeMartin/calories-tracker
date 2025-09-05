@@ -48,7 +48,7 @@ import { translate } from '@aerogel/core';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
-const date = computed(() => meal.createdAt.toLocaleString());
+const date = computed(() => (meal.consumedAt ?? meal.createdAt).toLocaleString());
 const nutrition = computed(() => {
     const mealNutrition = meal.recipe?.nutrition;
 

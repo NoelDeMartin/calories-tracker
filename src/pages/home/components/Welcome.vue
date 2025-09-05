@@ -9,12 +9,12 @@
         <span class="mt-2 text-center text-sm text-gray-500">
             {{ $t('home.orGetStarted') }}
         </span>
-        <Button class="mt-2" @click="$ui.modal(LogMealModal)">
+        <Button class="mt-2" @click="$ui.modal(CreateMealModal)">
             {{ $t('logs.add') }}
         </Button>
     </Page>
 </template>
 
 <script setup lang="ts">
-import LogMealModal from './LogMealModal.vue';
+import CreateMealModal from '@/components/meals/CreateMealModal.vue';
 </script>

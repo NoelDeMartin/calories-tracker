@@ -6,7 +6,7 @@
             <MealLog v-for="meal of todayMeals" :key="meal.url" :meal />
         </div>
 
-        <Button class="mt-4" @click="$ui.modal(LogMealModal)">
+        <Button class="mt-4" @click="$ui.modal(CreateMealModal)">
             <i-zondicons-add-outline class="size-4" />
             <span>{{ $t('logs.add') }}</span>
         </Button>
@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import Meal from '@/models/Meal';
-import LogMealModal from './LogMealModal.vue';
+import CreateMealModal from '@/components/meals/CreateMealModal.vue';
 import { computedModels, useModelCollection } from '@aerogel/plugin-soukai';
 import { sortedMeals } from '@/utils/meals';
 
