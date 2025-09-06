@@ -289,15 +289,15 @@ function renderMeal(meal: Recipe | Meal | { id: 'new' }) {
 }
 
 async function resolveIngredient({ template }: IngredientBreakdown): Promise<Ingredient> {
-    const name = stringToSlug(
-        template
-            .replace('{quantity}', '')
-            .trim()
-            .replace(/\s*\(optional\)/, ''),
-    );
+    const name = template
+        .replace('{quantity}', '')
+        .trim()
+        .replace(/\s*\(optional\)/, '');
 
-    if (ingredientsBySlug.value.hasKey(name)) {
-        return ingredientsBySlug.value.require(name);
+    const slug = stringToSlug(name);
+
+    if (ingredientsBySlug.value.hasKey(slug)) {
+        return ingredientsBySlug.value.require(slug);
     }
 
     const ingredient = new Ingredient({ name });
