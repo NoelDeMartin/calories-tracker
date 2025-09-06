@@ -1,46 +1,48 @@
 <template>
     <Modal :title="meal.recipe?.name ?? $t('logs.meal')">
         <table class="w-full">
-            <tr class="border-b border-gray-200">
-                <td class="py-2 text-sm text-gray-600">
-                    {{ $t('logs.mealServings') }}
-                </td>
-                <td class="py-2 text-right text-sm text-gray-900">
-                    {{ meal.recipe?.servingsBreakdown?.quantity ?? 1 }}
-                </td>
-            </tr>
-            <tr class="border-b border-gray-200">
-                <td class="py-2 text-sm text-gray-600">
-                    {{ $t('logs.mealCalories') }}
-                </td>
-                <td class="py-2 text-right text-sm text-gray-900">
-                    {{ formatNumber(meal.recipe?.nutrition?.calories, 'calories') }}
-                </td>
-            </tr>
-            <tr class="border-b border-gray-200">
-                <td class="py-2 text-sm text-gray-600">
-                    {{ $t('logs.mealProtein') }}
-                </td>
-                <td class="py-2 text-right text-sm text-gray-900">
-                    {{ formatNumber(meal.recipe?.nutrition?.protein, 'grams') }}
-                </td>
-            </tr>
-            <tr class="border-b border-gray-200">
-                <td class="py-2 text-sm text-gray-600">
-                    {{ $t('logs.mealCarbs') }}
-                </td>
-                <td class="py-2 text-right text-sm text-gray-900">
-                    {{ formatNumber(meal.recipe?.nutrition?.carbs, 'grams') }}
-                </td>
-            </tr>
-            <tr>
-                <td class="py-2 text-sm text-gray-600">
-                    {{ $t('logs.mealFat') }}
-                </td>
-                <td class="py-2 text-right text-sm text-gray-900">
-                    {{ formatNumber(meal.recipe?.nutrition?.fat, 'grams') }}
-                </td>
-            </tr>
+            <tbody>
+                <tr class="border-b border-gray-200">
+                    <td class="py-2 text-sm text-gray-600">
+                        {{ $t('logs.mealServings') }}
+                    </td>
+                    <td class="py-2 text-right text-sm text-gray-900">
+                        {{ meal.recipe?.servingsBreakdown?.quantity ?? 1 }}
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                    <td class="py-2 text-sm text-gray-600">
+                        {{ $t('logs.mealCalories') }}
+                    </td>
+                    <td class="py-2 text-right text-sm text-gray-900">
+                        {{ formatNumber(meal.recipe?.nutrition?.calories, 'calories') }}
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                    <td class="py-2 text-sm text-gray-600">
+                        {{ $t('logs.mealProtein') }}
+                    </td>
+                    <td class="py-2 text-right text-sm text-gray-900">
+                        {{ formatNumber(meal.recipe?.nutrition?.protein, 'grams') }}
+                    </td>
+                </tr>
+                <tr class="border-b border-gray-200">
+                    <td class="py-2 text-sm text-gray-600">
+                        {{ $t('logs.mealCarbs') }}
+                    </td>
+                    <td class="py-2 text-right text-sm text-gray-900">
+                        {{ formatNumber(meal.recipe?.nutrition?.carbs, 'grams') }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="py-2 text-sm text-gray-600">
+                        {{ $t('logs.mealFat') }}
+                    </td>
+                    <td class="py-2 text-right text-sm text-gray-900">
+                        {{ formatNumber(meal.recipe?.nutrition?.fat, 'grams') }}
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
         <template v-if="caloriesBreakdown?.length">
