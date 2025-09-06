@@ -162,6 +162,8 @@ describe('App', () => {
         cy.intercept('PATCH', podUrl('/meals/*')).as('updateMeal');
 
         // Act
+        const timezoneOffset = (new Date().getTimezoneOffset() * 60000) / (1000 * 60 * 60);
+
         cy.get('[aria-label="Edit"]').click();
         cy.comboboxSelect('Recipe', 'None');
         cy.get('input[name="name"]').clear().type('Spaghetti Carbonara');
@@ -169,7 +171,9 @@ describe('App', () => {
         cy.get('input[name="protein"]').clear().type('18');
         cy.get('input[name="carbs"]').clear().type('45');
         cy.get('input[name="fat"]').clear().type('22');
-        cy.get('input[name="consumedAt"]').clear().type('2025-01-01T12:00:00');
+        cy.get('input[name="consumedAt"]')
+            .clear()
+            .type(`2025-01-01T${(10 - timezoneOffset).toString().padStart(2, '0')}:00:00`);
         cy.press('Save');
         cy.waitSync();
 
