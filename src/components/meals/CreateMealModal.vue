@@ -129,7 +129,7 @@ import Meal from '@/models/Meal';
 import Ingredient from '@/models/Ingredient';
 import Nutritionix from '@/services/Nutritionix';
 import { formatNumber } from '@/utils/formatting';
-import { type IngredientBreakdown, IngredientUnits } from '@/utils/ingredients';
+import { type IngredientBreakdown, IngredientUnits, parseIngredient } from '@/utils/ingredients';
 
 interface Nutrition {
     calories: Nullable<number>;
@@ -157,7 +157,9 @@ const mealOptions = computed(() => {
         uniqueMeals.push(meal);
     }
 
-    return (recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals).concat({ id: 'new' });
+    return arraySorted((recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals), 'name').concat({
+        id: 'new',
+    });
 });
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, 'servings'] as const);
@@ -197,7 +199,7 @@ const servingsOptions = computed(() => {
     );
 });
 const caloriesBreakdown = computed(() => {
-    if (form.meal.id === 'new') {
+    if (isNewMeal(form.meal)) {
         return arrayFilter(
             mealIngredients.value.map((mealIngredient) => {
                 const ingredient = ingredientsBySlug.value.get(stringToSlug(mealIngredient.name));
@@ -207,11 +209,7 @@ const caloriesBreakdown = computed(() => {
                         case 'grams':
                             return mealIngredient.quantity / 100;
                         case 'servings':
-                            if (!nutrition?.servingGrams) {
-                                return null;
-                            }
-
-                            return mealIngredient.quantity * nutrition.servingGrams;
+                            return typeof mealIngredient.quantity === 'number' ? mealIngredient.quantity : 1;
                     }
                 })();
 
@@ -231,14 +229,12 @@ const caloriesBreakdown = computed(() => {
         );
     }
 
-    if (!isInstanceOf(form.meal, Recipe)) {
-        return;
-    }
+    const recipe = isInstanceOf(form.meal, Recipe) ? form.meal : form.meal.recipe;
+    const servings = isInstanceOf(form.meal, Recipe) ? form.servings : form.mealServings;
+    const originalServings = recipe?.servingsBreakdown?.quantity ?? 1;
+    const ingredientsMultiplier = servings ? servings / (originalServings ?? 1) : 1;
 
-    const originalServings = form.meal.servingsBreakdown?.quantity;
-    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
-
-    return form.meal.getCaloriesBreakdown(ingredientsMultiplier, ingredientsBySlug.value);
+    return recipe?.getCaloriesBreakdown(ingredientsMultiplier, ingredientsBySlug.value);
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
@@ -257,6 +253,10 @@ watch(
     },
     { immediate: true },
 );
+
+function isNewMeal(meal: Recipe | Meal | { id: 'new' }): meal is { id: 'new' } {
+    return meal.id === 'new';
+}
 
 async function submit() {
     error.value = '';
@@ -289,10 +289,12 @@ function renderMeal(meal: Recipe | Meal | { id: 'new' }) {
 }
 
 async function resolveIngredient({ template }: IngredientBreakdown): Promise<Ingredient> {
-    const name = template
-        .replace('{quantity}', '')
-        .trim()
-        .replace(/\s*\(optional\)/, '');
+    const name = stringToSlug(
+        template
+            .replace('{quantity}', '')
+            .trim()
+            .replace(/\s*\(optional\)/, ''),
+    );
 
     if (ingredientsBySlug.value.hasKey(name)) {
         return ingredientsBySlug.value.require(name);
@@ -377,11 +379,23 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
 
 async function logNewMeal() {
     const { name } = form;
+    const renderedIngredients = mealIngredients.value.map((ingredient) => {
+        switch (ingredient.unit) {
+            case 'grams':
+                return `${ingredient.quantity}g ${ingredient.name}`;
+            case 'servings':
+                return `${ingredient.quantity} ${ingredient.name}`;
+        }
+    });
 
     name || form.setFieldErrors('name', ['required']);
 
     if (!name) {
         return;
+    }
+
+    for (const ingredient of renderedIngredients) {
+        await resolveIngredient(parseIngredient(ingredient));
     }
 
     close();
@@ -403,16 +417,7 @@ async function logNewMeal() {
                     carbs:
                         caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0) ?? 0,
                 },
-                {
-                    ingredients: mealIngredients.value.map((ingredient) => {
-                        switch (ingredient.unit) {
-                            case 'grams':
-                                return `${ingredient.quantity}g ${ingredient.name}`;
-                            case 'servings':
-                                return `${ingredient.quantity} ${ingredient.name}`;
-                        }
-                    }),
-                },
+                { ingredients: renderedIngredients },
             );
         },
     );
@@ -429,14 +434,15 @@ async function logMeal(meal: Meal) {
         async () => {
             const servings = form.mealServings ?? 1;
             const nutrition = {
-                calories: meal.recipe?.nutrition?.calories ? meal.recipe?.nutrition?.calories * servings : undefined,
-                protein: meal.recipe?.nutrition?.protein ? meal.recipe?.nutrition?.protein * servings : undefined,
-                carbs: meal.recipe?.nutrition?.carbs ? meal.recipe?.nutrition?.carbs * servings : undefined,
-                fat: meal.recipe?.nutrition?.fat ? meal.recipe?.nutrition?.fat * servings : undefined,
+                calories: meal.recipe?.nutrition?.calories ? meal.recipe?.nutrition?.calories * servings : 0,
+                protein: meal.recipe?.nutrition?.protein ? meal.recipe?.nutrition?.protein * servings : 0,
+                carbs: meal.recipe?.nutrition?.carbs ? meal.recipe?.nutrition?.carbs * servings : 0,
+                fat: meal.recipe?.nutrition?.fat ? meal.recipe?.nutrition?.fat * servings : 0,
             };
 
             await createMeal(required(meal.recipe?.name), nutrition, {
                 servings: servings !== 1 ? formatNumber(servings) : undefined,
+                ingredients: caloriesBreakdown.value?.map((ingredient) => ingredient.name),
             });
         },
     );

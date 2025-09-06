@@ -48,7 +48,7 @@ logs:
     mealIngredientName: Ingredient
     mealIngredientUnits:
         grams: Grams
-        units: Units
+        servings: Servings
     mealConsumedAt: Consumed at
     add: Log meal
     addNew: New recipe
