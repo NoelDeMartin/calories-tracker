@@ -72,7 +72,7 @@
                 </Details>
             </template>
 
-            <datalist id="ingredient-names">
+            <datalist v-if="!e2e" id="ingredient-names">
                 <option v-for="ingredient in ingredients" :key="ingredient.id" :value="ingredient.name" />
             </datalist>
 
@@ -102,6 +102,7 @@ import {
     arraySorted,
     arrayUnique,
     isInstanceOf,
+    isTesting,
     map,
     range,
     required,
@@ -241,6 +242,8 @@ const caloriesBreakdown = computed(() => {
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
+
+const e2e = isTesting('e2e');
 
 watch(
     () => form.meal,
