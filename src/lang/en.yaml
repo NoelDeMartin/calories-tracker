@@ -27,6 +27,7 @@ ingredients:
     protein: Protein
     carbs: Carbs
     fat: Fat
+    edit: Edit
     editTitle: Edit {name}
     editName: Name
     editSubmit: Save
@@ -34,23 +35,29 @@ ingredients:
     editUpdating: Updating ingredient...
 
 logs:
+    log: Log
+    meal: Meal
+    mealRecipe: Recipe
+    mealName: Name
+    mealServings: Servings
+    mealCalories: Calories (kcal)
+    mealProtein: Protein (g)
+    mealCarbs: Carbs (g)
+    mealFat: Fat (g)
+    mealConsumedAt: Consumed at
     add: Log meal
     addNew: Other
-    meal: Meal
-    addName: Name
-    addServings: Servings
-    addCalories: Calories (kcal)
-    addProtein: Protein (g)
-    addCarbs: Carbs (g)
-    addFat: Fat (g)
     addMissingData: Please, complete all the fields.
     adding: Logging meal...
-    log: Log
+    editTitle: Edit {name}
+    editSubmit: Save
+    editCancel: Cancel
     delete: Delete meal
     deleteConfirm: Delete {name}?
     viewBreakdown: View calories breakdown
     caloriesBreakdown: '{name} Calories Breakdown'
     noIngredients: No ingredients found
+    noRecipe: None
     totalCalories: Total
 
 units:

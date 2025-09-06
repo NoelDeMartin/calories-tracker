@@ -19,14 +19,14 @@
                 v-else-if="isInstanceOf(form.meal, Meal)"
                 name="mealServings"
                 step="0.1"
-                :placeholder="$t('logs.addServings')"
+                :placeholder="$t('logs.mealServings')"
             />
             <template v-else>
-                <Input name="name" :placeholder="$t('logs.addName')" required />
-                <Input name="calories" :placeholder="$t('logs.addCalories')" required />
-                <Input name="protein" :placeholder="$t('logs.addProtein')" />
-                <Input name="carbs" :placeholder="$t('logs.addCarbs')" />
-                <Input name="fat" :placeholder="$t('logs.addFat')" />
+                <Input name="name" :placeholder="$t('logs.mealName')" required />
+                <Input name="calories" :placeholder="$t('logs.mealCalories')" required />
+                <Input name="protein" :placeholder="$t('logs.mealProtein')" />
+                <Input name="carbs" :placeholder="$t('logs.mealCarbs')" />
+                <Input name="fat" :placeholder="$t('logs.mealFat')" />
             </template>
 
             <Input name="consumedAt" type="datetime-local" />
@@ -372,6 +372,8 @@ async function logRecipe(recipe: Recipe) {
 async function createMeal(name: string, nutrition: Nutrition, servings?: string, externalUrls?: string[]) {
     const meal = new Meal({ consumedAt: form.consumedAt });
     const mealRecipe = meal.relatedRecipe.attach({ name, servings, externalUrls });
+
+    // TODO allow adding ingredients to recipe (either indicate ingredients, or manual nutrition)
 
     if (nutrition.calories || nutrition.protein || nutrition.carbs || nutrition.fat) {
         mealRecipe.relatedNutrition.attach({

@@ -20,7 +20,6 @@ export interface RecipeServingsBreakdown {
 export default class Recipe extends Model {
 
     public static cloud = true;
-    public static timestamps = false;
 
     declare public nutrition?: NutritionInformation;
     declare public relatedNutrition: BelongsToOneRelation<Recipe, NutritionInformation, typeof NutritionInformation>;

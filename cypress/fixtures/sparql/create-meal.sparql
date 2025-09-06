@@ -20,6 +20,12 @@ INSERT DATA {
         schema:name "{{ name }}" ;
         schema:nutrition <#[[nutrition][.*]]> .
 
+    <#[[recipe][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
         schema:calories "{{ calories }}" ;

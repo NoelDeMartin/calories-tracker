@@ -29,6 +29,16 @@
             <Button
                 size="icon"
                 variant="ghost"
+                class="text-gray-400 transition-colors hover:text-blue-500"
+                :title="$t('ingredients.edit')"
+                :aria-label="$t('ingredients.edit')"
+                @click="$ui.modal(EditMealModal, { meal })"
+            >
+                <i-zondicons-edit-pencil class="size-4" />
+            </Button>
+            <Button
+                size="icon"
+                variant="ghost"
                 class="text-gray-400 transition-colors hover:text-red-500"
                 :title="$t('logs.delete')"
                 :aria-label="$t('logs.delete')"
@@ -42,6 +52,7 @@
 
 <script setup lang="ts">
 import CaloriesBreakdownModal from './CaloriesBreakdownModal.vue';
+import EditMealModal from './EditMealModal.vue';
 import { computed } from 'vue';
 import { formatNumber } from '@/utils/formatting';
 import { translate } from '@aerogel/core';

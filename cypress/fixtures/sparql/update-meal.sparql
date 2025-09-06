@@ -1,0 +1,160 @@
+DELETE DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:endTime "[[.*]]"^^xsd:dateTime .
+    <#it-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[recipe][.*]]>
+        schema:name "Ramen" ;
+        schema:sameAs <http://localhost:3000/alice/cookbook/ramen#it> .
+
+    <#[[recipe][.*]]-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[nutrition][.*]]>
+        schema:calories "443 calories" ;
+        schema:carbohydrateContent "80.64 grams" ;
+        schema:fatContent "6.98 grams" ;
+        schema:proteinContent "20.42 grams" .
+
+    <#[[nutrition][.*]]-metadata>
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+};
+
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:endTime "{{ consumedAt}}"^^xsd:dateTime .
+    <#it-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#it-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:object ;
+        crdt:value <#[[recipe][.*]]> .
+
+    <#it-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:endTime ;
+        crdt:value "[[.*]]"^^xsd:dateTime .
+
+    <#it-operation-[[operation-3][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:endTime ;
+        crdt:value "{{ consumedAt }}"^^xsd:dateTime .
+
+    <#[[recipe][.*]]> schema:name "Spaghetti Carbonara" .
+    <#[[recipe][.*]]-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[recipe][.*]]-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "Ramen" .
+
+    <#[[recipe][.*]]-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:sameAs ;
+        crdt:value <http://localhost:3000/alice/cookbook/ramen#it> .
+
+    <#[[recipe][.*]]-operation-[[operation-3][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:nutrition ;
+        crdt:value <#[[nutrition][.*]]> .
+
+    <#[[recipe][.*]]-operation-[[operation-4][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "Spaghetti Carbonara" .
+
+    <#[[recipe][.*]]-operation-[[operation-5][%uuid%]]>
+        a crdt:RemovePropertyOperation ;
+        crdt:resource <#[[recipe][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:sameAs ;
+        crdt:value <http://localhost:3000/alice/cookbook/ramen#it> .
+
+    <#[[nutrition][.*]]>
+        schema:calories "450 calories" ;
+        schema:carbohydrateContent "45 grams" ;
+        schema:fatContent "22 grams" ;
+        schema:proteinContent "18 grams" .
+
+    <#[[nutrition][.*]]-metadata>
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[nutrition][.*]]-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:calories ;
+        crdt:value "443 calories" .
+
+    <#[[nutrition][.*]]-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:proteinContent ;
+        crdt:value "20.42 grams" .
+
+    <#[[nutrition][.*]]-operation-[[operation-3][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:carbohydrateContent ;
+        crdt:value "80.64 grams" .
+
+    <#[[nutrition][.*]]-operation-[[operation-4][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:fatContent ;
+        crdt:value "6.98 grams" .
+
+    <#[[nutrition][.*]]-operation-[[operation-5][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:calories ;
+        crdt:value "{{ calories }}" .
+
+    <#[[nutrition][.*]]-operation-[[operation-6][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:proteinContent ;
+        crdt:value "{{ protein }}" .
+
+    <#[[nutrition][.*]]-operation-[[operation-7][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:carbohydrateContent ;
+        crdt:value "{{ carbs }}" .
+
+    <#[[nutrition][.*]]-operation-[[operation-8][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:fatContent ;
+        crdt:value "{{ fat }}" .
+
+}

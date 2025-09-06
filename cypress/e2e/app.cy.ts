@@ -149,6 +149,52 @@ describe('App', () => {
         });
     });
 
+    it('Edits logs', () => {
+        // Arrange
+        setupAccount();
+
+        cy.solidLogin();
+        cy.waitSync();
+        cy.press('Log meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        cy.intercept('PATCH', podUrl('/meals/*')).as('updateMeal');
+
+        // Act
+        cy.get('[aria-label="Edit"]').click();
+        cy.comboboxSelect('Recipe', 'None');
+        cy.get('input[name="name"]').clear().type('Spaghetti Carbonara');
+        cy.get('input[name="calories"]').clear().type('450');
+        cy.get('input[name="protein"]').clear().type('18');
+        cy.get('input[name="carbs"]').clear().type('45');
+        cy.get('input[name="fat"]').clear().type('22');
+        cy.get('input[name="consumedAt"]').clear().type('2025-01-01T12:00:00');
+        cy.press('Save');
+        cy.waitSync();
+
+        // Assert
+        cy.see('Spaghetti Carbonara');
+        cy.see('450 kcal');
+        cy.see('18g protein');
+        cy.see('45g carbs');
+        cy.see('22g fat');
+        cy.see('1/1/2025');
+
+        cy.get('@updateMeal.all').should('have.length', 1);
+        cy.fixtureWithReplacements('sparql/update-meal.sparql', {
+            name: 'Spaghetti Carbonara',
+            calories: '450 calories',
+            protein: '18 grams',
+            carbs: '45 grams',
+            fat: '22 grams',
+            consumedAt: '2025-01-01T10:00:00.000Z',
+        }).then((sparql) => {
+            cy.get('@updateMeal').its('response.statusCode').should('eq', 205);
+            cy.get('@updateMeal').its('request.body').should('be.sparql', sparql);
+        });
+    });
+
     it('Shows history', () => {
         // Arrange
         setupAccount();
