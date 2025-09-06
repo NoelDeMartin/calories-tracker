@@ -7,9 +7,18 @@ import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './NutritionInformation.schema';
 
+export type ComputedValues = {
+    macroClass: string;
+    calories?: number;
+    protein?: number;
+    carbs?: number;
+    fat?: number;
+    servingGrams?: number;
+};
+
 export default class NutritionInformation extends Model {
 
-    private values: Record<string, number> | null = null;
+    private computedValues: ComputedValues | null = null;
 
     public static boot(name?: string): void {
         super.boot(name);
@@ -21,7 +30,7 @@ export default class NutritionInformation extends Model {
                 return;
             }
 
-            ingredient.nutrition.values = null;
+            ingredient.nutrition.computedValues = null;
         });
 
         Meal.on('updated', (meal) => {
@@ -29,7 +38,7 @@ export default class NutritionInformation extends Model {
                 return;
             }
 
-            meal.recipe.nutrition.values = null;
+            meal.recipe.nutrition.computedValues = null;
         });
 
         Recipe.on('updated', (recipe) => {
@@ -37,7 +46,7 @@ export default class NutritionInformation extends Model {
                 return;
             }
 
-            recipe.nutrition.values = null;
+            recipe.nutrition.computedValues = null;
         });
     }
 
@@ -61,17 +70,8 @@ export default class NutritionInformation extends Model {
         return this.value('servingGrams');
     }
 
-    public getMacroClass(): string {
-        const atwaterProtein = (this.protein ?? 0) * 4;
-        const atwaterCarbs = (this.carbs ?? 0) * 4;
-        const atwaterFat = (this.fat ?? 0) * 9;
-        const maxCalories = Math.max(atwaterProtein, atwaterCarbs, atwaterFat);
-
-        return {
-            [atwaterProtein]: 'bg-protein-500',
-            [atwaterCarbs]: 'bg-carbs-500',
-            [atwaterFat]: 'bg-fat-500',
-        }[maxCalories];
+    public get macroClass(): string | undefined {
+        return this.value('macroClass');
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -102,48 +102,62 @@ export default class NutritionInformation extends Model {
     protected async afterSave(): Promise<void> {
         await super.afterSave();
 
-        this.values = null;
+        this.computedValues = null;
     }
 
-    private value(key: string): number | undefined {
-        if (!this.values) {
-            this.values = this.parseValues();
+    private value<T extends keyof ComputedValues>(key: T): ComputedValues[T] {
+        if (!this.computedValues) {
+            this.computedValues = this.parseValues();
         }
 
-        return this.values[key];
+        return this.computedValues[key];
     }
 
-    private parseValues(): Record<string, number> {
-        const values: Record<string, number> = {};
+    private parseValues(): ComputedValues {
         const quantityMultiplier =
             this.serving && this.serving.includes('grams')
                 ? 100 / parseFloat(this.serving.replace('grams', '').trim())
                 : 1;
 
-        if (this.rawCalories) {
-            values.calories = round(
-                parseFloat(this.rawCalories.replace('calories', '').trim()) * quantityMultiplier,
-                2,
-            );
-        }
+        const calories = this.rawCalories
+            ? round(parseFloat(this.rawCalories.replace('calories', '').trim()) * quantityMultiplier, 2)
+            : undefined;
 
-        if (this.rawProtein) {
-            values.protein = round(parseFloat(this.rawProtein.replace('grams', '').trim()) * quantityMultiplier, 2);
-        }
+        const protein = this.rawProtein
+            ? round(parseFloat(this.rawProtein.replace('grams', '').trim()) * quantityMultiplier, 2)
+            : undefined;
 
-        if (this.rawCarbs) {
-            values.carbs = round(parseFloat(this.rawCarbs.replace('grams', '').trim()) * quantityMultiplier, 2);
-        }
+        const carbs = this.rawCarbs
+            ? round(parseFloat(this.rawCarbs.replace('grams', '').trim()) * quantityMultiplier, 2)
+            : undefined;
 
-        if (this.rawFat) {
-            values.fat = round(parseFloat(this.rawFat.replace('grams', '').trim()) * quantityMultiplier, 2);
-        }
+        const fat = this.rawFat
+            ? round(parseFloat(this.rawFat.replace('grams', '').trim()) * quantityMultiplier, 2)
+            : undefined;
 
-        if (this.serving && this.serving.includes('grams')) {
-            values.servingGrams = parseFloat(this.serving.replace('grams', '').trim());
-        }
+        const servingGrams =
+            this.serving && this.serving.includes('grams')
+                ? parseFloat(this.serving.replace('grams', '').trim())
+                : undefined;
 
-        return values;
+        const atwaterProtein = (protein ?? 0) * 4;
+        const atwaterCarbs = (carbs ?? 0) * 4;
+        const atwaterFat = (fat ?? 0) * 9;
+        const maxCalories = Math.max(atwaterProtein, atwaterCarbs, atwaterFat);
+        const macroClass = {
+            [atwaterProtein]: 'bg-protein-500',
+            [atwaterCarbs]: 'bg-carbs-500',
+            [atwaterFat]: 'bg-fat-500',
+        }[maxCalories];
+
+        return {
+            calories,
+            protein,
+            carbs,
+            fat,
+            servingGrams,
+            macroClass,
+        };
     }
 
 }

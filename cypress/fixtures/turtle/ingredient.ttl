@@ -1,0 +1,14 @@
+@prefix schema: <https://schema.org/> .
+
+<#it>
+    a schema:Substance, schema:MenuItem;
+    schema:name "{{ name }}";
+    schema:nutrition <#nutrition> .
+
+<#nutrition>
+    a schema:NutritionInformation;
+    schema:calories "{{ calories }}";
+    schema:carbohydrateContent "{{ carbs }}";
+    schema:fatContent "{{ fat }}";
+    schema:proteinContent "{{ protein }}";
+    schema:servingSize "{{ serving }}" .

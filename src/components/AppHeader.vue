@@ -1,7 +1,8 @@
 <template>
     <header
         v-if="meals.length > 0 || $solid.hasLoggedIn()"
-        class="px-edge mx-auto flex w-full max-w-screen-md items-center justify-between gap-2 pt-8"
+        class="px-edge max-w-screen-content mx-auto flex w-full items-center justify-between gap-2 pt-8"
+        :style="$route.name === 'ingredients' && '--breakpoint-content: 1200px'"
     >
         <div>
             <div class="flex flex-row items-center">

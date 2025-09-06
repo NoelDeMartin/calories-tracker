@@ -1,5 +1,5 @@
 import { podUrl, webId } from '@aerogel/cypress';
-import { uuid } from '@noeldemartin/utils';
+import { stringToSlug, uuid } from '@noeldemartin/utils';
 
 describe('App', () => {
 
@@ -91,7 +91,9 @@ describe('App', () => {
 
     it('Logs meals', () => {
         // Arrange
-        setupAccount();
+        setupAccount({
+            ingredients: ['Eggplant', 'Zucchini', 'Onion', 'Tomatoes'],
+        });
 
         cy.solidLogin();
         cy.waitSync();
@@ -101,12 +103,17 @@ describe('App', () => {
 
         // Act - new meal
         cy.press('Log meal');
-        cy.comboboxSelect('Meal', 'Other');
+        cy.comboboxSelect('Meal', 'New Recipe');
         cy.get('input[name="name"]').type('Pisto');
-        cy.get('input[name="calories"]').type('191');
-        cy.get('input[name="protein"]').type('6');
-        cy.get('input[name="carbs"]').type('39');
-        cy.get('input[name="fat"]').type('2');
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Eggplant');
+        cy.get('#ingredients-0-quantity').clear().type('50');
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Zucchini');
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Onion');
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Tomatoes');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -116,10 +123,11 @@ describe('App', () => {
         cy.get('@createMeal.all').should('have.length', 1);
         cy.fixtureWithReplacements('sparql/create-meal.sparql', {
             name: 'Pisto',
-            calories: '191 calories',
-            protein: '6 grams',
-            carbs: '39 grams',
-            fat: '2 grams',
+            calories: '153 calories',
+            protein: '4.76 grams',
+            carbs: '35.53 grams',
+            fat: '0.67 grams',
+            ingredients: '"50g Eggplant", "100g Zucchini", "100g Onion", "100g Tomatoes"',
         }).then((sparql) => {
             cy.get('@createMeal').its('response.statusCode').should('eq', 201);
             cy.get('@createMeal').its('request.body').should('be.sparql', sparql);
@@ -138,10 +146,10 @@ describe('App', () => {
         cy.get('@createMeal.all').should('have.length', 2);
         cy.fixtureWithReplacements('sparql/create-meal-from-meal.sparql', {
             name: 'Pisto',
-            calories: '382 calories',
-            protein: '12 grams',
-            carbs: '78 grams',
-            fat: '4 grams',
+            calories: '306 calories',
+            protein: '9.52 grams',
+            carbs: '71.06 grams',
+            fat: '1.34 grams',
             servings: '2',
         }).then((sparql) => {
             cy.get('@createMeal.2').its('response.statusCode').should('eq', 201);
@@ -227,11 +235,25 @@ describe('App', () => {
 
 });
 
-function setupAccount() {
+function setupAccount(options: { ingredients?: string[] } = {}) {
     cy.solidCreateDocument('/cookbook/ramen', 'turtle/ramen.ttl');
     cy.solidCreateDocument('/settings/privateTypeIndex', '<> a <http://www.w3.org/ns/solid/terms#TypeIndex> .');
     cy.solidUpdateDocument('/settings/privateTypeIndex', 'sparql/register-cookbook.sparql');
     cy.solidUpdateDocument('/profile/card', 'sparql/declare-type-index.sparql');
+
+    for (const ingredient of options.ingredients ?? []) {
+        cy.solidUpdateDocument('/settings/privateTypeIndex', 'sparql/register-ingredients.sparql');
+
+        cy.solidCreateDocument(`/ingredients/${stringToSlug(ingredient)}`, 'turtle/ingredient.ttl', {
+            name: ingredient,
+            serving: '94 grams',
+            calories: '41 calories',
+            protein: '1.28 grams',
+            carbs: '9.54 grams',
+            fat: '0.18 grams',
+        });
+    }
+
     cy.ariaInput('Login url').type(`${webId()}{enter}`);
 
     cy.service('$nutritionix').then((Nutritionix) => {

@@ -2,10 +2,12 @@ import { compare, objectWithoutEmpty } from '@noeldemartin/utils';
 
 export type IngredientQuantity = number | [number, number];
 
-export enum IngredientUnit {
-    Grams = 'grams',
-    Milliliters = 'milliliters',
-}
+export const IngredientUnits = {
+    Grams: 'grams',
+    Milliliters: 'milliliters',
+} as const;
+
+export type IngredientUnit = (typeof IngredientUnits)[keyof typeof IngredientUnits];
 
 export type IngredientBreakdown<Q extends IngredientQuantity = IngredientQuantity> = {
     template: string;
@@ -40,7 +42,7 @@ const INGREDIENT_UNIT_QUANTITIES: Record<IngredientUnit, Record<string, number>>
     // is 125g but a cup of water is 240g. But for now, this is fine because these conversions
     // are only used for sorting ingredients. If they are used to do actual conversions, this
     // should be kept in mind.
-    [IngredientUnit.Grams]: {
+    [IngredientUnits.Grams]: {
         g: 1,
         grams: 1,
         kg: 1000,
@@ -54,7 +56,7 @@ const INGREDIENT_UNIT_QUANTITIES: Record<IngredientUnit, Record<string, number>>
         tbsp: 15,
         tbl: 15,
     },
-    [IngredientUnit.Milliliters]: {
+    [IngredientUnits.Milliliters]: {
         ml: 1,
         milliliters: 1,
         l: 1000,

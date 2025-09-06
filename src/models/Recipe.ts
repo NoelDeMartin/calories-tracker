@@ -1,5 +1,5 @@
 import type { BelongsToOneRelation, Relation } from 'soukai';
-import { type ObjectsMap, arrayFilter } from '@noeldemartin/utils';
+import { type ObjectsMap, arrayFilter, stringToSlug } from '@noeldemartin/utils';
 
 import NutritionInformation from '@/models/NutritionInformation';
 import { parseIngredient } from '@/utils/ingredients';
@@ -44,22 +44,24 @@ export default class Recipe extends Model {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public getCaloriesBreakdown(ingredientsMultiplier: number, ingredientsByName: ObjectsMap<Ingredient>) {
+    public getCaloriesBreakdown(ingredientsMultiplier: number, ingredientsBySlug: ObjectsMap<Ingredient>) {
         return arrayFilter(
             this.ingredientsBreakdown.map((breakdown) => {
-                const name = breakdown.template
-                    .replace('{quantity}', '')
-                    .trim()
-                    .replace(/\s*\(optional\)/, '');
+                const slug = stringToSlug(
+                    breakdown.template
+                        .replace('{quantity}', '')
+                        .trim()
+                        .replace(/\s*\(optional\)/, ''),
+                );
 
-                const nutrition = ingredientsByName.get(name)?.nutrition;
+                const nutrition = ingredientsBySlug.get(slug)?.nutrition;
 
                 return {
                     name:
                         typeof breakdown.quantity === 'number'
                             ? breakdown.renderQuantity(breakdown.quantity * ingredientsMultiplier)
                             : breakdown.original,
-                    macroClass: nutrition?.getMacroClass(),
+                    macroClass: nutrition?.macroClass,
                     ...nutrition?.getIngredientMacrosAndCalories(ingredientsMultiplier, breakdown),
                 };
             }),

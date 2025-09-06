@@ -1,0 +1,6 @@
+INSERT DATA {
+    <#ingredients>
+        a <http://www.w3.org/ns/solid/terms#TypeRegistration> ;
+        <http://www.w3.org/ns/solid/terms#forClass> <https://schema.org/Substance>, <https://schema.org/MenuItem> ;
+        <http://www.w3.org/ns/solid/terms#instanceContainer> <http://localhost:3000/alice/ingredients/> .
+}

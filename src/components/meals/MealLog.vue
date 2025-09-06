@@ -20,9 +20,7 @@
                 size="icon"
                 variant="ghost"
                 class="text-gray-400 transition-colors hover:text-green-500"
-                :title="$t('logs.viewBreakdown')"
-                :aria-label="$t('logs.viewBreakdown')"
-                @click="$ui.modal(CaloriesBreakdownModal, { meal })"
+                @click="$ui.modal(ViewMealModal, { meal })"
             >
                 <i-lucide-eye class="size-4" />
             </Button>
@@ -51,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import CaloriesBreakdownModal from './CaloriesBreakdownModal.vue';
+import ViewMealModal from './ViewMealModal.vue';
 import EditMealModal from './EditMealModal.vue';
 import { computed } from 'vue';
 import { formatNumber } from '@/utils/formatting';

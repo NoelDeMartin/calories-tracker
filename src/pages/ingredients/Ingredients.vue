@@ -1,5 +1,5 @@
 <template>
-    <Page>
+    <Page style="--breakpoint-content: 1200px">
         <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
 
         <Markdown
@@ -27,8 +27,22 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
                     <tr v-for="ingredient of sortedIngredients" :key="ingredient.name">
-                        <td class="px-6 py-4 font-medium whitespace-nowrap text-gray-900">
-                            {{ ingredient.name }}
+                        <td class="flex items-center space-x-2 px-6 py-4 font-medium whitespace-nowrap text-gray-900">
+                            <div
+                                :class="ingredient.nutrition?.macroClass ?? 'bg-gray-400'"
+                                class="h-3 w-3 rounded-full"
+                            />
+                            <span>{{ ingredient.name }}</span>
+                            <Button
+                                v-for="url of ingredient.externalUrls"
+                                :key="url"
+                                :href="url"
+                                variant="ghost"
+                                target="_blank"
+                                class="opacity-75"
+                            >
+                                <i-lucide-external-link class="size-4" />
+                            </Button>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(ingredient.nutrition?.servingGrams, { unit: 'grams', fallback: '-' }) }}
