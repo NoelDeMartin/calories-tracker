@@ -238,6 +238,40 @@ describe('App', () => {
         cy.see(`1 meal on ${now} (443 kcal)`);
     });
 
+    it('Deletes ingredients', () => {
+        // Arrange
+        setupAccount({ ingredients: ['Wheat Noodles'] });
+
+        cy.solidLogin();
+        cy.waitSync();
+
+        cy.ariaLabel('Navigate').click();
+        cy.press('Ingredients');
+        cy.see('Wheat Noodles');
+
+        cy.intercept('PATCH', podUrl('/ingredients/*')).as('updateIngredient');
+
+        // Act
+        cy.ariaLabel('Delete Wheat Noodles').click();
+        cy.waitSync();
+
+        // Assert
+        cy.dontSee('Wheat Noodles');
+
+        cy.get('@updateIngredient.all').should('have.length', 1);
+        cy.fixtureWithReplacements('sparql/delete-ingredient.sparql', {
+            name: 'Wheat Noodles',
+            serving: '94 grams',
+            calories: '41 calories',
+            protein: '1.28 grams',
+            carbs: '9.54 grams',
+            fat: '0.18 grams',
+        }).then((sparql) => {
+            cy.get('@updateIngredient').its('response.statusCode').should('eq', 205);
+            cy.get('@updateIngredient').its('request.body').should('be.sparql', sparql);
+        });
+    });
+
 });
 
 function setupAccount(options: { ingredients?: string[] } = {}) {

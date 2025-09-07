@@ -81,8 +81,8 @@
                                     size="icon"
                                     variant="ghost"
                                     class="text-gray-400 transition-colors hover:text-red-500"
-                                    :title="$t('ingredients.delete')"
-                                    :aria-label="$t('ingredients.delete')"
+                                    :title="$t('ingredients.delete', { name: ingredient.name })"
+                                    :aria-label="$t('ingredients.delete', { name: ingredient.name })"
                                     @click="deleteIngredient(ingredient)"
                                 >
                                     <i-lucide-trash2 class="size-4" />

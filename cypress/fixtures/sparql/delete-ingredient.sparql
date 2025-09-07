@@ -1,0 +1,43 @@
+DELETE DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it>
+        a schema:Substance, schema:MenuItem ;
+        schema:name "{{ name }}" ;
+        schema:nutrition <#[[nutrition][.*]]> .
+
+    <#it-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#it> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[nutrition][.*]]>
+        a schema:NutritionInformation ;
+        schema:servingSize "{{ serving }}" ;
+        schema:calories "{{ calories }}" ;
+        schema:carbohydrateContent "{{ carbs }}" ;
+        schema:fatContent "{{ fat }}" ;
+        schema:proteinContent "{{ protein }}" .
+
+    <#[[nutrition][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[nutrition][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+};
+
+INSERT DATA {
+
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it-metadata>
+        a crdt:Tombstone ;
+        crdt:resource <#it> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+}

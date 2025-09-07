@@ -16,7 +16,7 @@ export default class Ingredient extends Model {
     >;
 
     public nutritionRelationship(): Relation {
-        return this.belongsToOne(NutritionInformation, 'nutritionUrl').usingSameDocument();
+        return this.belongsToOne(NutritionInformation, 'nutritionUrl').usingSameDocument().onDelete('cascade');
     }
 
 }

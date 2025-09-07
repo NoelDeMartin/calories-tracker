@@ -13,6 +13,7 @@ export class PantryService extends Service {
         await trackModels(Ingredient, {
             service: this,
             property: 'ingredients',
+            transform: (ingredients) => ingredients.filter((model) => !model.isSoftDeleted()),
         });
     }
 

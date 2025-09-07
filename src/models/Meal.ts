@@ -12,7 +12,7 @@ export default class Meal extends Model {
     declare public relatedRecipe: BelongsToOneRelation<Meal, Recipe, typeof Recipe>;
 
     public recipeRelationship(): Relation {
-        return this.belongsToOne(Recipe).usingSameDocument();
+        return this.belongsToOne(Recipe).usingSameDocument().onDelete('cascade');
     }
 
 }
