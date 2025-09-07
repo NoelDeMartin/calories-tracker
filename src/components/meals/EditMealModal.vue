@@ -77,13 +77,15 @@ async function submit() {
     close();
 
     const externalUrls = [...(meal.recipe?.externalUrls ?? [])];
+    const recipe = meal.recipe ?? meal.relatedRecipe.attach();
+    const nutrition = recipe.nutrition ?? recipe.relatedNutrition.attach();
 
     initialRecipe?.url && arrayRemove(externalUrls, initialRecipe.url);
     isNone(form.recipe) || externalUrls.push(form.recipe.url);
 
     meal.setAttributes({ consumedAt: form.consumedAt });
-    meal.recipe?.setAttributes({ name: form.name, externalUrls });
-    meal.recipe?.nutrition?.setAttributes({
+    recipe.setAttributes({ name: form.name, externalUrls });
+    nutrition.setAttributes({
         rawCalories: `${round(form.calories ?? 0)} calories`,
         rawProtein: `${round(form.protein ?? 0, 2)} grams`,
         rawCarbs: `${round(form.carbs ?? 0, 2)} grams`,

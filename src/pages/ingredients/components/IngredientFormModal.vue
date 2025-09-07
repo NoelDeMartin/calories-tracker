@@ -76,8 +76,7 @@ async function submit() {
     close();
 
     const model = ingredient ?? new Ingredient();
-
-    const nutrition = model.nutrition ?? model.relatedNutrition.attach({});
+    const nutrition = model.nutrition ?? model.relatedNutrition.attach();
     const servingsMultiplier = typeof form.serving === 'number' ? form.serving / 100 : 1;
 
     nutrition.setAttributes({
