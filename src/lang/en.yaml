@@ -37,6 +37,8 @@ ingredients:
     addExternalUrl: Add external URL
     aliases: Aliases
     addAlias: Add alias
+    delete: Delete ingredient
+    deleteConfirm: Delete {name}?
 
 logs:
     log: Log

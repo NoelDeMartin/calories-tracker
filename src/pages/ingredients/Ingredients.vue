@@ -42,6 +42,7 @@
                                 v-for="url of ingredient.externalUrls"
                                 :key="url"
                                 :href="url"
+                                size="icon"
                                 variant="ghost"
                                 target="_blank"
                                 class="opacity-75"
@@ -65,10 +66,28 @@
                             {{ formatNumber(ingredient.nutrition?.fat, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <Button variant="ghost" @click="$ui.modal(IngredientFormModal, { ingredient })">
-                                <i-zondicons-edit-pencil class="size-4" />
-                                <span class="sr-only">{{ $t('ingredients.edit') }}</span>
-                            </Button>
+                            <div class="flex space-x-1">
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="text-gray-400 transition-colors hover:text-blue-500"
+                                    :title="$t('ingredients.edit')"
+                                    :aria-label="$t('ingredients.edit')"
+                                    @click="$ui.modal(IngredientFormModal, { ingredient })"
+                                >
+                                    <i-zondicons-edit-pencil class="size-4" />
+                                </Button>
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="text-gray-400 transition-colors hover:text-red-500"
+                                    :title="$t('ingredients.delete')"
+                                    :aria-label="$t('ingredients.delete')"
+                                    @click="deleteIngredient(ingredient)"
+                                >
+                                    <i-lucide-trash2 class="size-4" />
+                                </Button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -121,5 +140,13 @@ function sortBy(column: DeepKeyOf<Ingredient>) {
 
     sortField.value = column;
     sortDirection.value = 'asc';
+}
+
+async function deleteIngredient(ingredient: Ingredient) {
+    if (!confirm(translate('ingredients.deleteConfirm', { name: ingredient.name }))) {
+        return;
+    }
+
+    await ingredient.delete();
 }
 </script>
