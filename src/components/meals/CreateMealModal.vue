@@ -73,7 +73,7 @@
             </template>
 
             <datalist v-if="!e2e" id="ingredient-names">
-                <option v-for="ingredient in ingredients" :key="ingredient.id" :value="ingredient.name" />
+                <option v-for="ingredient in $pantry.ingredients" :key="ingredient.id" :value="ingredient.name" />
             </datalist>
 
             <div v-if="error" class="rounded-md bg-red-50 p-2 text-sm text-red-500">
@@ -101,13 +101,12 @@ import {
     arrayFilter,
     arraySorted,
     arrayUnique,
+    compare,
     isInstanceOf,
     isTesting,
-    map,
     range,
     required,
     round,
-    stringToSlug,
     toString,
 } from '@noeldemartin/utils';
 import {
@@ -126,10 +125,9 @@ import type { Nullable } from '@noeldemartin/utils';
 
 import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import Meal from '@/models/Meal';
-import Ingredient from '@/models/Ingredient';
-import Nutritionix from '@/services/Nutritionix';
+import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
-import { type IngredientBreakdown, IngredientUnits, parseIngredient } from '@/utils/ingredients';
+import { IngredientUnits, parseIngredient } from '@/utils/ingredients';
 
 interface Nutrition {
     calories: Nullable<number>;
@@ -142,7 +140,6 @@ const { close } = useModal();
 const error = ref('');
 const recipes = useModelCollection(Recipe);
 const meals = useModelCollection(Meal);
-const ingredients = useModelCollection(Ingredient);
 
 const mealOptions = computed(() => {
     const mealNames = new Set<string>();
@@ -157,9 +154,9 @@ const mealOptions = computed(() => {
         uniqueMeals.push(meal);
     }
 
-    return arraySorted((recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals), 'name').concat({
-        id: 'new',
-    });
+    const recipesAndMeals = (recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals);
+
+    return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b))).concat({ id: 'new' });
 });
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, 'servings'] as const);
@@ -175,7 +172,6 @@ const mealIngredients = ref<{ name: string; quantity: number; unit: (typeof ingr
     []);
 const renderServing = computed(() =>
     form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString);
-const ingredientsBySlug = computed(() => map(ingredients.value, ({ name }) => stringToSlug(name)));
 const servingsOptions = computed(() => {
     if (!isInstanceOf(form.meal, Recipe)) {
         return [];
@@ -202,7 +198,7 @@ const caloriesBreakdown = computed(() => {
     if (isNewMeal(form.meal)) {
         return arrayFilter(
             mealIngredients.value.map((mealIngredient) => {
-                const ingredient = ingredientsBySlug.value.get(stringToSlug(mealIngredient.name));
+                const ingredient = Pantry.ingredient(mealIngredient.name);
                 const nutrition = ingredient?.nutrition;
                 const multiplier = (function() {
                     switch (mealIngredient.unit) {
@@ -234,7 +230,7 @@ const caloriesBreakdown = computed(() => {
     const originalServings = recipe?.servingsBreakdown?.quantity ?? 1;
     const ingredientsMultiplier = servings ? servings / (originalServings ?? 1) : 1;
 
-    return recipe?.getCaloriesBreakdown(ingredientsMultiplier, ingredientsBySlug.value);
+    return recipe?.getCaloriesBreakdown(ingredientsMultiplier);
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
@@ -288,37 +284,6 @@ function renderMeal(meal: Recipe | Meal | { id: 'new' }) {
     return translate('logs.addNew');
 }
 
-async function resolveIngredient({ template }: IngredientBreakdown): Promise<Ingredient> {
-    const name = template
-        .replace('{quantity}', '')
-        .trim()
-        .replace(/\s*\(optional\)/, '');
-
-    const slug = stringToSlug(name);
-
-    if (ingredientsBySlug.value.hasKey(slug)) {
-        return ingredientsBySlug.value.require(slug);
-    }
-
-    const ingredient = new Ingredient({ name });
-    const nutrition = await Nutritionix.getNutrition(name);
-
-    if (nutrition) {
-        ingredient.externalUrls = [`https://www.nutritionix.com/food/${stringToSlug(nutrition.name)}`];
-        ingredient.relatedNutrition.attach({
-            serving: nutrition.serving,
-            rawCalories: typeof nutrition.calories === 'number' ? `${round(nutrition.calories)} calories` : undefined,
-            rawProtein: typeof nutrition.protein === 'number' ? `${round(nutrition.protein, 2)} grams` : undefined,
-            rawCarbs: typeof nutrition.carbs === 'number' ? `${round(nutrition.carbs, 2)} grams` : undefined,
-            rawFat: typeof nutrition.fat === 'number' ? `${round(nutrition.fat, 2)} grams` : undefined,
-        });
-    }
-
-    await ingredient.save();
-
-    return ingredient;
-}
-
 function applyIngredientNutrition(
     ingredient: CaloriesBreakdown[number],
     nutrition: Nutrition,
@@ -342,13 +307,13 @@ function ingredientNotFound(name: string) {
 
 async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
     for (const breakdown of recipe.ingredientsBreakdown) {
-        await resolveIngredient(breakdown);
+        await Pantry.resolveIngredient(breakdown);
     }
 
     const originalServings = recipe.servingsBreakdown?.quantity;
     const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
 
-    const breakdown = recipe.getCaloriesBreakdown(ingredientsMultiplier, ingredientsBySlug.value);
+    const breakdown = recipe.getCaloriesBreakdown(ingredientsMultiplier);
     const nutrition: Nutrition = {
         calories: null,
         fat: null,
@@ -395,7 +360,7 @@ async function logNewMeal() {
     }
 
     for (const ingredient of renderedIngredients) {
-        await resolveIngredient(parseIngredient(ingredient));
+        await Pantry.resolveIngredient(parseIngredient(ingredient));
     }
 
     close();

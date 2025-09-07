@@ -56,26 +56,22 @@
 
 <script setup lang="ts">
 import Recipe from '@/models/Recipe';
-import Ingredient from '@/models/Ingredient';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import { computed } from 'vue';
-import { map, stringToSlug } from '@noeldemartin/utils';
+import { map } from '@noeldemartin/utils';
 import { formatNumber } from '@/utils/formatting';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
 const recipes = useModelCollection(Recipe);
-const ingredients = useModelCollection(Ingredient);
 const recipesByUrl = computed(() => map(recipes.value, 'url'));
-const ingredientsBySlug = computed(() => map(ingredients.value, ({ name }) => stringToSlug(name)));
 const caloriesBreakdown = computed(() => {
-    const _ingredientsBySlug = ingredientsBySlug.value;
     const recipeUrl = meal.recipe?.externalUrls.find((url) => recipesByUrl.value.get(url));
     const linkedRecipe = recipeUrl ? recipesByUrl.value.require(recipeUrl) : null;
     const recipe = linkedRecipe ?? meal.recipe;
     const recipeQuantity = recipe?.servingsBreakdown?.quantity ?? 1;
     const mealQuantity = meal.recipe?.servingsBreakdown?.quantity ?? 1;
 
-    return recipe?.getCaloriesBreakdown(mealQuantity / recipeQuantity, _ingredientsBySlug);
+    return recipe?.getCaloriesBreakdown(mealQuantity / recipeQuantity);
 });
 </script>

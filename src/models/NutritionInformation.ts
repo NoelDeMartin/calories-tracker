@@ -144,11 +144,14 @@ export default class NutritionInformation extends Model {
         const atwaterCarbs = (carbs ?? 0) * 4;
         const atwaterFat = (fat ?? 0) * 9;
         const maxCalories = Math.max(atwaterProtein, atwaterCarbs, atwaterFat);
-        const macroClass = {
-            [atwaterProtein]: 'bg-protein-500',
-            [atwaterCarbs]: 'bg-carbs-500',
-            [atwaterFat]: 'bg-fat-500',
-        }[maxCalories];
+        const macroClass =
+            typeof protein === 'number' && typeof carbs === 'number' && typeof fat === 'number'
+                ? {
+                    [atwaterProtein]: 'bg-protein-500',
+                    [atwaterCarbs]: 'bg-carbs-500',
+                    [atwaterFat]: 'bg-fat-500',
+                }[maxCalories]
+                : 'bg-gray-400';
 
         return {
             calories,

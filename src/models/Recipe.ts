@@ -1,9 +1,9 @@
+import { arrayFilter } from '@noeldemartin/utils';
 import type { BelongsToOneRelation, Relation } from 'soukai';
-import { type ObjectsMap, arrayFilter, stringToSlug } from '@noeldemartin/utils';
 
+import Pantry from '@/services/Pantry';
 import NutritionInformation from '@/models/NutritionInformation';
 import { parseIngredient } from '@/utils/ingredients';
-import type Ingredient from '@/models/Ingredient';
 import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './Recipe.schema';
@@ -44,17 +44,10 @@ export default class Recipe extends Model {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public getCaloriesBreakdown(ingredientsMultiplier: number, ingredientsBySlug: ObjectsMap<Ingredient>) {
+    public getCaloriesBreakdown(ingredientsMultiplier: number) {
         return arrayFilter(
             this.ingredientsBreakdown.map((breakdown) => {
-                const slug = stringToSlug(
-                    breakdown.template
-                        .replace('{quantity}', '')
-                        .trim()
-                        .replace(/\s*\(optional\)/, ''),
-                );
-
-                const nutrition = ingredientsBySlug.get(slug)?.nutrition;
+                const nutrition = Pantry.ingredient(breakdown)?.nutrition;
 
                 return {
                     name:

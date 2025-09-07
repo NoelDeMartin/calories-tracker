@@ -17,10 +17,10 @@
 
             <div class="mt-4 flex justify-end space-x-2">
                 <Button variant="secondary" @click="close">
-                    {{ $t('logs.editCancel') }}
+                    {{ $t('ui.cancel') }}
                 </Button>
                 <Button submit>
-                    {{ $t('logs.editSubmit') }}
+                    {{ $t('ui.save') }}
                 </Button>
             </div>
         </Form>

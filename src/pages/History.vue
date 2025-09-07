@@ -142,7 +142,7 @@
 <script setup lang="ts">
 import Meal from '@/models/Meal';
 import { range } from '@noeldemartin/utils';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import { formatNumber, formatPercentage } from '@/utils/formatting';
 import { sortedMeals } from '@/utils/meals';
@@ -162,14 +162,16 @@ const mealsByDay = computed(() => {
     const values = Object.fromEntries(days.value.map((day) => [day, [] as Meal[]]));
 
     for (const meal of meals.value) {
+        const consumedAt = meal.consumedAt ?? meal.createdAt;
+
         if (
-            meal.createdAt.getFullYear() !== selectedMonth.value.year ||
-            meal.createdAt.getMonth() !== selectedMonth.value.month
+            consumedAt.getFullYear() !== selectedMonth.value.year ||
+            consumedAt.getMonth() !== selectedMonth.value.month
         ) {
             continue;
         }
 
-        values[meal.createdAt.getDate()]?.push(meal);
+        values[consumedAt.getDate()]?.push(meal);
     }
 
     return values;
@@ -251,4 +253,16 @@ const selectedDayDisplay = computed(() =>
         year: 'numeric',
     }));
 const selectedDayData = computed(() => selectedDay.value && history.value[selectedDay.value]);
+
+watch(history, () => {
+    if (selectedDay.value && history.value[selectedDay.value]) {
+        return;
+    }
+
+    selectedDay.value = Number(
+        Object.entries(history.value)
+            .reverse()
+            .find(([, value]) => !!value)?.[0],
+    );
+});
 </script>

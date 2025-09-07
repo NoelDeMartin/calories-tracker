@@ -135,7 +135,6 @@ describe('App', () => {
 
         // Act - repeated meal
         cy.press('Log meal');
-        cy.comboboxSelect('Meal', 'Pisto');
         cy.get('input[name="mealServings"]').clear().type('2');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
@@ -185,6 +184,11 @@ describe('App', () => {
             .type(`2025-01-01T${(10 - timezoneOffset).toString().padStart(2, '0')}:00:00`);
         cy.press('Save');
         cy.waitSync();
+
+        cy.ariaLabel('Navigate').click();
+        cy.press('History');
+        cy.get('.month-picker button').click();
+        cy.press('Jan');
 
         // Assert
         cy.see('Spaghetti Carbonara');

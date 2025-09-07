@@ -1,7 +1,9 @@
 import Nutritionix from './Nutritionix';
+import Pantry from './Pantry';
 
 export const services = {
     $nutritionix: Nutritionix,
+    $pantry: Pantry,
 };
 
 export type AppServices = typeof services;

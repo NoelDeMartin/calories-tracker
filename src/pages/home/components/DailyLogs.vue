@@ -23,11 +23,14 @@ const meals = useModelCollection(Meal);
 const today = new Date();
 const todayMeals = computedModels(Meal, () =>
     sortedMeals(
-        meals.value.filter(
-            (meal) =>
-                meal.createdAt.getFullYear() === today.getFullYear() &&
-                meal.createdAt.getMonth() === today.getMonth() &&
-                meal.createdAt.getDate() === today.getDate(),
-        ),
+        meals.value.filter((meal) => {
+            const consumedAt = meal.consumedAt ?? meal.createdAt;
+
+            return (
+                consumedAt.getFullYear() === today.getFullYear() &&
+                consumedAt.getMonth() === today.getMonth() &&
+                consumedAt.getDate() === today.getDate()
+            );
+        }),
     ));
 </script>

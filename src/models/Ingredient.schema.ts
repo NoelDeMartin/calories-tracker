@@ -11,6 +11,11 @@ export default defineSolidModelSchema({
             type: FieldType.String,
             required: true,
         },
+        aliases: {
+            type: FieldType.Array,
+            items: FieldType.String,
+            rdfProperty: 'alternateName',
+        },
         nutritionUrl: {
             type: FieldType.Key,
             rdfProperty: 'nutrition',

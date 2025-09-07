@@ -1,6 +1,11 @@
 <template>
     <Page style="--breakpoint-content: 1200px">
-        <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
+        <div class="flex items-center gap-2">
+            <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
+            <Button @click="$ui.modal(IngredientFormModal)">
+                {{ $t('ingredients.add') }}
+            </Button>
+        </div>
 
         <Markdown
             v-if="filteredIngredients.length === 0"
@@ -73,15 +78,15 @@
 </template>
 
 <script setup lang="ts">
+import Pantry from '@/services/Pantry';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed, ref } from 'vue';
 import { translate } from '@aerogel/core';
-import { useModelCollection } from '@aerogel/plugin-soukai';
-import type { DeepKeyOf } from '@noeldemartin/utils';
-
-import Ingredient from '@/models/Ingredient';
-import IngredientFormModal from './components/IngredientFormModal.vue';
 import { formatNumber } from '@/utils/formatting';
+import type { DeepKeyOf } from '@noeldemartin/utils';
+import type Ingredient from '@/models/Ingredient';
+
+import IngredientFormModal from './components/IngredientFormModal.vue';
 
 const COLUMNS: { label: string; field?: DeepKeyOf<Ingredient> }[] = [
     { label: translate('ingredients.name'), field: 'name' },
@@ -96,15 +101,14 @@ const COLUMNS: { label: string; field?: DeepKeyOf<Ingredient> }[] = [
 const filter = ref('');
 const sortField = ref<DeepKeyOf<Ingredient>>('name');
 const sortDirection = ref<'asc' | 'desc'>('asc');
-const ingredients = useModelCollection(Ingredient);
 const filteredIngredients = computed(() => {
     if (!filter.value) {
-        return ingredients.value;
+        return Pantry.ingredients;
     }
 
     const query = filter.value.toLowerCase();
 
-    return ingredients.value.filter((ingredient) => ingredient.name.toLowerCase().includes(query));
+    return Pantry.ingredients.filter((ingredient) => ingredient.name.toLowerCase().includes(query));
 });
 
 const sortedIngredients = computed(() => arraySorted(filteredIngredients.value, sortField.value, sortDirection.value));

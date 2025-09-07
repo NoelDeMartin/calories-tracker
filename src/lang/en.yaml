@@ -27,12 +27,16 @@ ingredients:
     protein: Protein
     carbs: Carbs
     fat: Fat
+    add: Add
     edit: Edit
     editTitle: Edit {name}
-    editName: Name
-    editSubmit: Save
-    editCancel: Cancel
-    editUpdating: Updating ingredient...
+    createTitle: New ingredient
+    formServing: Serving (in grams)
+    formName: Name
+    externalUrls: External URLs
+    addExternalUrl: Add external URL
+    aliases: Aliases
+    addAlias: Add alias
 
 logs:
     log: Log
@@ -56,8 +60,6 @@ logs:
     addMissingData: Please, complete all the fields.
     adding: Logging meal...
     editTitle: Edit {name}
-    editSubmit: Save
-    editCancel: Cancel
     delete: Delete meal
     deleteConfirm: Delete {name}?
     viewBreakdown: View calories breakdown
@@ -76,3 +78,7 @@ settings:
     nutritionixDescription: If you want to get nutrition information for all the ingredients, you'll need to obtain a [Nutritionix API Key](https://www.nutritionix.com/business/api).
     nutritionixAppId: App ID
     nutritionixAppKey: App Key
+
+ui:
+    save: Save
+    cancel: Cancel
