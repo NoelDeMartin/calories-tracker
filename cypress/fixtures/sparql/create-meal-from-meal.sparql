@@ -19,6 +19,7 @@ INSERT DATA {
         a schema:Recipe ;
         schema:name "{{ name }}" ;
         schema:recipeYield "{{ servings }}" ;
+        schema:recipeIngredient {{ ingredients }} ;
         schema:nutrition <#[[nutrition][.*]]> .
 
     <#[[recipe][.*]]-metadata>

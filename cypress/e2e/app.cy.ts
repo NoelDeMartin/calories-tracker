@@ -151,6 +151,7 @@ describe('App', () => {
             carbs: '71.06 grams',
             fat: '1.34 grams',
             servings: '2',
+            ingredients: '"100g Eggplant", "200g Zucchini", "200g Onion", "200g Tomatoes"',
         }).then((sparql) => {
             cy.get('@createMeal.2').its('response.statusCode').should('eq', 201);
             cy.get('@createMeal.2').its('request.body').should('be.sparql', sparql);

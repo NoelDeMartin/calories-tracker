@@ -165,7 +165,7 @@ const mealOptions = computed(() => {
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, 'servings'] as const);
 
 const form = useForm({
-    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(recipes.value[0] ?? meals.value[0] ?? { id: 'new' }),
+    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(mealOptions.value[0] ?? { id: 'new' }),
     name: stringInput(),
     servings: numberInput(),
     mealServings: numberInput(1),
