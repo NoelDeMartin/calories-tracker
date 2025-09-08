@@ -205,7 +205,9 @@ const caloriesBreakdown = computed(() => {
                         case 'grams':
                             return mealIngredient.quantity / 100;
                         case 'servings':
-                            return typeof mealIngredient.quantity === 'number' ? mealIngredient.quantity : 1;
+                            return typeof mealIngredient.quantity === 'number'
+                                ? (mealIngredient.quantity * (nutrition?.servingGrams ?? 1)) / 100
+                                : 1;
                     }
                 })();
 
