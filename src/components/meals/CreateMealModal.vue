@@ -56,18 +56,11 @@
             <Input name="consumedAt" type="datetime-local" />
 
             <template v-if="totalCalories">
-                <span
-                    class="self-end text-sm text-gray-600"
-                    :class="{ 'mb-8': !caloriesBreakdown?.length || form.meal.id === 'new' }"
-                >
+                <span class="self-end text-sm text-gray-600">
                     {{ $t('logs.totalCalories') }}: {{ formatNumber(totalCalories, 'calories') }}
                 </span>
 
-                <Details
-                    v-if="caloriesBreakdown?.length && form.meal.id !== 'new'"
-                    :label="$t('logs.viewBreakdown')"
-                    class="overflow-y-auto"
-                >
+                <Details v-if="caloriesBreakdown?.length" :label="$t('logs.viewBreakdown')" class="overflow-y-auto">
                     <CaloriesBreakdown :breakdown="caloriesBreakdown" />
                 </Details>
             </template>
@@ -222,13 +215,23 @@ const caloriesBreakdown = computed(() => {
                             return typeof mealIngredient.quantity === 'number' ? mealIngredient.quantity : 1;
                     }
                 })();
+                const name = (function() {
+                    switch (mealIngredient.unit) {
+                        case 'grams':
+                            return `${mealIngredient.quantity}g ${mealIngredient.name}`;
+                        case 'milliliters':
+                            return `${mealIngredient.quantity}ml ${mealIngredient.name}`;
+                        case 'servings':
+                            return `${mealIngredient.quantity} ${mealIngredient.name}`;
+                    }
+                })();
 
                 if (!nutrition || !multiplier) {
-                    return;
+                    return { name, macroClass: 'bg-gray-400' };
                 }
 
                 return {
-                    name: mealIngredient.name,
+                    name,
                     macroClass: nutrition.macroClass,
                     calories: typeof nutrition.calories === 'number' ? nutrition.calories * multiplier : null,
                     protein: typeof nutrition.protein === 'number' ? nutrition.protein * multiplier : null,
@@ -375,18 +378,17 @@ async function logNewMeal() {
         return;
     }
 
-    for (const ingredient of renderedIngredients) {
-        await Pantry.resolveIngredient(parseIngredient(ingredient));
-    }
-
-    close();
-
-    UI.loading(
+    await close();
+    await UI.loading(
         {
             delay: 300,
             message: translate('logs.adding'),
         },
         async () => {
+            for (const ingredient of renderedIngredients) {
+                await Pantry.resolveIngredient(parseIngredient(ingredient));
+            }
+
             await createMeal(
                 name,
                 {
@@ -405,9 +407,8 @@ async function logNewMeal() {
 }
 
 async function logMeal(meal: Meal) {
-    close();
-
-    UI.loading(
+    await close();
+    await UI.loading(
         {
             delay: 300,
             message: translate('logs.adding'),
@@ -430,9 +431,8 @@ async function logMeal(meal: Meal) {
 }
 
 async function logRecipe(recipe: Recipe) {
-    close();
-
-    UI.loading(
+    await close();
+    await UI.loading(
         {
             delay: 300,
             message: translate('logs.adding'),
