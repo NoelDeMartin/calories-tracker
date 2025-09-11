@@ -1,5 +1,5 @@
-import { array, number, object, optional, string } from '@zod/mini';
-import { facade } from '@noeldemartin/utils';
+import { array, nullable, number, object, optional, string } from '@zod/mini';
+import { arraySorted, facade } from '@noeldemartin/utils';
 import { Events } from '@aerogel/core';
 import type { infer as ZInfer } from '@zod/mini';
 import type { Nullable } from '@noeldemartin/utils';
@@ -14,6 +14,16 @@ const FoodSchema = object({
     nf_total_carbohydrate: optional(number()),
     serving_qty: optional(number()),
     serving_weight_grams: optional(number()),
+    alt_measures: optional(
+        array(
+            object({
+                serving_weight: optional(number()),
+                measure: optional(string()),
+                qty: optional(number()),
+                seq: optional(nullable(number())),
+            }),
+        ),
+    ),
 });
 
 const SearchSchema = object({
@@ -22,29 +32,44 @@ const SearchSchema = object({
 
 export interface NutritionixIngredient {
     name: string;
-    serving: string;
     fat: Nullable<number>;
     protein: Nullable<number>;
     carbs: Nullable<number>;
     calories: Nullable<number>;
+    servingInGrams: number;
+    servingInMilliliters: Nullable<number>;
 }
 
 export class NutritionixService extends Service {
 
     public async getNutrition(ingredient: string): Promise<NutritionixIngredient | undefined> {
-        const food = await this.findIngredient(ingredient);
+        const foodInGrams = await this.findIngredient(`100g ${ingredient}`);
+        const foodInMilliliters = await this.findIngredient(`100ml ${ingredient}`);
 
-        if (!food || !food.serving_weight_grams) {
+        if (!foodInGrams) {
             return;
         }
 
+        const firstServingWeight = foodInGrams.alt_measures?.[0]?.serving_weight;
+        const firstSeqServingWeight = arraySorted(
+            foodInGrams.alt_measures?.filter(({ seq }) => seq !== null) ?? [],
+            'seq',
+            'asc',
+        )?.[0]?.serving_weight;
+        const servingInGrams = firstSeqServingWeight ?? firstServingWeight ?? 100;
+
         return {
-            name: food.food_name,
-            serving: `${food.serving_weight_grams / (food.serving_qty ?? 1)} grams`,
-            calories: food.nf_calories,
-            protein: food.nf_protein,
-            carbs: food.nf_total_carbohydrate,
-            fat: food.nf_total_fat,
+            servingInGrams,
+            name: foodInGrams.food_name,
+            calories: foodInGrams.nf_calories ? (foodInGrams.nf_calories / 100) * servingInGrams : undefined,
+            protein: foodInGrams.nf_protein ? (foodInGrams.nf_protein / 100) * servingInGrams : undefined,
+            carbs: foodInGrams.nf_total_carbohydrate
+                ? (foodInGrams.nf_total_carbohydrate / 100) * servingInGrams
+                : undefined,
+            fat: foodInGrams.nf_total_fat ? (foodInGrams.nf_total_fat / 100) * servingInGrams : undefined,
+            servingInMilliliters: foodInMilliliters?.serving_weight_grams
+                ? (100 / foodInMilliliters.serving_weight_grams) * servingInGrams
+                : undefined,
         };
     }
 

@@ -2,8 +2,9 @@
     <Modal :title="ingredient ? $t('ingredients.editTitle', { name: ingredient.name }) : $t('ingredients.createTitle')">
         <Form :form class="space-y-2" @submit="submit()">
             <Input name="name" :label="$t('ingredients.formName')" />
-            <Input name="serving" :label="$t('ingredients.formServing')" />
-            <Input name="calories" :label="$t('ingredients.calories')" step="0.01" />
+            <Input name="servingInGrams" :label="$t('ingredients.formServingInGrams')" />
+            <Input name="servingInMilliliters" :label="$t('ingredients.formServingInMilliliters')" />
+            <Input name="calories" :label="$t('ingredients.formCalories')" step="0.01" />
             <Input name="protein" :label="$t('ingredients.protein')" step="0.01" />
             <Input name="carbs" :label="$t('ingredients.carbs')" step="0.01" />
             <Input name="fat" :label="$t('ingredients.fat')" step="0.01" />
@@ -12,7 +13,7 @@
                 <label class="text-sm font-medium text-gray-700">{{ $t('ingredients.aliases') }}</label>
                 <ul class="mt-2 space-y-2" :class="{ hidden: aliases.length === 0 }">
                     <li v-for="(_, index) in aliases" :key="index" class="flex space-x-2">
-                        <Input v-model="aliases[index]" class="flex-1" />
+                        <Input :id="`aliases-${index}`" v-model="aliases[index]" class="flex-1" />
                         <Button variant="ghost" class="text-red-500" @click="aliases.splice(index, 1)">
                             <i-lucide-trash2 class="size-4" />
                         </Button>
@@ -62,7 +63,8 @@ const { close } = useModal();
 
 const form = useForm({
     name: requiredStringInput(ingredient?.name),
-    serving: numberInput(ingredient?.nutrition?.servingGrams),
+    servingInGrams: numberInput(ingredient?.nutrition?.servingInGrams),
+    servingInMilliliters: numberInput(ingredient?.nutrition?.servingInMilliliters),
     calories: numberInput(ingredient?.nutrition?.calories),
     protein: numberInput(ingredient?.nutrition?.protein),
     carbs: numberInput(ingredient?.nutrition?.carbs),
@@ -77,17 +79,26 @@ async function submit() {
 
     const model = ingredient ?? new Ingredient();
     const nutrition = model.nutrition ?? model.relatedNutrition.attach();
-    const servingsMultiplier = typeof form.serving === 'number' ? form.serving / 100 : 1;
 
     nutrition.setAttributes({
-        serving: typeof form.serving === 'number' ? `${round(form.serving, 2)} grams` : undefined,
-        rawCalories:
-            typeof form.calories === 'number' ? `${round(form.calories * servingsMultiplier)} calories` : undefined,
-        rawProtein:
-            typeof form.protein === 'number' ? `${round(form.protein * servingsMultiplier, 2)} grams` : undefined,
-        rawCarbs: typeof form.carbs === 'number' ? `${round(form.carbs * servingsMultiplier, 2)} grams` : undefined,
-        rawFat: typeof form.fat === 'number' ? `${round(form.fat * servingsMultiplier, 2)} grams` : undefined,
+        serving: typeof form.servingInGrams === 'number' ? `${round(form.servingInGrams, 2)} grams` : undefined,
+        rawCalories: typeof form.calories === 'number' ? `${round(form.calories)} calories` : undefined,
+        rawProtein: typeof form.protein === 'number' ? `${round(form.protein, 2)} grams` : undefined,
+        rawCarbs: typeof form.carbs === 'number' ? `${round(form.carbs, 2)} grams` : undefined,
+        rawFat: typeof form.fat === 'number' ? `${round(form.fat, 2)} grams` : undefined,
     });
+
+    if (typeof form.servingInMilliliters === 'number') {
+        const alternateServing = nutrition.alternateServings?.[0] ?? nutrition.relatedAlternateServings.attach();
+
+        alternateServing.setAttributes({
+            serving: `${round(form.servingInMilliliters, 2)} milliliters`,
+        });
+    } else {
+        nutrition.alternateServings?.forEach((alternateServing) => {
+            nutrition.relatedAlternateServings.removeRelated(alternateServing);
+        });
+    }
 
     await model.update({
         name: form.name,

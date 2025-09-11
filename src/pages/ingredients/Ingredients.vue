@@ -31,7 +31,10 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
-                    <tr v-for="ingredient of sortedIngredients" :key="ingredient.name">
+                    <tr
+                        v-for="{ ingredient, serving, calories, protein, carbs, fat } of sortedIngredientsSummary"
+                        :key="ingredient.name"
+                    >
                         <td class="flex items-center space-x-2 px-6 py-4 font-medium whitespace-nowrap text-gray-900">
                             <div
                                 :class="ingredient.nutrition?.macroClass ?? 'bg-gray-400'"
@@ -51,19 +54,19 @@
                             </Button>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ formatNumber(ingredient.nutrition?.servingGrams, { unit: 'grams', fallback: '-' }) }}
+                            {{ formatNumber(serving, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ formatNumber(ingredient.nutrition?.calories, { unit: 'calories', fallback: '-' }) }}
+                            {{ formatNumber(calories, { unit: 'calories', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ formatNumber(ingredient.nutrition?.protein, { unit: 'grams', fallback: '-' }) }}
+                            {{ formatNumber(protein, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ formatNumber(ingredient.nutrition?.carbs, { unit: 'grams', fallback: '-' }) }}
+                            {{ formatNumber(carbs, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {{ formatNumber(ingredient.nutrition?.fat, { unit: 'grams', fallback: '-' }) }}
+                            {{ formatNumber(fat, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <div class="flex space-x-1">
@@ -99,26 +102,26 @@
 <script setup lang="ts">
 import Pantry from '@/services/Pantry';
 import { arraySorted } from '@noeldemartin/utils';
-import { computed, ref } from 'vue';
 import { translate } from '@aerogel/core';
 import { formatNumber } from '@/utils/formatting';
+import { type UnwrapRef, computed, ref } from 'vue';
 import type { DeepKeyOf } from '@noeldemartin/utils';
 import type Ingredient from '@/models/Ingredient';
 
 import IngredientFormModal from './components/IngredientFormModal.vue';
 
-const COLUMNS: { label: string; field?: DeepKeyOf<Ingredient> }[] = [
-    { label: translate('ingredients.name'), field: 'name' },
-    { label: translate('ingredients.serving'), field: 'nutrition.servingGrams' },
-    { label: translate('ingredients.calories'), field: 'nutrition.calories' },
-    { label: translate('ingredients.protein'), field: 'nutrition.protein' },
-    { label: translate('ingredients.carbs'), field: 'nutrition.carbs' },
-    { label: translate('ingredients.fat'), field: 'nutrition.fat' },
+const COLUMNS: { label: string; field?: DeepKeyOf<UnwrapRef<typeof ingredientsSummary>[number]> }[] = [
+    { label: translate('ingredients.name'), field: 'ingredient.name' },
+    { label: translate('ingredients.serving'), field: 'serving' },
+    { label: translate('ingredients.calories'), field: 'calories' },
+    { label: translate('ingredients.protein'), field: 'protein' },
+    { label: translate('ingredients.carbs'), field: 'carbs' },
+    { label: translate('ingredients.fat'), field: 'fat' },
     { label: '' },
 ];
 
 const filter = ref('');
-const sortField = ref<DeepKeyOf<Ingredient>>('name');
+const sortField = ref<DeepKeyOf<UnwrapRef<typeof ingredientsSummary>[number]>>('ingredient.name');
 const sortDirection = ref<'asc' | 'desc'>('asc');
 const filteredIngredients = computed(() => {
     if (!filter.value) {
@@ -130,9 +133,33 @@ const filteredIngredients = computed(() => {
     return Pantry.ingredients.filter((ingredient) => ingredient.name.toLowerCase().includes(query));
 });
 
-const sortedIngredients = computed(() => arraySorted(filteredIngredients.value, sortField.value, sortDirection.value));
+const ingredientsSummary = computed(() =>
+    filteredIngredients.value.map((ingredient) => {
+        if (!ingredient.nutrition?.servingInGrams) {
+            return { ingredient };
+        }
 
-function sortBy(column: DeepKeyOf<Ingredient>) {
+        const multiplier = 100 / ingredient.nutrition.servingInGrams;
+
+        return {
+            ingredient,
+            serving: ingredient.nutrition.servingInGrams,
+            calories:
+                typeof ingredient.nutrition.calories === 'number'
+                    ? ingredient.nutrition.calories * multiplier
+                    : undefined,
+            protein:
+                typeof ingredient.nutrition.protein === 'number'
+                    ? ingredient.nutrition.protein * multiplier
+                    : undefined,
+            carbs: typeof ingredient.nutrition.carbs === 'number' ? ingredient.nutrition.carbs * multiplier : undefined,
+            fat: typeof ingredient.nutrition.fat === 'number' ? ingredient.nutrition.fat * multiplier : undefined,
+        };
+    }));
+const sortedIngredientsSummary = computed(() =>
+    arraySorted(ingredientsSummary.value, sortField.value, sortDirection.value));
+
+function sortBy(column: DeepKeyOf<UnwrapRef<typeof ingredientsSummary>[number]>) {
     if (sortField.value === column) {
         sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc';
         return;

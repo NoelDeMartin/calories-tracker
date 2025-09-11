@@ -17,8 +17,8 @@ INSERT DATA {
 
     <#[[recipe][.*]]>
         a schema:Recipe ;
-        schema:name "{{ name }}" ;
-        schema:recipeIngredient {{ ingredients }} ;
+        schema:name "Pisto" ;
+        schema:recipeIngredient "50g Eggplant", "100g Zucchini", "100g Onion", "100g Tomatoes" ;
         schema:nutrition <#[[nutrition][.*]]> .
 
     <#[[recipe][.*]]-metadata>
@@ -29,10 +29,10 @@ INSERT DATA {
 
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
-        schema:calories "{{ calories }}" ;
-        schema:carbohydrateContent "{{ carbs }}" ;
-        schema:fatContent "{{ fat }}" ;
-        schema:proteinContent "{{ protein }}" .
+        schema:calories "153 calories" ;
+        schema:carbohydrateContent "35.52 grams" ;
+        schema:fatContent "0.67 grams" ;
+        schema:proteinContent "4.77 grams" .
 
     <#[[nutrition][.*]]-metadata>
         a crdt:Metadata ;

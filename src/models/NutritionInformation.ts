@@ -1,4 +1,5 @@
 import { round } from '@noeldemartin/utils';
+import type { BelongsToManyRelation, Relation } from 'soukai';
 
 import Ingredient from '@/models/Ingredient';
 import Meal from '@/models/Meal';
@@ -13,12 +14,11 @@ export type ComputedValues = {
     protein?: number;
     carbs?: number;
     fat?: number;
-    servingGrams?: number;
+    servingInGrams?: number;
+    servingInMilliliters?: number;
 };
 
 export default class NutritionInformation extends Model {
-
-    private computedValues: ComputedValues | null = null;
 
     public static boot(name?: string): void {
         super.boot(name);
@@ -50,6 +50,14 @@ export default class NutritionInformation extends Model {
         });
     }
 
+    private computedValues: ComputedValues | null = null;
+    declare public alternateServings?: NutritionInformation[];
+    declare public relatedAlternateServings: BelongsToManyRelation<
+        NutritionInformation,
+        NutritionInformation,
+        typeof NutritionInformation
+    >;
+
     public get calories(): number | undefined {
         return this.value('calories');
     }
@@ -66,8 +74,12 @@ export default class NutritionInformation extends Model {
         return this.value('fat');
     }
 
-    public get servingGrams(): number | undefined {
-        return this.value('servingGrams');
+    public get servingInGrams(): number | undefined {
+        return this.value('servingInGrams');
+    }
+
+    public get servingInMilliliters(): number | undefined {
+        return this.value('servingInMilliliters');
     }
 
     public get macroClass(): string | undefined {
@@ -80,13 +92,19 @@ export default class NutritionInformation extends Model {
         const quantity = typeof breakdown.quantity === 'number' ? breakdown.quantity : 1;
 
         if (breakdown.unit === 'grams') {
-            multiplier = servings * (quantity / 100);
-        } else if (!breakdown.unit) {
-            if (!this.servingGrams) {
+            if (!this.servingInGrams) {
                 return null;
             }
 
-            multiplier = (servings * (quantity * this.servingGrams)) / 100;
+            multiplier = servings * (quantity / this.servingInGrams);
+        } else if (breakdown.unit === 'milliliters') {
+            if (!this.servingInMilliliters) {
+                return null;
+            }
+
+            multiplier = servings * (quantity / this.servingInMilliliters);
+        } else if (!breakdown.unit) {
+            multiplier = quantity;
         } else {
             return null;
         }
@@ -97,6 +115,12 @@ export default class NutritionInformation extends Model {
             carbs: typeof this.carbs === 'number' ? this.carbs * multiplier : null,
             fat: typeof this.fat === 'number' ? this.fat * multiplier : null,
         };
+    }
+
+    public alternateServingsRelationship(): Relation {
+        return this.belongsToMany(NutritionInformation, 'alternateServingUrls')
+            .usingSameDocument(true)
+            .onDelete('cascade');
     }
 
     protected async afterSave(): Promise<void> {
@@ -114,31 +138,26 @@ export default class NutritionInformation extends Model {
     }
 
     private parseValues(): ComputedValues {
-        const quantityMultiplier =
-            this.serving && this.serving.includes('grams')
-                ? 100 / parseFloat(this.serving.replace('grams', '').trim())
-                : 1;
-
         const calories = this.rawCalories
-            ? round(parseFloat(this.rawCalories.replace('calories', '').trim()) * quantityMultiplier, 2)
+            ? round(parseFloat(this.rawCalories.replace('calories', '').trim()), 2)
             : undefined;
 
-        const protein = this.rawProtein
-            ? round(parseFloat(this.rawProtein.replace('grams', '').trim()) * quantityMultiplier, 2)
-            : undefined;
+        const protein = this.rawProtein ? round(parseFloat(this.rawProtein.replace('grams', '').trim()), 2) : undefined;
 
-        const carbs = this.rawCarbs
-            ? round(parseFloat(this.rawCarbs.replace('grams', '').trim()) * quantityMultiplier, 2)
-            : undefined;
+        const carbs = this.rawCarbs ? round(parseFloat(this.rawCarbs.replace('grams', '').trim()), 2) : undefined;
 
-        const fat = this.rawFat
-            ? round(parseFloat(this.rawFat.replace('grams', '').trim()) * quantityMultiplier, 2)
-            : undefined;
+        const fat = this.rawFat ? round(parseFloat(this.rawFat.replace('grams', '').trim()), 2) : undefined;
 
-        const servingGrams =
+        const servingInGrams =
             this.serving && this.serving.includes('grams')
                 ? parseFloat(this.serving.replace('grams', '').trim())
                 : undefined;
+
+        const millilitersServing = this.alternateServings?.find((serving) =>
+            serving.serving?.includes('milliliters'))?.serving;
+        const servingInMilliliters = millilitersServing
+            ? parseFloat(millilitersServing.replace('milliliters', '').trim())
+            : undefined;
 
         const atwaterProtein = (protein ?? 0) * 4;
         const atwaterCarbs = (carbs ?? 0) * 4;
@@ -158,7 +177,8 @@ export default class NutritionInformation extends Model {
             protein,
             carbs,
             fat,
-            servingGrams,
+            servingInGrams,
+            servingInMilliliters,
             macroClass,
         };
     }

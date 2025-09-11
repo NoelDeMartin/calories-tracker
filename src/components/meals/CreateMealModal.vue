@@ -159,7 +159,7 @@ const mealOptions = computed(() => {
     return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b))).concat({ id: 'new' });
 });
 
-const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, 'servings'] as const);
+const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
 
 const form = useForm({
     meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(mealOptions.value[0] ?? { id: 'new' }),
@@ -201,13 +201,25 @@ const caloriesBreakdown = computed(() => {
                 const ingredient = Pantry.ingredient(mealIngredient.name);
                 const nutrition = ingredient?.nutrition;
                 const multiplier = (function() {
+                    if (!nutrition) {
+                        return;
+                    }
+
                     switch (mealIngredient.unit) {
                         case 'grams':
-                            return mealIngredient.quantity / 100;
+                            if (!nutrition.servingInGrams) {
+                                return;
+                            }
+
+                            return mealIngredient.quantity / nutrition.servingInGrams;
+                        case 'milliliters':
+                            if (!nutrition.servingInMilliliters) {
+                                return;
+                            }
+
+                            return mealIngredient.quantity / nutrition.servingInMilliliters;
                         case 'servings':
-                            return typeof mealIngredient.quantity === 'number'
-                                ? (mealIngredient.quantity * (nutrition?.servingGrams ?? 1)) / 100
-                                : 1;
+                            return typeof mealIngredient.quantity === 'number' ? mealIngredient.quantity : 1;
                     }
                 })();
 
@@ -350,6 +362,8 @@ async function logNewMeal() {
         switch (ingredient.unit) {
             case 'grams':
                 return `${ingredient.quantity}g ${ingredient.name}`;
+            case 'milliliters':
+                return `${ingredient.quantity}ml ${ingredient.name}`;
             case 'servings':
                 return `${ingredient.quantity} ${ingredient.name}`;
         }

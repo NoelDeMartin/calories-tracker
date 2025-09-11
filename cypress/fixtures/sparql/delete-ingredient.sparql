@@ -5,7 +5,7 @@ DELETE DATA {
 
     <#it>
         a schema:Substance, schema:MenuItem ;
-        schema:name "{{ name }}" ;
+        schema:name "Wheat Noodles" ;
         schema:nutrition <#[[nutrition][.*]]> .
 
     <#it-metadata>
@@ -16,11 +16,11 @@ DELETE DATA {
 
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
-        schema:servingSize "{{ serving }}" ;
-        schema:calories "{{ calories }}" ;
-        schema:carbohydrateContent "{{ carbs }}" ;
-        schema:fatContent "{{ fat }}" ;
-        schema:proteinContent "{{ protein }}" .
+        schema:servingSize "94 grams" ;
+        schema:calories "41 calories" ;
+        schema:carbohydrateContent "9.54 grams" ;
+        schema:fatContent "0.18 grams" ;
+        schema:proteinContent "1.28 grams" .
 
     <#[[nutrition][.*]]-metadata>
         a crdt:Metadata ;

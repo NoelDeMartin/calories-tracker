@@ -1,0 +1,120 @@
+DELETE DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#nutrition>
+        schema:servingSize "94 grams" ;
+        schema:calories "41 calories" .
+
+    <#nutrition-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+};
+
+INSERT DATA {
+
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:alternateName "Noodles" .
+    <#it-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#it-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "Wheat Noodles" .
+
+    <#it-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:nutrition ;
+        crdt:value <#nutrition> .
+
+    <#it-operation-[[operation-3][%uuid%]]>
+        a crdt:AddPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:alternateName ;
+        crdt:value "Noodles" .
+
+    <#nutrition>
+        schema:servingSize "122 grams" ;
+        schema:calories "23 calories" ;
+        schema:sameAs <#[[alternateServing][.*]]> .
+
+    <#nutrition-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#nutrition-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:calories ;
+        crdt:value "41 calories" .
+
+    <#nutrition-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:carbohydrateContent ;
+        crdt:value "9.54 grams" .
+
+    <#nutrition-operation-[[operation-3][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:fatContent ;
+        crdt:value "0.18 grams" .
+
+    <#nutrition-operation-[[operation-4][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:proteinContent ;
+        crdt:value "1.28 grams" .
+
+    <#nutrition-operation-[[operation-5][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:servingSize ;
+        crdt:value "94 grams" .
+
+    <#nutrition-operation-[[operation-6][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:servingSize ;
+        crdt:value "122 grams" .
+
+    <#nutrition-operation-[[operation-7][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:calories ;
+        crdt:value "23 calories" .
+
+    <#nutrition-operation-[[operation-8][%uuid%]]>
+        a crdt:AddPropertyOperation ;
+        crdt:resource <#nutrition> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:sameAs ;
+        crdt:value <#[[alternateServing][.*]]> .
+
+    <#[[alternateServing][.*]]>
+        a schema:NutritionInformation ;
+        schema:servingSize "273 milliliters" .
+
+    <#[[alternateServing][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[alternateServing][.*]]> ;
+        crdt:createdAt "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+}

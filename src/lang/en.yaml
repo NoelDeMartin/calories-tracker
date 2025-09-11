@@ -31,8 +31,10 @@ ingredients:
     edit: Edit
     editTitle: Edit {name}
     createTitle: New ingredient
-    formServing: Serving (in grams)
+    formServingInGrams: Serving (in grams)
+    formServingInMilliliters: Serving (in milliliters)
     formName: Name
+    formCalories: Calories
     externalUrls: External URLs
     addExternalUrl: Add external URL
     aliases: Aliases
@@ -54,6 +56,7 @@ logs:
     mealIngredientName: Ingredient
     mealIngredientUnits:
         grams: Grams
+        milliliters: Milliliters
         servings: Servings
     mealConsumedAt: Consumed at
     add: Log meal

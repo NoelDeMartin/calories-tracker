@@ -26,5 +26,10 @@ export default defineSolidModelSchema({
             type: FieldType.String,
             rdfProperty: 'fatContent',
         },
+        alternateServingUrls: {
+            type: FieldType.Array,
+            items: FieldType.Key,
+            rdfProperty: 'sameAs',
+        },
     },
 });

@@ -22,11 +22,22 @@ INSERT DATA {
         schema:calories "{{ calories }}" ;
         schema:carbohydrateContent "{{ carbs }}" ;
         schema:fatContent "{{ fat }}" ;
-        schema:proteinContent "{{ protein }}" .
+        schema:proteinContent "{{ protein }}" ;
+        schema:sameAs <#[[alternateServing][.*]]> .
 
     <#[[nutrition][.*]]-metadata>
         a crdt:Metadata ;
         crdt:resource <#[[nutrition][.*]]> ;
+        crdt:createdAt "[[.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[alternateServing][.*]]>
+        a schema:NutritionInformation ;
+        schema:servingSize "{{ alternateServing }}" .
+
+    <#[[alternateServing][.*]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[alternateServing][.*]]> ;
         crdt:createdAt "[[.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[.*]]"^^xsd:dateTime .
 

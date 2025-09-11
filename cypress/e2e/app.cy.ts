@@ -36,14 +36,7 @@ describe('App', () => {
         cy.see('Ramen');
 
         cy.get('@createMeal.all').should('have.length', 1);
-        cy.fixtureWithReplacements('sparql/create-meal-from-recipe.sparql', {
-            name: 'Ramen',
-            sameAs: podUrl('/cookbook/ramen#it'),
-            calories: '443 calories',
-            protein: '20.42 grams',
-            carbs: '80.64 grams',
-            fat: '6.98 grams',
-        }).then((sparql) => {
+        cy.fixture('sparql/create-meal-from-recipe.sparql').then((sparql) => {
             cy.get('@createMeal').its('response.statusCode').should('eq', 201);
             cy.get('@createMeal').its('request.body').should('be.sparql', sparql);
         });
@@ -52,6 +45,7 @@ describe('App', () => {
         cy.ariaLabel('Navigate').click();
         cy.press('Ingredients');
         cy.see('Wheat Noodles');
+        cy.see('Broth');
 
         cy.get('@createIngredient.all').should('have.length', 3);
 
@@ -63,6 +57,7 @@ describe('App', () => {
             protein: '6.05 grams',
             carbs: '8.47 grams',
             fat: '2.88 grams',
+            alternateServing: '236.59 milliliters',
         }).then((sparql) => {
             cy.get('@createIngredient.1').its('response.statusCode').should('eq', 201);
             cy.get('@createIngredient.1').its('request.body').should('be.sparql', sparql);
@@ -71,11 +66,12 @@ describe('App', () => {
         cy.fixtureWithReplacements('sparql/create-ingredient.sparql', {
             name: 'Wheat Noodles',
             sameAs: 'https://www.nutritionix.com/food/wheat-noodles',
-            serving: '160 grams',
-            calories: '238 calories',
-            protein: '9.58 grams',
-            carbs: '48.11 grams',
-            fat: '2.74 grams',
+            serving: '117 grams',
+            calories: '174 calories',
+            protein: '7.01 grams',
+            carbs: '35.18 grams',
+            fat: '2 grams',
+            alternateServing: '231.32 milliliters',
         }).then((sparql) => {
             cy.get('@createIngredient.2').its('response.statusCode').should('eq', 201);
             cy.get('@createIngredient.2').its('request.body').should('be.sparql', sparql);
@@ -121,14 +117,7 @@ describe('App', () => {
         cy.see('Pisto');
 
         cy.get('@createMeal.all').should('have.length', 1);
-        cy.fixtureWithReplacements('sparql/create-meal.sparql', {
-            name: 'Pisto',
-            calories: '153 calories',
-            protein: '4.76 grams',
-            carbs: '35.53 grams',
-            fat: '0.67 grams',
-            ingredients: '"50g Eggplant", "100g Zucchini", "100g Onion", "100g Tomatoes"',
-        }).then((sparql) => {
+        cy.fixture('sparql/create-meal.sparql').then((sparql) => {
             cy.get('@createMeal').its('response.statusCode').should('eq', 201);
             cy.get('@createMeal').its('request.body').should('be.sparql', sparql);
         });
@@ -143,15 +132,7 @@ describe('App', () => {
         cy.see('Pisto (2)');
 
         cy.get('@createMeal.all').should('have.length', 2);
-        cy.fixtureWithReplacements('sparql/create-meal-from-meal.sparql', {
-            name: 'Pisto',
-            calories: '306 calories',
-            protein: '9.52 grams',
-            carbs: '71.06 grams',
-            fat: '1.34 grams',
-            servings: '2',
-            ingredients: '"100g Eggplant", "200g Zucchini", "200g Onion", "200g Tomatoes"',
-        }).then((sparql) => {
+        cy.fixture('sparql/create-meal-from-meal.sparql').then((sparql) => {
             cy.get('@createMeal.2').its('response.statusCode').should('eq', 201);
             cy.get('@createMeal.2').its('request.body').should('be.sparql', sparql);
         });
@@ -199,14 +180,7 @@ describe('App', () => {
         cy.see('1/1/2025');
 
         cy.get('@updateMeal.all').should('have.length', 1);
-        cy.fixtureWithReplacements('sparql/update-meal.sparql', {
-            name: 'Spaghetti Carbonara',
-            calories: '450 calories',
-            protein: '18 grams',
-            carbs: '45 grams',
-            fat: '22 grams',
-            consumedAt: '2025-01-01T10:00:00.000Z',
-        }).then((sparql) => {
+        cy.fixture('sparql/update-meal.sparql').then((sparql) => {
             cy.get('@updateMeal').its('response.statusCode').should('eq', 205);
             cy.get('@updateMeal').its('request.body').should('be.sparql', sparql);
         });
@@ -235,7 +209,40 @@ describe('App', () => {
             year: 'numeric',
         });
 
-        cy.see(`1 meal on ${now} (443 kcal)`);
+        cy.see(`1 meal on ${now} (539 kcal)`);
+    });
+
+    it('Edits ingredients', () => {
+        // Arrange
+        setupAccount({ ingredients: ['Wheat Noodles'] });
+
+        cy.solidLogin();
+        cy.waitSync();
+
+        cy.ariaLabel('Navigate').click();
+        cy.press('Ingredients');
+
+        cy.intercept('PATCH', podUrl('/ingredients/*')).as('updateIngredient');
+
+        // Act
+        cy.ariaLabel('Edit').click();
+        cy.get('input[name="servingInGrams"]').clear().type('122');
+        cy.get('input[name="servingInMilliliters"]').clear().type('273');
+        cy.get('input[name="calories"]').clear().type('23');
+        cy.press('Add alias');
+        cy.get('#aliases-0').clear().type('Noodles');
+        cy.press('Save');
+        cy.waitSync();
+
+        // Assert
+        cy.see('122g');
+        cy.see('19 kcal');
+
+        cy.get('@updateIngredient.all').should('have.length', 1);
+        cy.fixture('sparql/update-ingredient.sparql').then((sparql) => {
+            cy.get('@updateIngredient').its('response.statusCode').should('eq', 205);
+            cy.get('@updateIngredient').its('request.body').should('be.sparql', sparql);
+        });
     });
 
     it('Deletes ingredients', () => {
@@ -259,14 +266,7 @@ describe('App', () => {
         cy.dontSee('Wheat Noodles');
 
         cy.get('@updateIngredient.all').should('have.length', 1);
-        cy.fixtureWithReplacements('sparql/delete-ingredient.sparql', {
-            name: 'Wheat Noodles',
-            serving: '94 grams',
-            calories: '41 calories',
-            protein: '1.28 grams',
-            carbs: '9.54 grams',
-            fat: '0.18 grams',
-        }).then((sparql) => {
+        cy.fixture('sparql/delete-ingredient.sparql').then((sparql) => {
             cy.get('@updateIngredient').its('response.statusCode').should('eq', 205);
             cy.get('@updateIngredient').its('request.body').should('be.sparql', sparql);
         });
@@ -304,11 +304,17 @@ function setupAccount(options: { ingredients?: string[] } = {}) {
         const { query } = request.body as { query?: string };
 
         switch (query) {
-            case 'Wheat Noodles':
-                fixture = 'json/wheat-noodles.json';
+            case '100g Wheat Noodles':
+                fixture = 'json/wheat-noodles-100g.json';
                 break;
-            case 'Broth':
-                fixture = 'json/broth.json';
+            case '100ml Wheat Noodles':
+                fixture = 'json/wheat-noodles-100ml.json';
+                break;
+            case '100g Broth':
+                fixture = 'json/broth-100g.json';
+                break;
+            case '100ml Broth':
+                fixture = 'json/broth-100ml.json';
                 break;
         }
 

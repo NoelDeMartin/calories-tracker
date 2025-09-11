@@ -17,8 +17,8 @@ INSERT DATA {
 
     <#[[recipe][.*]]>
         a schema:Recipe ;
-        schema:name "{{ name }}" ;
-        schema:sameAs <{{ sameAs }}> ;
+        schema:name "Ramen" ;
+        schema:sameAs <http://localhost:3000/alice/cookbook/ramen#it> ;
         schema:nutrition <#[[nutrition][.*]]> .
 
     <#[[recipe][.*]]-metadata>
@@ -29,10 +29,10 @@ INSERT DATA {
 
     <#[[nutrition][.*]]>
         a schema:NutritionInformation ;
-        schema:calories "{{ calories }}" ;
-        schema:carbohydrateContent "{{ carbs }}" ;
-        schema:fatContent "{{ fat }}" ;
-        schema:proteinContent "{{ protein }}" .
+        schema:calories "539 calories" ;
+        schema:carbohydrateContent "90.06 grams" ;
+        schema:fatContent "10.19 grams" ;
+        schema:proteinContent "27.17 grams" .
 
     <#[[nutrition][.*]]-metadata>
         a crdt:Metadata ;
