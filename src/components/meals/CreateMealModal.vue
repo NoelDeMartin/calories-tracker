@@ -42,7 +42,7 @@
                             />
                             <Select
                                 v-model="mealIngredient.unit"
-                                :options="ingredientUnitOptions"
+                                :options="mealIngredientUnits"
                                 :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
                             />
                             <Button variant="ghost" class="text-red-500" @click="mealIngredients.splice(index, 1)">
@@ -91,7 +91,6 @@
 
 <script setup lang="ts">
 import {
-    arrayFilter,
     arraySorted,
     arrayUnique,
     compare,
@@ -120,7 +119,8 @@ import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
-import { IngredientUnits, parseIngredient } from '@/utils/ingredients';
+import { parseIngredient } from '@/utils/ingredients';
+import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
 
 interface Nutrition {
     calories: Nullable<number>;
@@ -152,8 +152,6 @@ const mealOptions = computed(() => {
     return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b))).concat({ id: 'new' });
 });
 
-const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
-
 const form = useForm({
     meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(mealOptions.value[0] ?? { id: 'new' }),
     name: stringInput(),
@@ -161,8 +159,7 @@ const form = useForm({
     mealServings: numberInput(1),
     consumedAt: requiredDateInput(new Date()),
 });
-const mealIngredients = ref<{ name: string; quantity: number; unit: (typeof ingredientUnitOptions.value)[number] }[]>(
-    []);
+const mealIngredients = ref<MealIngredient[]>([]);
 const renderServing = computed(() =>
     form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString);
 const servingsOptions = computed(() => {
@@ -189,57 +186,7 @@ const servingsOptions = computed(() => {
 });
 const caloriesBreakdown = computed(() => {
     if (isNewMeal(form.meal)) {
-        return arrayFilter(
-            mealIngredients.value.map((mealIngredient) => {
-                const ingredient = Pantry.ingredient(mealIngredient.name);
-                const nutrition = ingredient?.nutrition;
-                const multiplier = (function() {
-                    if (!nutrition) {
-                        return;
-                    }
-
-                    switch (mealIngredient.unit) {
-                        case 'grams':
-                            if (!nutrition.servingInGrams) {
-                                return;
-                            }
-
-                            return mealIngredient.quantity / nutrition.servingInGrams;
-                        case 'milliliters':
-                            if (!nutrition.servingInMilliliters) {
-                                return;
-                            }
-
-                            return mealIngredient.quantity / nutrition.servingInMilliliters;
-                        case 'servings':
-                            return typeof mealIngredient.quantity === 'number' ? mealIngredient.quantity : 1;
-                    }
-                })();
-                const name = (function() {
-                    switch (mealIngredient.unit) {
-                        case 'grams':
-                            return `${mealIngredient.quantity}g ${mealIngredient.name}`;
-                        case 'milliliters':
-                            return `${mealIngredient.quantity}ml ${mealIngredient.name}`;
-                        case 'servings':
-                            return `${mealIngredient.quantity} ${mealIngredient.name}`;
-                    }
-                })();
-
-                if (!nutrition || !multiplier) {
-                    return { name, macroClass: 'bg-gray-400' };
-                }
-
-                return {
-                    name,
-                    macroClass: nutrition.macroClass,
-                    calories: typeof nutrition.calories === 'number' ? nutrition.calories * multiplier : null,
-                    protein: typeof nutrition.protein === 'number' ? nutrition.protein * multiplier : null,
-                    carbs: typeof nutrition.carbs === 'number' ? nutrition.carbs * multiplier : null,
-                    fat: typeof nutrition.fat === 'number' ? nutrition.fat * multiplier : null,
-                };
-            }),
-        );
+        return getMealIngredientsCaloriesBreakdown(mealIngredients.value);
     }
 
     const recipe = isInstanceOf(form.meal, Recipe) ? form.meal : form.meal.recipe;

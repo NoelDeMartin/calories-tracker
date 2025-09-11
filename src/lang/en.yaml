@@ -47,6 +47,7 @@ logs:
     meal: Meal
     mealRecipe: Recipe
     mealName: Name
+    mealRecipeView: View recipe
     mealIngredients: Ingredients
     mealServings: Servings
     mealCalories: Calories (kcal)
@@ -54,6 +55,7 @@ logs:
     mealCarbs: Carbs (g)
     mealFat: Fat (g)
     mealIngredientName: Ingredient
+    mealIngredientUnit: Unit
     mealIngredientUnits:
         grams: Grams
         milliliters: Milliliters
@@ -64,7 +66,9 @@ logs:
     addIngredient: Add ingredient
     addMissingData: Please, complete all the fields.
     adding: Logging meal...
+    updating: Updating meal...
     editTitle: Edit {name}
+    editRecalculate: Recalculate nutrients
     delete: Delete meal
     deleteConfirm: Delete {name}?
     viewBreakdown: View calories breakdown

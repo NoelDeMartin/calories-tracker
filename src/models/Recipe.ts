@@ -44,7 +44,7 @@ export default class Recipe extends Model {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public getCaloriesBreakdown(ingredientsMultiplier: number) {
+    public getCaloriesBreakdown(ingredientsMultiplier: number = 1) {
         return arrayFilter(
             this.ingredientsBreakdown.map((breakdown) => {
                 const nutrition = Pantry.ingredient(breakdown)?.nutrition;

@@ -186,6 +186,43 @@ describe('App', () => {
         });
     });
 
+    it('Edits logs ingredients', () => {
+        // Arrange
+        setupAccount();
+
+        cy.solidLogin();
+        cy.waitSync();
+        cy.press('Log meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        cy.intercept('PATCH', podUrl('/meals/*')).as('updateMeal');
+
+        // Act
+        cy.get('[aria-label="Edit"]').click();
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Broth');
+        cy.get('#ingredients-0-quantity').clear().type('200');
+        cy.comboboxSelect('Unit', 'Milliliters');
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Wheat Noodles');
+        cy.press('Recalculate nutrients');
+        cy.press('Save');
+        cy.waitSync();
+
+        // Assert
+        cy.see('221 kcal');
+        cy.see('11g protein');
+        cy.see('37g carbs');
+        cy.see('4g fat');
+
+        cy.get('@updateMeal.all').should('have.length', 1);
+        cy.fixture('sparql/update-meal-ingredients.sparql').then((sparql) => {
+            cy.get('@updateMeal').its('response.statusCode').should('eq', 205);
+            cy.get('@updateMeal').its('request.body').should('be.sparql', sparql);
+        });
+    });
+
     it('Shows history', () => {
         // Arrange
         setupAccount();

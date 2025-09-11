@@ -1,5 +1,12 @@
 <template>
     <Modal :title="meal.recipe?.name ?? $t('logs.meal')">
+        <Link
+            v-if="meal.recipe?.externalUrls.length"
+            class="text-sm text-blue-500"
+            :href="meal.recipe?.externalUrls[0]"
+        >
+            {{ $t('logs.mealRecipeView') }}
+        </Link>
         <table class="w-full">
             <tbody>
                 <tr class="border-b border-gray-200">
@@ -66,6 +73,10 @@ const { meal } = defineProps<{ meal: Meal }>();
 const recipes = useModelCollection(Recipe);
 const recipesByUrl = computed(() => map(recipes.value, 'url'));
 const caloriesBreakdown = computed(() => {
+    if (meal.recipe?.ingredients?.length) {
+        return meal.recipe.getCaloriesBreakdown();
+    }
+
     const recipeUrl = meal.recipe?.externalUrls.find((url) => recipesByUrl.value.get(url));
     const linkedRecipe = recipeUrl ? recipesByUrl.value.require(recipeUrl) : null;
     const recipe = linkedRecipe ?? meal.recipe;
