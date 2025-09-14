@@ -53,9 +53,7 @@
                             {{ $t('history.carbs') }}
                         </span>
                         <span class="text-xs text-gray-600">
-                            {{
-                                formatPercentage(carbsPercentage, [carbsPercentage, proteinPercentage, fatPercentage])
-                            }}
+                            {{ formatPercentage(carbsPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }}
                             •
                             {{ formatNumber(macros.carbs, 'grams') }}
                         </span>
@@ -86,9 +84,9 @@ const { macros } = defineProps<{ macros: { calories?: number; protein?: number; 
 
 // Calculate atwater macros percentages
 // See https://en.wikipedia.org/wiki/Atwater_system#Modified_system
-const atwaterProtein = computed(() => macros.protein ?? 0 * 4);
-const atwaterCarbs = computed(() => macros.carbs ?? 0 * 4);
-const atwaterFat = computed(() => macros.fat ?? 0 * 9);
+const atwaterProtein = computed(() => (macros.protein ?? 0) * 4);
+const atwaterCarbs = computed(() => (macros.carbs ?? 0) * 4);
+const atwaterFat = computed(() => (macros.fat ?? 0) * 9);
 const atwaterTotal = computed(() => atwaterProtein.value + atwaterCarbs.value + atwaterFat.value);
 
 const proteinPercentage = computed(() => atwaterProtein.value / atwaterTotal.value);
