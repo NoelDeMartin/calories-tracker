@@ -51,6 +51,7 @@ describe('App', () => {
 
         cy.fixtureWithReplacements('sparql/create-ingredient.sparql', {
             name: 'Broth',
+            imageUrl: 'https://nix-tag-images.s3.amazonaws.com/1089_thumb.jpg',
             sameAs: 'https://www.nutritionix.com/food/broth',
             serving: '240 grams',
             calories: '86 calories',
@@ -65,6 +66,7 @@ describe('App', () => {
 
         cy.fixtureWithReplacements('sparql/create-ingredient.sparql', {
             name: 'Wheat Noodles',
+            imageUrl: 'https://nix-tag-images.s3.amazonaws.com/1798_thumb.jpg',
             sameAs: 'https://www.nutritionix.com/food/wheat-noodles',
             serving: '117 grams',
             calories: '174 calories',
@@ -246,7 +248,8 @@ describe('App', () => {
             year: 'numeric',
         });
 
-        cy.see(`1 meal on ${now} (539 kcal)`);
+        cy.see(`1 meal on ${now}`);
+        cy.see('539 kcal');
     });
 
     it('Edits ingredients', () => {

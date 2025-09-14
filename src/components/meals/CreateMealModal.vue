@@ -1,6 +1,6 @@
 <template>
-    <Modal :title="$t('logs.add')" class="flex flex-col">
-        <Form :form class="flex flex-col space-y-2 overflow-y-auto" @submit="submit()">
+    <Modal :title="$t('logs.add')" fullscreen-mobile>
+        <Form :form class="flex flex-1 flex-col space-y-2 overflow-y-auto" @submit="submit()">
             <Select
                 name="meal"
                 label-class="sr-only"
@@ -81,6 +81,8 @@
             >
                 {{ $t('logs.addIngredient') }}
             </Button>
+
+            <div class="grow" />
 
             <Button submit class="w-full">
                 {{ $t('logs.log') }}

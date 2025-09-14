@@ -56,81 +56,16 @@
         </div>
 
         <div v-if="selectedDayData" class="mt-4">
-            <h3 class="text-center font-medium">
+            <h3 class="text-center text-2xl font-medium">
                 {{
                     $t('history.meals', {
                         n: selectedDayData.meals.length,
                         day: selectedDayDisplay,
-                        calories: formatNumber(selectedDayData.calories, 'calories'),
                     })
                 }}
             </h3>
 
-            <div class="mt-4 flex items-center justify-center gap-6">
-                <div class="relative h-32 w-32">
-                    <div
-                        class="h-full w-full rounded-full"
-                        :style="{
-                            background: `conic-gradient(
-                                from 0deg,
-                                var(--color-protein-500) 0deg var(--protein-deg, 108deg),
-                                var(--color-carbs-500)
-                                    var(--protein-deg, 108deg)
-                                    calc(var(--protein-deg, 108deg) + var(--carbs-deg, 126deg)),
-                                var(--color-fat-500) calc(var(--carbs-deg, 126deg) + var(--protein-deg, 108deg)) 360deg
-                            )`,
-                            '--carbs-deg': `${selectedDayData.carbsPercentage * 360}deg`,
-                            '--protein-deg': `${selectedDayData.proteinPercentage * 360}deg`,
-                            '--fat-deg': `${selectedDayData.fatPercentage * 360}deg`,
-                        }"
-                    />
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <div class="flex items-center gap-2">
-                        <div class="bg-protein-500 h-4 w-4 rounded-full" />
-                        <span class="text-sm">
-                            {{ $t('history.protein') }}
-                            {{
-                                formatPercentage(selectedDayData.proteinPercentage, [
-                                    selectedDayData.carbsPercentage,
-                                    selectedDayData.proteinPercentage,
-                                    selectedDayData.fatPercentage,
-                                ])
-                            }}
-                            ({{ formatNumber(selectedDayData.protein, 'grams') }})
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="bg-carbs-500 h-4 w-4 rounded-full" />
-                        <span class="text-sm">
-                            {{ $t('history.carbs') }}
-                            {{
-                                formatPercentage(selectedDayData.carbsPercentage, [
-                                    selectedDayData.carbsPercentage,
-                                    selectedDayData.proteinPercentage,
-                                    selectedDayData.fatPercentage,
-                                ])
-                            }}
-                            ({{ formatNumber(selectedDayData.carbs, 'grams') }})
-                        </span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="bg-fat-500 h-4 w-4 rounded-full" />
-                        <span class="text-sm">
-                            {{ $t('history.fat') }}
-                            {{
-                                formatPercentage(selectedDayData.fatPercentage, [
-                                    selectedDayData.carbsPercentage,
-                                    selectedDayData.proteinPercentage,
-                                    selectedDayData.fatPercentage,
-                                ])
-                            }}
-                            ({{ formatNumber(selectedDayData.fat, 'grams') }})
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <NutritionChart class="mt-4" :macros="selectedDayData" />
 
             <div class="mt-6 w-full space-y-4">
                 <MealLog v-for="meal of selectedDayData.meals" :key="meal.url" :meal />
@@ -144,7 +79,7 @@ import Meal from '@/models/Meal';
 import { range } from '@noeldemartin/utils';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
-import { formatNumber, formatPercentage } from '@/utils/formatting';
+import { formatNumber } from '@/utils/formatting';
 import { sortedMeals } from '@/utils/meals';
 
 interface Macros {

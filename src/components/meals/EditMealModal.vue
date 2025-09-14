@@ -1,6 +1,6 @@
 <template>
-    <Modal :title="$t('logs.editTitle', { name: meal.recipe?.name || $t('logs.meal') })">
-        <Form :form class="flex flex-col space-y-2" @submit="submit()">
+    <Modal :title="$t('logs.editTitle', { name: meal.recipe?.name || $t('logs.meal') })" fullscreen-mobile>
+        <Form :form class="flex flex-1 flex-col space-y-2" @submit="submit()">
             <Input name="name" :label="$t('logs.mealName')" />
             <Select
                 name="recipe"
@@ -73,6 +73,8 @@
                     <CaloriesBreakdown :breakdown="caloriesBreakdown" />
                 </Details>
             </template>
+
+            <div class="grow" />
 
             <div class="mt-4 flex justify-end space-x-2">
                 <Checkbox v-model="recalculate">

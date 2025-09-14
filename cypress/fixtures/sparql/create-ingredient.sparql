@@ -7,6 +7,7 @@ INSERT DATA {
     <#it>
         a schema:Substance, schema:MenuItem ;
         schema:name "{{ name }}" ;
+        schema:image <{{ imageUrl }}> ;
         schema:nutrition <#[[nutrition][.*]]> ;
         schema:sameAs <{{ sameAs }}> .
 

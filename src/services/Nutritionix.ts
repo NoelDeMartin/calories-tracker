@@ -24,6 +24,11 @@ const FoodSchema = object({
             }),
         ),
     ),
+    photo: optional(
+        object({
+            thumb: optional(string()),
+        }),
+    ),
 });
 
 const SearchSchema = object({
@@ -32,10 +37,11 @@ const SearchSchema = object({
 
 export interface NutritionixIngredient {
     name: string;
-    fat: Nullable<number>;
-    protein: Nullable<number>;
-    carbs: Nullable<number>;
-    calories: Nullable<number>;
+    imageUrl: Nullable<string>;
+    fat: number;
+    protein: number;
+    carbs: number;
+    calories: number;
     servingInGrams: number;
     servingInMilliliters: Nullable<number>;
 }
@@ -60,16 +66,15 @@ export class NutritionixService extends Service {
 
         return {
             servingInGrams,
+            imageUrl: foodInGrams.photo?.thumb,
             name: foodInGrams.food_name,
-            calories: foodInGrams.nf_calories ? (foodInGrams.nf_calories / 100) * servingInGrams : undefined,
-            protein: foodInGrams.nf_protein ? (foodInGrams.nf_protein / 100) * servingInGrams : undefined,
-            carbs: foodInGrams.nf_total_carbohydrate
-                ? (foodInGrams.nf_total_carbohydrate / 100) * servingInGrams
-                : undefined,
-            fat: foodInGrams.nf_total_fat ? (foodInGrams.nf_total_fat / 100) * servingInGrams : undefined,
+            calories: foodInGrams.nf_calories ? (foodInGrams.nf_calories / 100) * servingInGrams : 0,
+            protein: foodInGrams.nf_protein ? (foodInGrams.nf_protein / 100) * servingInGrams : 0,
+            carbs: foodInGrams.nf_total_carbohydrate ? (foodInGrams.nf_total_carbohydrate / 100) * servingInGrams : 0,
+            fat: foodInGrams.nf_total_fat ? (foodInGrams.nf_total_fat / 100) * servingInGrams : 0,
             servingInMilliliters: foodInMilliliters?.serving_weight_grams
                 ? (100 / foodInMilliliters.serving_weight_grams) * servingInGrams
-                : undefined,
+                : 0,
         };
     }
 

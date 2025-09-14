@@ -11,6 +11,11 @@ export default defineSolidModelSchema({
             type: FieldType.String,
             required: true,
         },
+        description: FieldType.String,
+        imageUrl: {
+            type: FieldType.Key,
+            rdfProperty: 'image',
+        },
         aliases: {
             type: FieldType.Array,
             items: FieldType.String,

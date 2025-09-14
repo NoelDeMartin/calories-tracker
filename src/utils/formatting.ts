@@ -34,7 +34,7 @@ export function formatPercentage(value: number, all: number[] = []): string {
             value * 100,
             all.map((v) => v * 100),
         ) / 100,
-        { unit: 'percentage' },
+        'percentage',
     );
 }
 

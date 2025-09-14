@@ -11,7 +11,7 @@ home:
 history:
     title: History
     emptyMonth: No meals for this month.
-    meals: '1 meal on {day} ({calories})|{n} meals on {day} ({calories})'
+    meals: '1 meal on {day}|{n} meals on {day}'
     carbs: Carbs
     protein: Protein
     fat: Fat
@@ -22,6 +22,8 @@ ingredients:
     noIngredients: You haven't used any ingredients yet, [log some meals](#route:home) to get started.
     noSearchResults: No ingredients match your search
     name: Ingredient
+    description: Description
+    imageUrl: Image URL
     calories: Calories (per 100g)
     serving: Serving
     protein: Protein
@@ -41,6 +43,11 @@ ingredients:
     addAlias: Add alias
     delete: Delete {name}
     deleteConfirm: Delete {name}?
+    view: View {name}
+    nutrition: Nutrition
+    servingGrams: Serving (in grams)
+    servingMilliliters: Serving (in milliliters)
+    caloriesPerServing: Calories (per serving)
 
 logs:
     log: Log

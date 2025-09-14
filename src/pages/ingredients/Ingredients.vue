@@ -41,17 +41,6 @@
                                 class="h-3 w-3 rounded-full"
                             />
                             <span>{{ ingredient.name }}</span>
-                            <Button
-                                v-for="url of ingredient.externalUrls"
-                                :key="url"
-                                :href="url"
-                                size="icon"
-                                variant="ghost"
-                                target="_blank"
-                                class="opacity-75"
-                            >
-                                <i-lucide-external-link class="size-4" />
-                            </Button>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(serving, { unit: 'grams', fallback: '-' }) }}
@@ -70,6 +59,16 @@
                         </td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <div class="flex space-x-1">
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    class="text-gray-400 transition-colors hover:text-green-500"
+                                    :title="$t('ingredients.view', { name: ingredient.name })"
+                                    :aria-label="$t('ingredients.view', { name: ingredient.name })"
+                                    @click="$ui.modal(IngredientModal, { ingredient })"
+                                >
+                                    <i-lucide-eye class="size-4" />
+                                </Button>
                                 <Button
                                     size="icon"
                                     variant="ghost"
@@ -109,6 +108,7 @@ import type { DeepKeyOf } from '@noeldemartin/utils';
 import type Ingredient from '@/models/Ingredient';
 
 import IngredientFormModal from './components/IngredientFormModal.vue';
+import IngredientModal from './components/IngredientModal.vue';
 
 const COLUMNS: { label: string; field?: DeepKeyOf<UnwrapRef<typeof ingredientsSummary>[number]> }[] = [
     { label: translate('ingredients.name'), field: 'ingredient.name' },

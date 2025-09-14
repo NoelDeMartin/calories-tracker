@@ -44,8 +44,8 @@ export class PantryService extends Service {
             return required(this.ingredientsBySlug.get(slug));
         }
 
-        const ingredient = new Ingredient({ name });
         const nutrition = await Nutritionix.getNutrition(name);
+        const ingredient = new Ingredient({ name, imageUrl: nutrition?.imageUrl });
 
         if (nutrition) {
             ingredient.externalUrls = [`https://www.nutritionix.com/food/${stringToSlug(nutrition.name)}`];

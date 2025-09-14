@@ -1,9 +1,15 @@
 <template>
-    <Modal :title="ingredient ? $t('ingredients.editTitle', { name: ingredient.name }) : $t('ingredients.createTitle')">
-        <Form :form class="space-y-2" @submit="submit()">
+    <Modal
+        :title="ingredient ? $t('ingredients.editTitle', { name: ingredient.name }) : $t('ingredients.createTitle')"
+        fullscreen-mobile
+    >
+        <Form :form class="flex flex-1 flex-col space-y-2" @submit="submit()">
             <Input name="name" :label="$t('ingredients.formName')" />
-            <Input name="servingInGrams" :label="$t('ingredients.formServingInGrams')" />
-            <Input name="servingInMilliliters" :label="$t('ingredients.formServingInMilliliters')" />
+            <Input name="imageUrl" :label="$t('ingredients.imageUrl')" />
+            <TextArea name="description" :label="$t('ingredients.description')" />
+
+            <Input name="servingInGrams" :label="$t('ingredients.formServingInGrams')" step="0.01" />
+            <Input name="servingInMilliliters" :label="$t('ingredients.formServingInMilliliters')" step="0.01" />
             <Input name="calories" :label="$t('ingredients.formCalories')" step="0.01" />
             <Input name="protein" :label="$t('ingredients.protein')" step="0.01" />
             <Input name="carbs" :label="$t('ingredients.carbs')" step="0.01" />
@@ -39,6 +45,8 @@
                 </Button>
             </div>
 
+            <div class="grow" />
+
             <div class="mt-4 flex justify-end space-x-2">
                 <Button variant="secondary" @click="close">
                     {{ $t('ui.cancel') }}
@@ -54,7 +62,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { arrayFilter, round, validUrl } from '@noeldemartin/utils';
-import { numberInput, requiredStringInput, useForm, useModal } from '@aerogel/core';
+import { numberInput, requiredStringInput, stringInput, useForm, useModal } from '@aerogel/core';
 
 import Ingredient from '@/models/Ingredient';
 
@@ -63,6 +71,8 @@ const { close } = useModal();
 
 const form = useForm({
     name: requiredStringInput(ingredient?.name),
+    imageUrl: stringInput(ingredient?.imageUrl),
+    description: stringInput(ingredient?.description),
     servingInGrams: numberInput(ingredient?.nutrition?.servingInGrams),
     servingInMilliliters: numberInput(ingredient?.nutrition?.servingInMilliliters),
     calories: numberInput(ingredient?.nutrition?.calories),
@@ -102,6 +112,8 @@ async function submit() {
 
     await model.update({
         name: form.name,
+        imageUrl: form.imageUrl?.trim() || null,
+        description: form.description?.trim() || null,
         aliases: arrayFilter(aliases.value.map((alias) => alias.trim())),
         externalUrls: arrayFilter(externalUrls.value.map((url) => validUrl(url))),
     });
