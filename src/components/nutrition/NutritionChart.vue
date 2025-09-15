@@ -5,19 +5,16 @@
                 <div class="relative h-36 w-36">
                     <div class="absolute inset-0 rounded-full bg-gray-100" />
                     <div
-                        class="absolute inset-2 rounded-full"
+                        class="absolute inset-2 rounded-full transition-[--protein-deg,--carbs-deg] duration-300 ease-in-out"
                         :style="{
                             background: `conic-gradient(
-                            from 0deg,
-                            var(--color-protein-500) 0deg var(--protein-deg, 108deg),
-                            var(--color-carbs-500)
-                                var(--protein-deg, 108deg)
-                                calc(var(--protein-deg, 108deg) + var(--carbs-deg, 126deg)),
-                            var(--color-fat-500) calc(var(--carbs-deg, 126deg) + var(--protein-deg, 108deg)) 360deg
-                        )`,
+                                from 0deg,
+                                var(--color-protein-500) 0deg var(--protein-deg),
+                                var(--color-carbs-500) var(--protein-deg) calc(var(--protein-deg) + var(--carbs-deg)),
+                                var(--color-fat-500) calc(var(--protein-deg) + var(--carbs-deg)) 360deg
+                            )`,
                             '--carbs-deg': `${carbsPercentage * 360}deg`,
                             '--protein-deg': `${proteinPercentage * 360}deg`,
-                            '--fat-deg': `${fatPercentage * 360}deg`,
                         }"
                     />
                     <div class="absolute inset-6 flex items-center justify-center rounded-full bg-white">
@@ -93,3 +90,17 @@ const proteinPercentage = computed(() => atwaterProtein.value / atwaterTotal.val
 const carbsPercentage = computed(() => atwaterCarbs.value / atwaterTotal.value);
 const fatPercentage = computed(() => atwaterFat.value / atwaterTotal.value);
 </script>
+
+<style>
+@property --protein-deg {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --carbs-deg {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+</style>
