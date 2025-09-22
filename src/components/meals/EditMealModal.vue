@@ -98,7 +98,6 @@ import {
     UI,
     numberInput,
     requiredDateInput,
-    requiredNumberInput,
     requiredObjectInput,
     requiredStringInput,
     translate,
@@ -125,7 +124,7 @@ const recipesOptions = computed(() => (recipes.value as Array<Recipe | { id: 'no
 const form = useForm({
     name: requiredStringInput(meal.recipe?.name),
     recipe: requiredObjectInput<Recipe | { id: 'none' }>(initialRecipe ?? { id: 'none' }),
-    calories: requiredNumberInput(meal.recipe?.nutrition?.calories ?? 0),
+    calories: numberInput(meal.recipe?.nutrition?.calories ?? 0),
     protein: numberInput(meal.recipe?.nutrition?.protein ?? 0),
     carbs: numberInput(meal.recipe?.nutrition?.carbs ?? 0),
     fat: numberInput(meal.recipe?.nutrition?.fat ?? 0),
