@@ -20,7 +20,7 @@ function applyBankerRounding(value: number, all: number[] = []) {
     return rounded[all.indexOf(value)];
 }
 
-export type FormatUnit = 'percentage' | 'grams' | 'calories';
+export type FormatUnit = 'percentage' | 'grams' | 'calories' | 'milliliters';
 
 export interface FormatOptions {
     unit?: FormatUnit;
@@ -62,6 +62,9 @@ export function formatNumber(value: Nullable<number>, unitOrOptions?: FormatUnit
 
         case 'calories':
             return translate('units.calories', { n: Math.round(value).toLocaleString() });
+
+        case 'milliliters':
+            return translate('units.milliliters', { n: Math.round(value).toLocaleString() });
 
         default:
             return value.toLocaleString();

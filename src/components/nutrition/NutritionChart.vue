@@ -18,10 +18,16 @@
                         }"
                     />
                     <div class="absolute inset-6 flex items-center justify-center rounded-full bg-white">
-                        <div class="text-center">
+                        <div class="flex flex-col items-center text-center">
                             <div class="text-lg font-bold text-gray-900">
-                                {{ formatNumber(macros.calories, 'calories') }}
+                                {{ formatNumber(nutrition.calories, 'calories') }}
                             </div>
+                            <span v-if="nutrition.servingInGrams" class="text-xs font-normal text-gray-500">
+                                {{ formatNumber(nutrition.servingInGrams, 'grams') }}
+                            </span>
+                            <span v-else-if="nutrition.servingInMilliliters" class="text-xs font-normal text-gray-500">
+                                {{ formatNumber(nutrition.servingInMilliliters, 'milliliters') }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -39,7 +45,7 @@
                                 formatPercentage(proteinPercentage, [carbsPercentage, proteinPercentage, fatPercentage])
                             }}
                             •
-                            {{ formatNumber(macros.protein, 'grams') }}
+                            {{ formatNumber(nutrition.protein, 'grams') }}
                         </span>
                     </div>
                 </div>
@@ -52,7 +58,7 @@
                         <span class="text-xs text-gray-600">
                             {{ formatPercentage(carbsPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }}
                             •
-                            {{ formatNumber(macros.carbs, 'grams') }}
+                            {{ formatNumber(nutrition.carbs, 'grams') }}
                         </span>
                     </div>
                 </div>
@@ -64,7 +70,7 @@
                         </span>
                         <span class="text-xs text-gray-600">
                             {{ formatPercentage(fatPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }} •
-                            {{ formatNumber(macros.fat, 'grams') }}
+                            {{ formatNumber(nutrition.fat, 'grams') }}
                         </span>
                     </div>
                 </div>
@@ -76,14 +82,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { formatNumber, formatPercentage } from '@/utils/formatting';
+import type NutritionInformation from '@/models/NutritionInformation';
 
-const { macros } = defineProps<{ macros: { calories?: number; protein?: number; carbs?: number; fat?: number } }>();
+const { nutrition } = defineProps<{ nutrition: NutritionInformation }>();
 
 // Calculate atwater macros percentages
 // See https://en.wikipedia.org/wiki/Atwater_system#Modified_system
-const atwaterProtein = computed(() => (macros.protein ?? 0) * 4);
-const atwaterCarbs = computed(() => (macros.carbs ?? 0) * 4);
-const atwaterFat = computed(() => (macros.fat ?? 0) * 9);
+const atwaterProtein = computed(() => (nutrition.protein ?? 0) * 4);
+const atwaterCarbs = computed(() => (nutrition.carbs ?? 0) * 4);
+const atwaterFat = computed(() => (nutrition.fat ?? 0) * 9);
 const atwaterTotal = computed(() => atwaterProtein.value + atwaterCarbs.value + atwaterFat.value);
 
 const proteinPercentage = computed(() => atwaterProtein.value / atwaterTotal.value);

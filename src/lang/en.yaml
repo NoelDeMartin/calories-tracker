@@ -85,6 +85,7 @@ logs:
 units:
     calories: '{n} kcal'
     grams: '{n}g'
+    milliliters: '{n}ml'
     protein: '{protein} protein'
     carbs: '{carbs} carbs'
     fat: '{fat} fat'

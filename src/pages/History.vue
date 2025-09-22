@@ -65,7 +65,7 @@
                 }}
             </h3>
 
-            <NutritionChart class="mt-4" :macros="selectedDayData" />
+            <NutritionChart class="mt-4" :nutrition="selectedDayData.nutrition" />
 
             <div class="mt-6 w-full space-y-4">
                 <MealLog v-for="meal of selectedDayData.meals" :key="meal.url" :meal />
@@ -76,6 +76,7 @@
 
 <script setup lang="ts">
 import Meal from '@/models/Meal';
+import NutritionInformation from '@/models/NutritionInformation';
 import { range } from '@noeldemartin/utils';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
@@ -158,10 +159,12 @@ const history = computed(() =>
                     : {
                         meals: dayMeals,
                         weekday,
-                        calories: macros.calories,
-                        carbs: macros.carbs,
-                        protein: macros.protein,
-                        fat: macros.fat,
+                        nutrition: new NutritionInformation({
+                            rawCalories: `${macros.calories} calories`,
+                            rawCarbs: `${macros.carbs} grams`,
+                            rawProtein: `${macros.protein} grams`,
+                            rawFat: `${macros.fat} grams`,
+                        }),
                         scalePercentage: macros.calories / maxCalories.value,
                         proteinPercentage: atwaterProtein / atwaterTotal,
                         carbsPercentage: atwaterCarbs / atwaterTotal,

@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <NutritionChart v-if="meal.recipe?.nutrition" :macros="meal.recipe.nutrition" />
+        <NutritionChart v-if="meal.recipe?.nutrition" :nutrition="meal.recipe.nutrition" />
 
         <template v-if="caloriesBreakdown?.length">
             <div class="overflow-hidden rounded-lg bg-gray-50">

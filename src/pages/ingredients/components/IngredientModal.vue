@@ -30,7 +30,7 @@
 
         <template v-if="ingredient.nutrition">
             <div class="space-y-3">
-                <NutritionChart :macros="ingredient.nutrition" />
+                <NutritionChart :nutrition="ingredient.nutrition" />
 
                 <div class="overflow-hidden rounded-lg bg-gray-50">
                     <div class="border-b border-gray-200 bg-gray-100 px-4 py-2">
