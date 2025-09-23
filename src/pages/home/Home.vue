@@ -1,12 +1,10 @@
 <template>
-    <Welcome v-if="meals.length == 0 && !$solid.hasLoggedIn()" />
-    <DailyLogs v-else />
+    <DailyLogs v-if="onboarded" />
+    <Welcome v-else />
 </template>
 
 <script setup lang="ts">
-import { useModelCollection } from '@aerogel/plugin-soukai';
+import { useOnboarded } from '@/utils/app';
 
-import Meal from '@/models/Meal';
-
-const meals = useModelCollection(Meal);
+const onboarded = useOnboarded();
 </script>

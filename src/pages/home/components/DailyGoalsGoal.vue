@@ -5,7 +5,11 @@
             <span :class="{ 'text-red-700': current > goal }"> {{ current }} / {{ goal }} {{ units }} </span>
         </div>
         <div class="mt-1 h-2 rounded-full bg-gray-200">
-            <ProgressBar :filled-class="`${barClass} duration-200`" :progress="current / goal" />
+            <ProgressBar
+                :filled-class="`${barFilledClass} duration-200`"
+                :overflow-class="`${barOverflowClass} duration-200`"
+                :progress="current / goal"
+            />
         </div>
     </div>
 </template>
@@ -18,6 +22,7 @@ defineProps<{
     units: string;
     current: number;
     goal: number;
-    barClass?: HTMLAttributes['class'];
+    barFilledClass?: HTMLAttributes['class'];
+    barOverflowClass?: HTMLAttributes['class'];
 }>();
 </script>

@@ -1,7 +1,9 @@
+import Goals from './Goals';
 import Nutritionix from './Nutritionix';
 import Pantry from './Pantry';
 
 export const services = {
+    $goals: Goals,
     $nutritionix: Nutritionix,
     $pantry: Pantry,
 };

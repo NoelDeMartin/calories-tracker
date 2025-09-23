@@ -95,6 +95,12 @@ settings:
     nutritionixDescription: If you want to get nutrition information for all the ingredients, you'll need to obtain a [Nutritionix API Key](https://www.nutritionix.com/business/api).
     nutritionixAppId: App ID
     nutritionixAppKey: App Key
+    goals: Goals
+    goalsDescription: Set your daily goals for calories, protein, carbs, and fat.
+    goalsCalories: Calories
+    goalsProtein: Protein
+    goalsCarbs: Carbs
+    goalsFat: Fat
 
 ui:
     save: Save

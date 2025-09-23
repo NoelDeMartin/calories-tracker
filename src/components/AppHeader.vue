@@ -1,6 +1,6 @@
 <template>
     <header
-        v-if="meals.length > 0 || $solid.hasLoggedIn()"
+        v-if="onboarded"
         class="px-edge max-w-screen-content mx-auto flex w-full items-center justify-between gap-2 pt-8"
         :style="$route.name === 'ingredients' && '--breakpoint-content: 1200px'"
     >
@@ -20,7 +20,7 @@
                     {{ $t('app.title') }}
                 </h1>
             </div>
-            <h2 v-if="meals.length > 0 || $solid.hasLoggedIn()" class="text-lg text-gray-500">
+            <h2 v-if="onboarded" class="text-lg text-gray-500">
                 {{ title }}
             </h2>
         </div>
@@ -35,12 +35,10 @@ import { computed } from 'vue';
 import { Router } from '@aerogel/plugin-routing';
 import { toString } from '@noeldemartin/utils';
 import { translate } from '@aerogel/core';
-import { useModelCollection } from '@aerogel/plugin-soukai';
-
-import Meal from '@/models/Meal';
+import { useOnboarded } from '@/utils/app';
 
 const ROUTES = ['home', 'history', 'ingredients'];
-const meals = useModelCollection(Meal);
+const onboarded = useOnboarded();
 const title = computed(() => {
     if (!Router.currentRoute.value?.name) {
         return;

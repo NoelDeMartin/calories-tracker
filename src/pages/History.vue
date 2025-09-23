@@ -6,7 +6,19 @@
             <div
                 class="pointer-events-none absolute inset-x-0 -top-10 bottom-10 flex flex-col justify-between select-none"
             >
-                <div v-for="step of caloriesSteps" :key="step" class="w-full border-b border-dashed border-gray-300" />
+                <span
+                    v-if="$goals.calories"
+                    class="border-calories-500/40 absolute inset-x-0 border-b border-dashed"
+                    :style="{ top: `${(1 - $goals.calories / maxCalories) * 100}%` }"
+                />
+                <span
+                    v-if="$goals.calories"
+                    class="text-calories-500 absolute right-0 -translate-y-full text-xs"
+                    :style="{ top: `${(1 - $goals.calories / maxCalories) * 100}%` }"
+                >
+                    {{ formatNumber($goals.calories, 'calories') }}
+                </span>
+                <span v-for="step of caloriesSteps" :key="step" class="w-full border-b border-dashed border-gray-300" />
             </div>
             <template v-for="day of days" :key="day">
                 <button
@@ -77,6 +89,7 @@
 <script setup lang="ts">
 import Meal from '@/models/Meal';
 import NutritionInformation from '@/models/NutritionInformation';
+import Goals from '@/services/Goals';
 import { range } from '@noeldemartin/utils';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
@@ -125,7 +138,10 @@ const macrosByDay = computed(() =>
         }),
     ));
 const maxCalories = computed(
-    () => Math.ceil(Math.max(...Object.values(macrosByDay.value).map((macros) => macros.calories)) / 1000) * 1000,
+    () =>
+        Math.ceil(
+            Math.max(Goals.calories ?? 0, ...Object.values(macrosByDay.value).map((macros) => macros.calories)) / 1000,
+        ) * 1000,
 );
 
 const caloriesSteps = computed(() =>
