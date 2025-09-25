@@ -1,5 +1,5 @@
 <template>
-    <Modal :title="$t('logs.add')" fullscreen-mobile>
+    <Modal :title="$t('logs.add')" fullscreen-on-mobile>
         <Form :form class="flex flex-1 flex-col space-y-2 overflow-y-auto" @submit="submit()">
             <Select
                 name="meal"

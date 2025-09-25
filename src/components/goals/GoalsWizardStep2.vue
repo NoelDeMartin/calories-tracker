@@ -6,7 +6,9 @@
             class="flex flex-col"
             :label="$t('goalsWizard.calories')"
             :description="
-                tdeeDiff ? $t('goalsWizard.carbsDiff', { diff: tdeeDiff > 0 ? `+${tdeeDiff}` : tdeeDiff }) : undefined
+                tdeeDiff
+                    ? $t('goalsWizard.caloriesDiff', { diff: tdeeDiff > 0 ? `+${tdeeDiff}` : tdeeDiff })
+                    : undefined
             "
             :description-class="{
                 'text-xs self-end': true,

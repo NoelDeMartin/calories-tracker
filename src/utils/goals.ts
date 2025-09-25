@@ -64,7 +64,7 @@ export function getGoalRecommendations(profile: GoalsProfile) {
     const proteinMultiplier = proteinMultipliers.find(([matcher]) => matcher.test(proteinMatcher))?.[1] ?? 1;
 
     return {
-        baseCalories,
+        baseCalories: Math.round(baseCalories),
         calories: Math.max(1200, Math.round(baseCalories + goalDeltas[profile.goal])),
         protein: Math.round(profile.weight * proteinMultiplier),
     };

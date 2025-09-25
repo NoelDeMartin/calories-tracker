@@ -1,7 +1,7 @@
 <template>
     <Modal
         :title="ingredient ? $t('ingredients.editTitle', { name: ingredient.name }) : $t('ingredients.createTitle')"
-        fullscreen-mobile
+        fullscreen-on-mobile
     >
         <Form :form class="flex flex-1 flex-col space-y-2" @submit="submit()">
             <Input name="name" :label="$t('ingredients.formName')" />

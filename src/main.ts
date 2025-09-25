@@ -14,6 +14,7 @@ import { services } from './services';
 bootstrap(App, {
     services,
     settings,
+    settingsFullscreenOnMobile: true,
     plugins: [
         i18n({ messages: import.meta.glob('@/lang/*.yaml') }),
         routing({ routes }),

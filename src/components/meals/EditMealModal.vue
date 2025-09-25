@@ -1,5 +1,5 @@
 <template>
-    <Modal :title="$t('logs.editTitle', { name: meal.recipe?.name || $t('logs.meal') })" fullscreen-mobile>
+    <Modal :title="$t('logs.editTitle', { name: meal.recipe?.name || $t('logs.meal') })" fullscreen-on-mobile>
         <Form :form class="flex flex-1 flex-col space-y-2" @submit="submit()">
             <Input name="name" :label="$t('logs.mealName')" />
             <Select

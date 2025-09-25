@@ -130,9 +130,9 @@ goalsWizard:
     submitProfile: Calculate
     summary: 'Given your profile and preferences, we recommend that you aim for the following daily goals:'
     calories: Calories
+    caloriesDiff: '{diff} from daily expenditure'
     protein: Protein
     carbs: Carbs
-    carbsDiff: '{diff} from daily expenditure'
     fat: Fat
     summaryDetails: 'View profile'
     submitGoals: Set goals

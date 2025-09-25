@@ -44,13 +44,13 @@ const todayMeals = computedModels(Meal, () =>
         }),
     ));
 const totalCalories = computed(() =>
-    Math.floor(meals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.calories ?? 0), 0)));
+    Math.floor(todayMeals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.calories ?? 0), 0)));
 const totalProtein = computed(() =>
-    Math.floor(meals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.protein ?? 0), 0)));
+    Math.floor(todayMeals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.protein ?? 0), 0)));
 const totalCarbs = computed(() =>
-    Math.floor(meals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.carbs ?? 0), 0)));
+    Math.floor(todayMeals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.carbs ?? 0), 0)));
 const totalFat = computed(() =>
-    Math.floor(meals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.fat ?? 0), 0)));
+    Math.floor(todayMeals.value.reduce((total, meal) => total + (meal.recipe?.nutrition?.fat ?? 0), 0)));
 const nutrition = computed(
     () =>
         new NutritionInformation({
