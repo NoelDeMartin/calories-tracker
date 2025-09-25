@@ -26,5 +26,19 @@
                 :label="$t('settings.goalsFat')"
             />
         </div>
+        <Button class="mt-4 w-full" variant="secondary" @click="openGoalsWizard()">
+            {{ $t('settings.goalsWizard') }}
+        </Button>
     </Setting>
 </template>
+
+<script setup lang="ts">
+import GoalsWizardModal from '@/components/goals/GoalsWizardModal.vue';
+import { UI } from '@aerogel/core';
+
+async function openGoalsWizard() {
+    const { response } = await UI.modal(GoalsWizardModal);
+
+    response && (await UI.closeAllModals());
+}
+</script>

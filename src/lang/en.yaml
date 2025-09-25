@@ -51,6 +51,7 @@ ingredients:
 
 logs:
     log: Log
+    empty: No meals logged today.
     meal: Meal
     mealRecipe: Recipe
     mealName: Name
@@ -101,6 +102,40 @@ settings:
     goalsProtein: Protein
     goalsCarbs: Carbs
     goalsFat: Fat
+    goalsWizard: Help me decide
+
+goalsWizard:
+    title: Goals setup
+    sex: Sex
+    sexOptions:
+        man: Man
+        woman: Woman
+    weight: Weight (in kg)
+    height: Height (in cm)
+    age: Age (in years)
+    lifestyle: Lifestyle
+    lifestyleOptions:
+        sedentary: Sedentary (Little to no exercise)
+        lightlyActive: Lightly Active (exercise 1-3 days/week)
+        moderatelyActive: Moderately Active (exercise 3-5 days/week)
+        veryActive: Very Active (exercise 6-7 days/week)
+        extremelyActive: Extremely Active (athlete)
+    goal: Goal
+    goalOptions:
+        maintainWeight: Maintain Weight
+        loseWeight: Lose Weight
+        gainMuscle: Gain Muscle
+        loseAndGain: Lose Weight & Gain Muscle
+    loseAndGainWarning: It is very difficult to gain muscle and lose weight at the same time, we recommend that you focus on one goal at a time instead.
+    submitProfile: Calculate
+    summary: 'Given your profile and preferences, we recommend that you aim for the following daily goals:'
+    calories: Calories
+    protein: Protein
+    carbs: Carbs
+    carbsDiff: '{diff} from daily expenditure'
+    fat: Fat
+    summaryDetails: 'View profile'
+    submitGoals: Set goals
 
 ui:
     save: Save

@@ -15,25 +15,25 @@ importers:
     dependencies:
       '@aerogel/core':
         specifier: next
-        version: 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+        version: 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
       '@aerogel/plugin-i18n':
         specifier: next
-        version: 0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))
+        version: 0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))
       '@aerogel/plugin-local-first':
         specifier: next
-        version: 0.1.1-next.dec66f358b1fdc66900c3ee1c84d9467941a7c0f(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(482945868624cf1424d5a0408c73805b))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(soukai-solid@0.6.2-next.466b22de698947905da007d573e6c328357510bf(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3)
+        version: 0.1.1-next.dec66f358b1fdc66900c3ee1c84d9467941a7c0f(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(1dc00b18add579d2600a214163fcaff0))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(soukai-solid@0.6.2-next.466b22de698947905da007d573e6c328357510bf(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3)
       '@aerogel/plugin-routing':
         specifier: next
-        version: 0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(@aerogel/vite@0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0))(vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)))
+        version: 0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(@aerogel/vite@0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0))(vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)))
       '@aerogel/plugin-solid':
         specifier: next
-        version: 0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(482945868624cf1424d5a0408c73805b)
+        version: 0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(1dc00b18add579d2600a214163fcaff0)
       '@aerogel/plugin-soukai':
         specifier: next
-        version: 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
+        version: 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
       '@intlify/unplugin-vue-i18n':
         specifier: 6.0.5
-        version: 6.0.5(@vue/compiler-dom@3.5.21)(eslint@8.57.1)(rollup@2.79.2)(typescript@5.8.3)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
+        version: 6.0.5(@vue/compiler-dom@3.5.22)(eslint@8.57.1)(rollup@2.79.2)(typescript@5.8.3)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
       '@noeldemartin/utils':
         specifier: next
         version: 0.7.2-next.0b24da5a86a4448dc87c534345ad7e7c509c6d9f
@@ -156,8 +156,8 @@ packages:
     resolution: {integrity: sha512-KMyE+8g45Sd37KSDBl6G3b5l7WJadeFedVQqyjBxpKGbA+FOcluLrtz0wMVkdig2EsPVB9EjwNz1ZNm57ZL8zw==}
     hasBin: true
 
-  '@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2':
-    resolution: {integrity: sha512-jiiq6+JlBQVLMMSjOlJm+V95EtdxzXXMuQSLcgdOfp4eRDNNbe82QezKwMKQh0BftH18u8iqoFBtVrDMzHoOnQ==}
+  '@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7':
+    resolution: {integrity: sha512-RRwhe96QGQyik8PI3FGThnVltbP+hR54Dhw8M9hBdCl4kpv3xdkH68pZ0JCSmLXfkQ9+6pUSyvCGJnmBuAbLVg==}
     peerDependencies:
       '@tailwindcss/forms': ^0.5.10
       '@tailwindcss/typography': ^0.5.16
@@ -246,44 +246,44 @@ packages:
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
 
-  '@aws-sdk/client-ses@3.894.0':
-    resolution: {integrity: sha512-1WL+2CQOn99VV2WqLXn9XmWiqmtyjAL4SGEE1fb7+dXLkcmtBRYTO28/x7jLU09EREsIk7x3Dqlr8lC/1OJ5FQ==}
+  '@aws-sdk/client-ses@3.896.0':
+    resolution: {integrity: sha512-L5C1ZLdTnAAZJqngRxt6RB6boHnx1Jp1U/awmLsBcnW3tEax5iCLtaNkDRZ6XrccYktVcy2lIUXnFJ7G7WunoQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/client-sso@3.894.0':
-    resolution: {integrity: sha512-lsznYIOiaMtbJfxTlMbvc6d37a1D6OIYF/RgFu9ue765XtiAG2RUF4aoEKA9e448Bwv+078eE+ndNxH3fd0uEw==}
+  '@aws-sdk/client-sso@3.896.0':
+    resolution: {integrity: sha512-mpE3mrNili1dcvEvxaYjyoib8HlRXkb2bY5a3WeK++KObFY+HUujKtgQmiNSRX5YwQszm//fTrmGMmv9zpMcKg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/core@3.894.0':
-    resolution: {integrity: sha512-7zbO31NV2FaocmMtWOg/fuTk3PC2Ji2AC0Fi2KqrppEDIcwLlTTuT9w/rdu/93Pz+wyUhCxWnDc0tPbwtCLs+A==}
+  '@aws-sdk/core@3.896.0':
+    resolution: {integrity: sha512-uJaoyWKeGNyCyeI+cIJrD7LEB4iF/W8/x2ij7zg32OFpAAJx96N34/e+XSKp/xkJpO5FKiBOskKLnHeUsJsAPA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-env@3.894.0':
-    resolution: {integrity: sha512-2aiQJIRWOuROPPISKgzQnH/HqSfucdk5z5VMemVH3Mm2EYOrzBwmmiiFpmSMN3ST+sE8c7gusqycUchP+KfALQ==}
+  '@aws-sdk/credential-provider-env@3.896.0':
+    resolution: {integrity: sha512-Cnqhupdkp825ICySrz4QTI64Nq3AmUAscPW8dueanni0avYBDp7RBppX4H0+6icqN569B983XNfQ0YSImQhfhg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-http@3.894.0':
-    resolution: {integrity: sha512-Z5QQpqFRflszrT+lUq6+ORuu4jRDcpgCUSoTtlhczidMqfdOSckKmK3chZEfmUUJPSwoFQZ7EiVTsX3c886fBg==}
+  '@aws-sdk/credential-provider-http@3.896.0':
+    resolution: {integrity: sha512-CN0fTCKCUA1OTSx1c76o8XyJCy2WoI/av3J8r8mL6GmxTerhLRyzDy/MwxzPjTYPoL+GLEg6V4a9fRkWj1hBUA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-ini@3.894.0':
-    resolution: {integrity: sha512-SpSR7ULrdBpOrqP7HtpBg1LtJiud+AKH+w8nXX9EjedbIVQgy5uNoGMxRt+fp3aa1D4TXooRPE183YpG6+zwLg==}
+  '@aws-sdk/credential-provider-ini@3.896.0':
+    resolution: {integrity: sha512-+rbYG98czzwZLTYHJasK+VBjnIeXk73mRpZXHvaa4kDNxBezdN2YsoGNpLlPSxPdbpq18LY3LRtkdFTaT6DIQA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-node@3.894.0':
-    resolution: {integrity: sha512-B2QNQtZBYHCQLfxSyftGoW2gPtpM2ndhMfmKvIMrSuKUXz3v+p70FLsGRETeOu6kOHsobGlgK+TQCg08qGQfeQ==}
+  '@aws-sdk/credential-provider-node@3.896.0':
+    resolution: {integrity: sha512-J0Jm+56MNngk1PIyqoJFf5FC2fjA4CYXlqODqNRDtid7yk7HB9W3UTtvxofmii5KJOLcHGNPdGnHWKkUc+xYgw==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-process@3.894.0':
-    resolution: {integrity: sha512-VU74GNsj+SsO+pl4d+JimlQ7+AcderZaC6bFndQssQdFZ5NRad8yFNz5Xbec8CPJr+z/VAwHib6431F5nYF46g==}
+  '@aws-sdk/credential-provider-process@3.896.0':
+    resolution: {integrity: sha512-UfWVMQPZy7dus40c4LWxh5vQ+I51z0q4vf09Eqas5848e9DrGRG46GYIuc/gy+4CqEypjbg/XNMjnZfGLHxVnQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-sso@3.894.0':
-    resolution: {integrity: sha512-ZZ1jF8x70RObXbRAcUPMANqX0LhgxVCQBzAfy3tslOp3h6aTgB+WMdGpVVR91x00DbSJnswMMN+mgWkaw78fSQ==}
+  '@aws-sdk/credential-provider-sso@3.896.0':
+    resolution: {integrity: sha512-77Te8WrVdLABKlv7QyetXP6aYEX1UORiahLA1PXQb/p66aFBw18Xc6JiN/6zJ4RqdyV1Xr9rwYBwGYua93ANIA==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/credential-provider-web-identity@3.894.0':
-    resolution: {integrity: sha512-6IwlCueEwzu2RAzUWufb4ZPf+LxF30vSTB1aHy9RVNce8MTaBt5VZ0EPdicdnhL0xqGuYNERP5+WpS70K7D1dw==}
+  '@aws-sdk/credential-provider-web-identity@3.896.0':
+    resolution: {integrity: sha512-gwMwZWumo+V0xJplO8j2HIb1TfPsF9fbcRGXS0CanEvjg4fF2Xs1pOQl2oCw3biPZpxHB0plNZjqSF2eneGg9g==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/middleware-host-header@3.893.0':
@@ -298,28 +298,28 @@ packages:
     resolution: {integrity: sha512-H7Zotd9zUHQAr/wr3bcWHULYhEeoQrF54artgsoUGIf/9emv6LzY89QUccKIxYd6oHKNTrTyXm9F0ZZrzXNxlg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/middleware-user-agent@3.894.0':
-    resolution: {integrity: sha512-+s1HRLDIuSMhOzVsxRKbatUjJib0w1AGxDfWNZWrSnM7Aq9U1cap0XgR9/zy7NhJ+I3Twrx6SCVfpjpZspoRTA==}
+  '@aws-sdk/middleware-user-agent@3.896.0':
+    resolution: {integrity: sha512-so/3tZH34YIeqG/QJgn5ZinnmHRdXV1ehsj4wVUrezL/dVW86jfwIkQIwpw8roOC657UoUf91c9FDhCxs3J5aQ==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/nested-clients@3.894.0':
-    resolution: {integrity: sha512-FEEIk43RLO7Oy2BHXfwbo4gjCec7pK7i5nnUT9GbJQh6JMcS0FqPJGF95lQa93quS3SgwdCpWbv01TH86i+41w==}
+  '@aws-sdk/nested-clients@3.896.0':
+    resolution: {integrity: sha512-KaHALB6DIXScJL/ExmonADr3jtTV6dpOHoEeTRSskJ/aW+rhZo7kH8SLmrwOT/qX8d5tza17YyR/oRkIKY6Eaw==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/region-config-resolver@3.893.0':
     resolution: {integrity: sha512-/cJvh3Zsa+Of0Zbg7vl9wp/kZtdb40yk/2+XcroAMVPO9hPvmS9r/UOm6tO7FeX4TtkRFwWaQJiTZTgSdsPY+Q==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/token-providers@3.894.0':
-    resolution: {integrity: sha512-tOkrD6U3UrU5IJfbBl932RBi8EjFVFkU1hAjPgAWWBDy6uRQunpuh3i1z6dRQoelVT88BmEyEv1l/WpM5uZezg==}
+  '@aws-sdk/token-providers@3.896.0':
+    resolution: {integrity: sha512-WBoD+RY7tUfW9M+wGrZ2vdveR+ziZOjGHWFY3lcGnDvI8KE+fcSccEOTxgJBNBS5Z8B+WHKU2sZjb+Z7QqGwjw==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/types@3.893.0':
     resolution: {integrity: sha512-Aht1nn5SnA0N+Tjv0dzhAY7CQbxVtmq1bBR6xI0MhG7p2XYVh1wXuKTzrldEvQWwA3odOYunAfT9aBiKZx9qIg==}
     engines: {node: '>=18.0.0'}
 
-  '@aws-sdk/util-endpoints@3.893.0':
-    resolution: {integrity: sha512-xeMcL31jXHKyxRwB3oeNjs8YEpyvMnSYWr2OwLydgzgTr0G349AHlJHwYGCF9xiJ2C27kDxVvXV/Hpdp0p7TWw==}
+  '@aws-sdk/util-endpoints@3.895.0':
+    resolution: {integrity: sha512-MhxBvWbwxmKknuggO2NeMwOVkHOYL98pZ+1ZRI5YwckoCL3AvISMnPJgfN60ww6AIXHGpkp+HhpFdKOe8RHSEg==}
     engines: {node: '>=18.0.0'}
 
   '@aws-sdk/util-locate-window@3.893.0':
@@ -329,8 +329,8 @@ packages:
   '@aws-sdk/util-user-agent-browser@3.893.0':
     resolution: {integrity: sha512-PE9NtbDBW6Kgl1bG6A5fF3EPo168tnkj8TgMcT0sg4xYBWsBpq0bpJZRh+Jm5Bkwiw9IgTCLjEU7mR6xWaMB9w==}
 
-  '@aws-sdk/util-user-agent-node@3.894.0':
-    resolution: {integrity: sha512-tmA3XtQA6nPGyJGl9+7Bbo/5UmUvqCiweC5fNmfTg/aLpT3YkiivOG36XhuJxXVBkX3jr5Sc+IsaANUlJmblEA==}
+  '@aws-sdk/util-user-agent-node@3.896.0':
+    resolution: {integrity: sha512-jegizucAwoxyBddKl0kRGNEgRHcfGuMeyhP1Nf+wIUmHz/9CxobIajqcVk/KRNLdZY5mSn7YG2VtP3z0BcBb0w==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       aws-crt: '>=1.0.0'
@@ -2779,11 +2779,17 @@ packages:
   '@vue/compiler-core@3.5.21':
     resolution: {integrity: sha512-8i+LZ0vf6ZgII5Z9XmUvrCyEzocvWT+TeR2VBUVlzIH6Tyv57E20mPZ1bCS+tbejgUgmjrEh7q/0F0bibskAmw==}
 
+  '@vue/compiler-core@3.5.22':
+    resolution: {integrity: sha512-jQ0pFPmZwTEiRNSb+i9Ow/I/cHv2tXYqsnHKKyCQ08irI2kdF5qmYedmF8si8mA7zepUFmJ2hqzS8CQmNOWOkQ==}
+
   '@vue/compiler-dom@3.5.13':
     resolution: {integrity: sha512-ZOJ46sMOKUjO3e94wPdCzQ6P1Lx/vhp2RSvfaab88Ajexs0AHeV0uasYhi99WPaogmBlRHNRuly8xV75cNTMDA==}
 
   '@vue/compiler-dom@3.5.21':
     resolution: {integrity: sha512-jNtbu/u97wiyEBJlJ9kmdw7tAr5Vy0Aj5CgQmo+6pxWNQhXZDPsRr1UWPN4v3Zf82s2H3kF51IbzZ4jMWAgPlQ==}
+
+  '@vue/compiler-dom@3.5.22':
+    resolution: {integrity: sha512-W8RknzUM1BLkypvdz10OVsGxnMAuSIZs9Wdx1vzA3mL5fNMN15rhrSCLiTm6blWeACwUwizzPVqGJgOGBEN/hA==}
 
   '@vue/compiler-sfc@3.5.13':
     resolution: {integrity: sha512-6VdaljMpD82w6c2749Zhf5T9u5uLBWKnVue6XWxprDobftnletJ8+oel7sexFfM3qIxNmVE7LSFGTpv6obNyaQ==}
@@ -2830,6 +2836,9 @@ packages:
 
   '@vue/shared@3.5.21':
     resolution: {integrity: sha512-+2k1EQpnYuVuu3N7atWyG3/xoFWIVJZq4Mz8XNOdScFI0etES75fbny/oU4lKWk/577P1zmg0ioYvpGEDZ3DLw==}
+
+  '@vue/shared@3.5.22':
+    resolution: {integrity: sha512-F4yc6palwq3TT0u+FYf0Ns4Tfl9GRFURDN2gWG7L1ecIaS/4fCIuFOjMTnCyjsu/OK6vaDKLCrGAa+KvvH+h4w==}
 
   '@vue/tsconfig@0.7.0':
     resolution: {integrity: sha512-ku2uNz5MaZ9IerPPUyOHzyjhXoX2kVJaVf7hL315DC17vS6IiZRmmCPfggNbU16QTvM80+uYYy3eYJB59WCtvg==}
@@ -3003,8 +3012,8 @@ packages:
   async@3.2.6:
     resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
 
-  asynciterator@3.9.0:
-    resolution: {integrity: sha512-bwLLTAnoE6Ap6XdjK/j8vDk2Vi9p3ojk0PFwM0SwktAG1k8pfRJF9ng+mmkaRFKdZCQQlOxcWnvOmX2NQ1HV0g==}
+  asynciterator@3.10.0:
+    resolution: {integrity: sha512-eDOBoUf2m+4ht0ETVn2SCfuBIZZ6UWyyQbP++LRPKoK7PmrCQq37pJ6vRvyef4o1Pn+CwWnzMlkXxGdh/krVIw==}
 
   asyncjoin@1.2.4:
     resolution: {integrity: sha512-7/1g5uV2/iTDQteJ/pxqZq6qkO5406V+vNyOCYtHJ+mo6bmvvQHHrZgd7AtU/rx+cnz08NPWlwk8daW61thnlA==}
@@ -3064,8 +3073,8 @@ packages:
     resolution: {integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==}
     engines: {node: '>=6.0.0'}
 
-  baseline-browser-mapping@2.8.6:
-    resolution: {integrity: sha512-wrH5NNqren/QMtKUEEJf7z86YjfqW/2uw3IL3/xpqZUC95SSVIFXYQeeGjL6FT/X68IROu6RMehZQS5foy2BXw==}
+  baseline-browser-mapping@2.8.7:
+    resolution: {integrity: sha512-bxxN2M3a4d1CRoQC//IqsR5XrLh0IJ8TCv2x6Y9N0nckNz/rTjZB3//GGscZziZOxmjP55rzxg/ze7usFI9FqQ==}
     hasBin: true
 
   bcrypt-pbkdf@1.0.2:
@@ -3177,8 +3186,8 @@ packages:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
     engines: {node: '>=16'}
 
-  caniuse-lite@1.0.30001743:
-    resolution: {integrity: sha512-e6Ojr7RV14Un7dz6ASD0aZDmQPT/A+eZU+nuTNfjqmRrmkmQlnTNWH0SKmqagx9PeW87UVqapSurtAXifmtdmw==}
+  caniuse-lite@1.0.30001745:
+    resolution: {integrity: sha512-ywt6i8FzvdgrrrGbr1jZVObnVv6adj+0if2/omv9cmR2oiZs30zL4DIyaptKcbOrBdOIc74QTMoJvSE2QHh5UQ==}
 
   canonicalize@1.0.8:
     resolution: {integrity: sha512-0CNTVCLZggSh7bc5VkX5WWPWO+cyZbNd07IHIsSXLia/eAq+r836hgk+8BKoEh7949Mda87VUOitx5OddVj64A==}
@@ -3533,8 +3542,8 @@ packages:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
 
-  detect-libc@2.1.0:
-    resolution: {integrity: sha512-vEtk+OcP7VBRtQZ1EJ3bdgzSfBjgnEalLTp5zjJrS+2Z1w2KZly4SBdac/WDU3hhsNAZ9E8SC96ME4Ey8MZ7cg==}
+  detect-libc@2.1.1:
+    resolution: {integrity: sha512-ecqj/sy1jcK1uWrwpR67UhYrIFQ+5WlGxth34WquCbamhFA6hkkwiu37o6J5xCHdo1oixJRfVRw+ywV+Hq/0Aw==}
     engines: {node: '>=8'}
 
   dir-glob@3.0.1:
@@ -3585,8 +3594,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  electron-to-chromium@1.5.223:
-    resolution: {integrity: sha512-qKm55ic6nbEmagFlTFczML33rF90aU+WtrJ9MdTCThrcvDNdUHN4p6QfVN78U06ZmguqXIyMPyYhw2TrbDUwPQ==}
+  electron-to-chromium@1.5.224:
+    resolution: {integrity: sha512-kWAoUu/bwzvnhpdZSIc6KUyvkI1rbRXMT0Eq8pKReyOyaPZcctMli+EgvcN1PAvwVc7Tdo4Fxi2PsLNDU05mdg==}
 
   elliptic@6.6.1:
     resolution: {integrity: sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g==}
@@ -5890,6 +5899,9 @@ packages:
   tiny-case@1.0.3:
     resolution: {integrity: sha512-Eet/eeMhkO6TX8mnUteS9zgPbUMQa4I6Kkp5ORiBD5476/m+PIRiumP5tmh5ioJpH7k51Kehawy2UDfsnxxY8Q==}
 
+  tiny-set-immediate@1.0.2:
+    resolution: {integrity: sha512-EVbaM4zXFWS4CIqVoPzY7XIioQ5LU1p49AHizwPO1KyFyp/gxy5SA8mDmfDVl/2WLQiHgUL+esO6Ig+KhpUxUw==}
+
   tinybench@2.9.0:
     resolution: {integrity: sha512-0+DUvqWMValLmha6lr4kD8iAMK1HzV0/aKnCtWb9v9641TnP/MFb7Pc2bxoxQjTXAErryXVgUOfv2YqNllqGeg==}
 
@@ -6560,7 +6572,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))':
+  '@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))':
     dependencies:
       '@noeldemartin/utils': 0.7.1-next.5f7bc66cad4aaa2dce4a2314e99d562ff3ab993b
       '@noeldemartin/vue-modals': 0.0.0-next.124c6a1c5e8a2cef4ec43d6a01de0fc450f155b1(vue@3.5.13(typescript@5.8.3))
@@ -6594,16 +6606,16 @@ snapshots:
       - supports-color
       - web-streams-polyfill
 
-  '@aerogel/plugin-i18n@0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))':
+  '@aerogel/plugin-i18n@0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))':
     dependencies:
-      '@aerogel/core': 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      '@aerogel/core': 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
       '@noeldemartin/utils': 0.7.1-next.5f7bc66cad4aaa2dce4a2314e99d562ff3ab993b
 
-  ? '@aerogel/plugin-local-first@0.1.1-next.dec66f358b1fdc66900c3ee1c84d9467941a7c0f(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(482945868624cf1424d5a0408c73805b))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(soukai-solid@0.6.2-next.466b22de698947905da007d573e6c328357510bf(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3)'
+  ? '@aerogel/plugin-local-first@0.1.1-next.dec66f358b1fdc66900c3ee1c84d9467941a7c0f(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(1dc00b18add579d2600a214163fcaff0))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(soukai-solid@0.6.2-next.466b22de698947905da007d573e6c328357510bf(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)(web-streams-polyfill@3.3.3)'
   : dependencies:
-      '@aerogel/core': 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
-      '@aerogel/plugin-solid': 0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(482945868624cf1424d5a0408c73805b)
-      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
+      '@aerogel/core': 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      '@aerogel/plugin-solid': 0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(1dc00b18add579d2600a214163fcaff0)
+      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
       '@noeldemartin/solid-utils': 0.6.1(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.1-next.5f7bc66cad4aaa2dce4a2314e99d562ff3ab993b
       idb: 8.0.3
@@ -6612,18 +6624,18 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@aerogel/plugin-routing@0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(@aerogel/vite@0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0))(vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)))':
+  '@aerogel/plugin-routing@0.1.1-next.7fce7b4ce55cfb9c329a7746f571015aedc8e3bd(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631))(@aerogel/vite@0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0))(vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)))':
     dependencies:
-      '@aerogel/core': 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
-      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
+      '@aerogel/core': 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
       '@aerogel/vite': 0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0)
       '@noeldemartin/utils': 0.7.1-next.5f7bc66cad4aaa2dce4a2314e99d562ff3ab993b
       vue-router: 4.5.0(vue@3.5.13(typescript@5.8.3))
 
-  '@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(482945868624cf1424d5a0408c73805b)':
+  '@aerogel/plugin-solid@0.1.1-next.61989dc8b4f65abed26a6684a608964c2c6045a7(1dc00b18add579d2600a214163fcaff0)':
     dependencies:
-      '@aerogel/core': 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
-      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
+      '@aerogel/core': 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      '@aerogel/plugin-soukai': 0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)
       '@aerogel/vite': 0.1.1-next.7f33b133934b479bdeee0808001759d92e987cf9(@babel/parser@7.28.4)(vite@6.3.1(@types/node@20.17.30)(jiti@2.6.0)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.1))(vue@3.5.13(typescript@5.8.3))(workbox-build@7.3.0)(workbox-window@7.3.0)
       '@inrupt/solid-client-authn-browser': 2.5.0
       '@noeldemartin/solid-utils': 0.6.1(web-streams-polyfill@3.3.3)
@@ -6635,9 +6647,9 @@ snapshots:
       - encoding
       - web-streams-polyfill
 
-  '@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)':
+  '@aerogel/plugin-soukai@0.1.1-next.d6a3799bbe1433d0b03c0a45a62cf8c55e3729c8(@aerogel/core@0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)))(soukai@0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631)':
     dependencies:
-      '@aerogel/core': 0.1.1-next.e6a6ad3e33336c7da826eebdf24cd581e20522f2(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      '@aerogel/core': 0.1.1-next.794da2a581990f8be4a2f33880a77e15fa1e40a7(@tailwindcss/forms@0.5.10(tailwindcss@4.1.4))(@tailwindcss/typography@0.5.16(tailwindcss@4.1.4))(tailwindcss@4.1.4)(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
       '@noeldemartin/utils': 0.7.1-next.5f7bc66cad4aaa2dce4a2314e99d562ff3ab993b
       soukai: 0.6.2-next.2c55c486cda4356850263de7356cf9761ef8d631
 
@@ -6723,21 +6735,21 @@ snapshots:
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
 
-  '@aws-sdk/client-ses@3.894.0':
+  '@aws-sdk/client-ses@3.896.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.894.0
-      '@aws-sdk/credential-provider-node': 3.894.0
+      '@aws-sdk/core': 3.896.0
+      '@aws-sdk/credential-provider-node': 3.896.0
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.896.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.896.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -6768,20 +6780,20 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/client-sso@3.894.0':
+  '@aws-sdk/client-sso@3.896.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.896.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.896.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -6811,7 +6823,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/core@3.894.0':
+  '@aws-sdk/core@3.896.0':
     dependencies:
       '@aws-sdk/types': 3.893.0
       '@aws-sdk/xml-builder': 3.894.0
@@ -6823,22 +6835,21 @@ snapshots:
       '@smithy/smithy-client': 4.6.4
       '@smithy/types': 4.5.0
       '@smithy/util-base64': 4.1.0
-      '@smithy/util-body-length-browser': 4.1.0
       '@smithy/util-middleware': 4.1.1
       '@smithy/util-utf8': 4.1.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-env@3.894.0':
+  '@aws-sdk/credential-provider-env@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-http@3.894.0':
+  '@aws-sdk/credential-provider-http@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/fetch-http-handler': 5.2.1
       '@smithy/node-http-handler': 4.2.1
@@ -6849,15 +6860,15 @@ snapshots:
       '@smithy/util-stream': 4.3.2
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-ini@3.894.0':
+  '@aws-sdk/credential-provider-ini@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
-      '@aws-sdk/credential-provider-env': 3.894.0
-      '@aws-sdk/credential-provider-http': 3.894.0
-      '@aws-sdk/credential-provider-process': 3.894.0
-      '@aws-sdk/credential-provider-sso': 3.894.0
-      '@aws-sdk/credential-provider-web-identity': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/core': 3.896.0
+      '@aws-sdk/credential-provider-env': 3.896.0
+      '@aws-sdk/credential-provider-http': 3.896.0
+      '@aws-sdk/credential-provider-process': 3.896.0
+      '@aws-sdk/credential-provider-sso': 3.896.0
+      '@aws-sdk/credential-provider-web-identity': 3.896.0
+      '@aws-sdk/nested-clients': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/credential-provider-imds': 4.1.2
       '@smithy/property-provider': 4.1.1
@@ -6867,14 +6878,14 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-node@3.894.0':
+  '@aws-sdk/credential-provider-node@3.896.0':
     dependencies:
-      '@aws-sdk/credential-provider-env': 3.894.0
-      '@aws-sdk/credential-provider-http': 3.894.0
-      '@aws-sdk/credential-provider-ini': 3.894.0
-      '@aws-sdk/credential-provider-process': 3.894.0
-      '@aws-sdk/credential-provider-sso': 3.894.0
-      '@aws-sdk/credential-provider-web-identity': 3.894.0
+      '@aws-sdk/credential-provider-env': 3.896.0
+      '@aws-sdk/credential-provider-http': 3.896.0
+      '@aws-sdk/credential-provider-ini': 3.896.0
+      '@aws-sdk/credential-provider-process': 3.896.0
+      '@aws-sdk/credential-provider-sso': 3.896.0
+      '@aws-sdk/credential-provider-web-identity': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/credential-provider-imds': 4.1.2
       '@smithy/property-provider': 4.1.1
@@ -6884,20 +6895,20 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-process@3.894.0':
+  '@aws-sdk/credential-provider-process@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/credential-provider-sso@3.894.0':
+  '@aws-sdk/credential-provider-sso@3.896.0':
     dependencies:
-      '@aws-sdk/client-sso': 3.894.0
-      '@aws-sdk/core': 3.894.0
-      '@aws-sdk/token-providers': 3.894.0
+      '@aws-sdk/client-sso': 3.896.0
+      '@aws-sdk/core': 3.896.0
+      '@aws-sdk/token-providers': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -6906,10 +6917,10 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
 
-  '@aws-sdk/credential-provider-web-identity@3.894.0':
+  '@aws-sdk/credential-provider-web-identity@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/core': 3.896.0
+      '@aws-sdk/nested-clients': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -6939,30 +6950,30 @@ snapshots:
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/middleware-user-agent@3.894.0':
+  '@aws-sdk/middleware-user-agent@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@smithy/core': 3.12.0
       '@smithy/protocol-http': 5.2.1
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/nested-clients@3.894.0':
+  '@aws-sdk/nested-clients@3.896.0':
     dependencies:
       '@aws-crypto/sha256-browser': 5.2.0
       '@aws-crypto/sha256-js': 5.2.0
-      '@aws-sdk/core': 3.894.0
+      '@aws-sdk/core': 3.896.0
       '@aws-sdk/middleware-host-header': 3.893.0
       '@aws-sdk/middleware-logger': 3.893.0
       '@aws-sdk/middleware-recursion-detection': 3.893.0
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.896.0
       '@aws-sdk/region-config-resolver': 3.893.0
       '@aws-sdk/types': 3.893.0
-      '@aws-sdk/util-endpoints': 3.893.0
+      '@aws-sdk/util-endpoints': 3.895.0
       '@aws-sdk/util-user-agent-browser': 3.893.0
-      '@aws-sdk/util-user-agent-node': 3.894.0
+      '@aws-sdk/util-user-agent-node': 3.896.0
       '@smithy/config-resolver': 4.2.2
       '@smithy/core': 3.12.0
       '@smithy/fetch-http-handler': 5.2.1
@@ -7001,10 +7012,10 @@ snapshots:
       '@smithy/util-middleware': 4.1.1
       tslib: 2.8.1
 
-  '@aws-sdk/token-providers@3.894.0':
+  '@aws-sdk/token-providers@3.896.0':
     dependencies:
-      '@aws-sdk/core': 3.894.0
-      '@aws-sdk/nested-clients': 3.894.0
+      '@aws-sdk/core': 3.896.0
+      '@aws-sdk/nested-clients': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/property-provider': 4.1.1
       '@smithy/shared-ini-file-loader': 4.2.0
@@ -7018,7 +7029,7 @@ snapshots:
       '@smithy/types': 4.5.0
       tslib: 2.8.1
 
-  '@aws-sdk/util-endpoints@3.893.0':
+  '@aws-sdk/util-endpoints@3.895.0':
     dependencies:
       '@aws-sdk/types': 3.893.0
       '@smithy/types': 4.5.0
@@ -7037,9 +7048,9 @@ snapshots:
       bowser: 2.12.1
       tslib: 2.8.1
 
-  '@aws-sdk/util-user-agent-node@3.894.0':
+  '@aws-sdk/util-user-agent-node@3.896.0':
     dependencies:
-      '@aws-sdk/middleware-user-agent': 3.894.0
+      '@aws-sdk/middleware-user-agent': 3.896.0
       '@aws-sdk/types': 3.893.0
       '@smithy/node-config-provider': 4.2.2
       '@smithy/types': 4.5.0
@@ -7736,7 +7747,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       sparqlalgebrajs: 4.3.8
@@ -7839,7 +7850,7 @@ snapshots:
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
       '@types/yargs': 17.0.33
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       negotiate: 1.0.1
       rdf-quad: 1.5.0
       rdf-string: 1.6.3
@@ -7893,7 +7904,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
@@ -7906,7 +7917,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -7963,7 +7974,7 @@ snapshots:
       '@comunica/expression-evaluator': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8007,7 +8018,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8018,7 +8029,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/expression-evaluator': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8029,7 +8040,7 @@ snapshots:
       '@comunica/actor-query-operation-union': 2.10.1(encoding@0.1.13)
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8067,7 +8078,7 @@ snapshots:
       '@comunica/bindings-factory': 2.10.1
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8088,7 +8099,7 @@ snapshots:
       '@comunica/bindings-factory': 2.10.1
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-string: 1.6.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8101,7 +8112,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8127,7 +8138,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -8154,7 +8165,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8182,7 +8193,7 @@ snapshots:
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
@@ -8196,7 +8207,7 @@ snapshots:
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8261,7 +8272,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8306,7 +8317,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8436,7 +8447,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8447,7 +8458,7 @@ snapshots:
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
     transitivePeerDependencies:
       - encoding
 
@@ -8477,7 +8488,7 @@ snapshots:
       '@comunica/bus-rdf-join': 2.10.1(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/metadata': 2.10.0
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
     transitivePeerDependencies:
       - encoding
 
@@ -8689,7 +8700,7 @@ snapshots:
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       readable-stream: 4.7.0
       shaclc-parse: 1.4.3
       stream-to-string: 1.2.1
@@ -8729,7 +8740,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -8744,7 +8755,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       lru-cache: 10.4.3
       rdf-data-factory: 1.1.3
@@ -8764,7 +8775,7 @@ snapshots:
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
@@ -8788,7 +8799,7 @@ snapshots:
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       lru-cache: 10.4.3
       rdf-data-factory: 1.1.3
       rdf-streaming-store: 1.1.5
@@ -8804,7 +8815,7 @@ snapshots:
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
     transitivePeerDependencies:
@@ -8856,7 +8867,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
       readable-stream: 4.7.0
@@ -8872,7 +8883,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
@@ -8885,7 +8896,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
       stream-to-string: 1.2.1
@@ -8912,7 +8923,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
     transitivePeerDependencies:
@@ -8986,7 +8997,7 @@ snapshots:
       '@comunica/data-factory': 2.7.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
@@ -9083,7 +9094,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -9109,7 +9120,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
       - encoding
@@ -9371,7 +9382,7 @@ snapshots:
     dependencies:
       '@rdfjs/types': 1.1.2
       '@types/yargs': 17.0.33
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
 
   '@cypress/request@3.0.9':
@@ -9647,12 +9658,12 @@ snapshots:
 
   '@intlify/shared@11.1.3': {}
 
-  '@intlify/unplugin-vue-i18n@6.0.5(@vue/compiler-dom@3.5.21)(eslint@8.57.1)(rollup@2.79.2)(typescript@5.8.3)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))':
+  '@intlify/unplugin-vue-i18n@6.0.5(@vue/compiler-dom@3.5.22)(eslint@8.57.1)(rollup@2.79.2)(typescript@5.8.3)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.0(eslint@8.57.1)
       '@intlify/bundle-utils': 10.0.1(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))
       '@intlify/shared': 11.1.12
-      '@intlify/vue-i18n-extensions': 8.0.0(@intlify/shared@11.1.12)(@vue/compiler-dom@3.5.21)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
+      '@intlify/vue-i18n-extensions': 8.0.0(@intlify/shared@11.1.12)(@vue/compiler-dom@3.5.22)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))
       '@rollup/pluginutils': 5.3.0(rollup@2.79.2)
       '@typescript-eslint/scope-manager': 8.44.1
       '@typescript-eslint/typescript-estree': 8.44.1(typescript@5.8.3)
@@ -9674,12 +9685,12 @@ snapshots:
       - supports-color
       - typescript
 
-  '@intlify/vue-i18n-extensions@8.0.0(@intlify/shared@11.1.12)(@vue/compiler-dom@3.5.21)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))':
+  '@intlify/vue-i18n-extensions@8.0.0(@intlify/shared@11.1.12)(@vue/compiler-dom@3.5.22)(vue-i18n@11.1.3(vue@3.5.13(typescript@5.8.3)))(vue@3.5.13(typescript@5.8.3))':
     dependencies:
       '@babel/parser': 7.28.4
     optionalDependencies:
       '@intlify/shared': 11.1.12
-      '@vue/compiler-dom': 3.5.21
+      '@vue/compiler-dom': 3.5.22
       vue: 3.5.13(typescript@5.8.3)
       vue-i18n: 11.1.3(vue@3.5.13(typescript@5.8.3))
 
@@ -10535,7 +10546,7 @@ snapshots:
 
   '@tailwindcss/oxide@4.1.13':
     dependencies:
-      detect-libc: 2.1.0
+      detect-libc: 2.1.1
       tar: 7.5.1
     optionalDependencies:
       '@tailwindcss/oxide-android-arm64': 4.1.13
@@ -10746,7 +10757,7 @@ snapshots:
 
   '@types/nodemailer@6.4.19':
     dependencies:
-      '@aws-sdk/client-ses': 3.894.0
+      '@aws-sdk/client-ses': 3.896.0
       '@types/node': 20.17.30
     transitivePeerDependencies:
       - aws-crt
@@ -11113,6 +11124,15 @@ snapshots:
       entities: 4.5.0
       estree-walker: 2.0.2
       source-map-js: 1.2.1
+    optional: true
+
+  '@vue/compiler-core@3.5.22':
+    dependencies:
+      '@babel/parser': 7.28.4
+      '@vue/shared': 3.5.22
+      entities: 4.5.0
+      estree-walker: 2.0.2
+      source-map-js: 1.2.1
 
   '@vue/compiler-dom@3.5.13':
     dependencies:
@@ -11123,6 +11143,12 @@ snapshots:
     dependencies:
       '@vue/compiler-core': 3.5.21
       '@vue/shared': 3.5.21
+    optional: true
+
+  '@vue/compiler-dom@3.5.22':
+    dependencies:
+      '@vue/compiler-core': 3.5.22
+      '@vue/shared': 3.5.22
 
   '@vue/compiler-sfc@3.5.13':
     dependencies:
@@ -11170,9 +11196,9 @@ snapshots:
   '@vue/language-core@2.2.8(typescript@5.8.3)':
     dependencies:
       '@volar/language-core': 2.4.23
-      '@vue/compiler-dom': 3.5.21
+      '@vue/compiler-dom': 3.5.22
       '@vue/compiler-vue2': 2.7.16
-      '@vue/shared': 3.5.21
+      '@vue/shared': 3.5.22
       alien-signals: 1.0.13
       minimatch: 9.0.5
       muggle-string: 0.4.1
@@ -11204,7 +11230,10 @@ snapshots:
 
   '@vue/shared@3.5.13': {}
 
-  '@vue/shared@3.5.21': {}
+  '@vue/shared@3.5.21':
+    optional: true
+
+  '@vue/shared@3.5.22': {}
 
   '@vue/tsconfig@0.7.0(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))':
     optionalDependencies:
@@ -11361,11 +11390,13 @@ snapshots:
 
   async@3.2.6: {}
 
-  asynciterator@3.9.0: {}
+  asynciterator@3.10.0:
+    dependencies:
+      tiny-set-immediate: 1.0.2
 
   asyncjoin@1.2.4:
     dependencies:
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
 
   asynckit@0.4.0: {}
 
@@ -11376,7 +11407,7 @@ snapshots:
   autoprefixer@10.4.21(postcss@8.5.6):
     dependencies:
       browserslist: 4.26.2
-      caniuse-lite: 1.0.30001743
+      caniuse-lite: 1.0.30001745
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -11429,7 +11460,7 @@ snapshots:
 
   base64url@3.0.1: {}
 
-  baseline-browser-mapping@2.8.6: {}
+  baseline-browser-mapping@2.8.7: {}
 
   bcrypt-pbkdf@1.0.2:
     dependencies:
@@ -11470,9 +11501,9 @@ snapshots:
 
   browserslist@4.26.2:
     dependencies:
-      baseline-browser-mapping: 2.8.6
-      caniuse-lite: 1.0.30001743
-      electron-to-chromium: 1.5.223
+      baseline-browser-mapping: 2.8.7
+      caniuse-lite: 1.0.30001745
+      electron-to-chromium: 1.5.224
       node-releases: 2.0.21
       update-browserslist-db: 1.1.3(browserslist@4.26.2)
 
@@ -11541,7 +11572,7 @@ snapshots:
 
   camelcase@8.0.0: {}
 
-  caniuse-lite@1.0.30001743: {}
+  caniuse-lite@1.0.30001745: {}
 
   canonicalize@1.0.8: {}
 
@@ -11936,7 +11967,7 @@ snapshots:
 
   destroy@1.2.0: {}
 
-  detect-libc@2.1.0: {}
+  detect-libc@2.1.1: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -11991,7 +12022,7 @@ snapshots:
     dependencies:
       jake: 10.9.4
 
-  electron-to-chromium@1.5.223: {}
+  electron-to-chromium@1.5.224: {}
 
   elliptic@6.6.1:
     dependencies:
@@ -13219,7 +13250,7 @@ snapshots:
 
   lightningcss@1.30.1:
     dependencies:
-      detect-libc: 2.1.0
+      detect-libc: 2.1.1
     optionalDependencies:
       lightningcss-darwin-arm64: 1.30.1
       lightningcss-darwin-x64: 1.30.1
@@ -13971,7 +14002,7 @@ snapshots:
   rdf-stores@1.0.0:
     dependencies:
       '@rdfjs/types': 1.1.2
-      asynciterator: 3.9.0
+      asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -14678,6 +14709,8 @@ snapshots:
   through@2.3.8: {}
 
   tiny-case@1.0.3: {}
+
+  tiny-set-immediate@1.0.2: {}
 
   tinybench@2.9.0: {}
 

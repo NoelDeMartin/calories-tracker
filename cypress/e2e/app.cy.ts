@@ -312,6 +312,33 @@ describe('App', () => {
         });
     });
 
+    it('Sets goals', () => {
+        // Arrange
+        cy.press('Log meal');
+        cy.get('input[name="name"]').type('First meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+
+        cy.ariaLabel('Configuration').click();
+        cy.press('Settings');
+
+        // Act
+        cy.press('Help me decide');
+        cy.comboboxSelect('Sex', 'Man');
+        cy.get('input[name="weight"]').clear().type('80');
+        cy.get('input[name="height"]').clear().type('180');
+        cy.get('input[name="age"]').clear().type('42');
+        cy.comboboxSelect('Lifestyle', 'Lightly Active');
+        cy.comboboxSelect('Goal', 'Gain Muscle');
+        cy.press('Calculate');
+
+        cy.see('+250 from daily expenditure');
+        cy.press('Set goals');
+
+        // Assert
+        cy.see('0 / 2615 kcal');
+        cy.see('0 / 112 g');
+    });
+
 });
 
 function setupAccount(options: { ingredients?: string[] } = {}) {

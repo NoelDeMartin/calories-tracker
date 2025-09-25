@@ -58,13 +58,9 @@ export function formatNumber(value: Nullable<number>, unitOrOptions?: FormatUnit
         }
 
         case 'grams':
-            return translate('units.grams', { n: Math.round(value).toLocaleString() });
-
         case 'calories':
-            return translate('units.calories', { n: Math.round(value).toLocaleString() });
-
         case 'milliliters':
-            return translate('units.milliliters', { n: Math.round(value).toLocaleString() });
+            return translate(`units.${options.unit}`, { n: Math.round(value).toLocaleString() });
 
         default:
             return value.toLocaleString();
