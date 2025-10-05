@@ -44,7 +44,9 @@ export default class Recipe extends Model {
     }
 
     public hasIncompleteIngredients(): boolean {
-        return this.ingredientsBreakdown.some((breakdown) => !Pantry.ingredient(breakdown)?.nutrition?.calories);
+        return this.ingredientsBreakdown.some(
+            (breakdown) => typeof Pantry.ingredient(breakdown)?.nutrition?.calories === 'undefined',
+        );
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
