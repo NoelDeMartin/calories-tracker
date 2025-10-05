@@ -49,33 +49,40 @@ export interface NutritionixIngredient {
 export class NutritionixService extends Service {
 
     public async getNutrition(ingredient: string): Promise<NutritionixIngredient | undefined> {
-        const foodInGrams = await this.findIngredient(`100g ${ingredient}`);
-        const foodInMilliliters = await this.findIngredient(`100ml ${ingredient}`);
+        try {
+            const foodInGrams = await this.findIngredient(`100g ${ingredient}`);
+            const foodInMilliliters = await this.findIngredient(`100ml ${ingredient}`);
 
-        if (!foodInGrams) {
-            return;
+            if (!foodInGrams) {
+                return;
+            }
+
+            const firstServingWeight = foodInGrams.alt_measures?.[0]?.serving_weight;
+            const firstSeqServingWeight = arraySorted(
+                foodInGrams.alt_measures?.filter(({ seq }) => seq !== null) ?? [],
+                'seq',
+                'asc',
+            )?.[0]?.serving_weight;
+            const servingInGrams = firstSeqServingWeight ?? firstServingWeight ?? 100;
+
+            return {
+                servingInGrams,
+                imageUrl: foodInGrams.photo?.thumb,
+                name: foodInGrams.food_name,
+                calories: foodInGrams.nf_calories ? (foodInGrams.nf_calories / 100) * servingInGrams : 0,
+                protein: foodInGrams.nf_protein ? (foodInGrams.nf_protein / 100) * servingInGrams : 0,
+                carbs: foodInGrams.nf_total_carbohydrate
+                    ? (foodInGrams.nf_total_carbohydrate / 100) * servingInGrams
+                    : 0,
+                fat: foodInGrams.nf_total_fat ? (foodInGrams.nf_total_fat / 100) * servingInGrams : 0,
+                servingInMilliliters: foodInMilliliters?.serving_weight_grams
+                    ? (100 / foodInMilliliters.serving_weight_grams) * servingInGrams
+                    : 0,
+            };
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error(error);
         }
-
-        const firstServingWeight = foodInGrams.alt_measures?.[0]?.serving_weight;
-        const firstSeqServingWeight = arraySorted(
-            foodInGrams.alt_measures?.filter(({ seq }) => seq !== null) ?? [],
-            'seq',
-            'asc',
-        )?.[0]?.serving_weight;
-        const servingInGrams = firstSeqServingWeight ?? firstServingWeight ?? 100;
-
-        return {
-            servingInGrams,
-            imageUrl: foodInGrams.photo?.thumb,
-            name: foodInGrams.food_name,
-            calories: foodInGrams.nf_calories ? (foodInGrams.nf_calories / 100) * servingInGrams : 0,
-            protein: foodInGrams.nf_protein ? (foodInGrams.nf_protein / 100) * servingInGrams : 0,
-            carbs: foodInGrams.nf_total_carbohydrate ? (foodInGrams.nf_total_carbohydrate / 100) * servingInGrams : 0,
-            fat: foodInGrams.nf_total_fat ? (foodInGrams.nf_total_fat / 100) * servingInGrams : 0,
-            servingInMilliliters: foodInMilliliters?.serving_weight_grams
-                ? (100 / foodInMilliliters.serving_weight_grams) * servingInGrams
-                : 0,
-        };
     }
 
     protected async boot(): Promise<void> {
