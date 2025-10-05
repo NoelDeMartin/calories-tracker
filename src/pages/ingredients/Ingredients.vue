@@ -1,5 +1,5 @@
 <template>
-    <Page style="--breakpoint-content: 1400px">
+    <AppPage style="--breakpoint-content: 1400px" :header="$t('ingredients.title')">
         <div class="flex items-center gap-2">
             <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
             <Button @click="$ui.modal(IngredientFormModal)">
@@ -13,9 +13,9 @@
             :lang-key="filter ? 'ingredients.noSearchResults' : 'ingredients.noIngredients'"
         />
 
-        <div v-else class="mt-4 w-full overflow-x-auto rounded-lg border border-gray-200 bg-white">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
+        <div v-else class="mt-4 w-full overflow-x-auto rounded-lg border border-green-200 bg-green-50">
+            <table class="min-w-full divide-y divide-green-200">
+                <thead class="bg-green-100">
                     <tr>
                         <th
                             v-for="column in COLUMNS"
@@ -30,7 +30,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200 bg-white">
+                <tbody class="divide-y divide-green-200 bg-green-50">
                     <tr
                         v-for="{
                             ingredient,
@@ -114,7 +114,7 @@
                 </tbody>
             </table>
         </div>
-    </Page>
+    </AppPage>
 </template>
 
 <script setup lang="ts">

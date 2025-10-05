@@ -1,5 +1,5 @@
 <template>
-    <Page>
+    <AppPage :header="$t('home.title')">
         <NutritionChart v-if="nutrition.calories" :nutrition />
         <Markdown v-else lang-key="logs.empty" class="mx-auto text-center" />
 
@@ -18,7 +18,7 @@
             <i-zondicons-add-outline class="size-4" />
             <span>{{ $t('logs.add') }}</span>
         </Button>
-    </Page>
+    </AppPage>
 </template>
 
 <script setup lang="ts">

@@ -1,6 +1,8 @@
 <template>
-    <Page>
-        <MonthPicker v-model="selectedMonth" />
+    <AppPage>
+        <template #header>
+            <MonthPicker v-model="selectedMonth" />
+        </template>
 
         <div v-if="!emptyMonth" class="relative mt-11 flex h-44 w-full items-end justify-between">
             <div
@@ -83,7 +85,7 @@
                 <MealLog v-for="meal of selectedDayData.meals" :key="meal.url" :meal />
             </div>
         </div>
-    </Page>
+    </AppPage>
 </template>
 
 <script setup lang="ts">

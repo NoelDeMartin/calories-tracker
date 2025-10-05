@@ -4,8 +4,25 @@
 @import '@aerogel/plugin-routing';
 
 @theme {
-    --color-carbs-500: var(--color-green-500);
-    --color-protein-500: var(--color-red-500);
-    --color-fat-500: var(--color-yellow-500);
-    --color-calories-500: var(--color-blue-500);
+    --font-shantell-sans: 'Shantell Sans', sans-serif;
+
+    --spacing-mobile-footer-height: theme('spacing.20');
+
+    --color-primary-50: #effaf3;
+    --color-primary-100: #d8f3e0;
+    --color-primary-200: #b5e5c6;
+    --color-primary-300: #8cd4aa;
+    --color-primary-400: #51b67e;
+    --color-primary-500: #2f9a63;
+    --color-primary-600: #1f7c4e;
+    --color-primary-700: #196340;
+    --color-primary-800: #164f34;
+    --color-primary-900: #13412c;
+    --color-primary-950: #0a2419;
+
+    --color-carbs-500: #8ad7a7;
+    --color-protein-500: #f6947c;
+    --color-fat-500: #f6e491;
+    --color-calories-500: #9ddee5;
+    --color-background: var(--color-primary-50);
 }

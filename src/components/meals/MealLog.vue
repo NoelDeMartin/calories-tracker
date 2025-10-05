@@ -2,7 +2,7 @@
     <div
         :key="meal.id"
         class="flex w-full items-center justify-between rounded-lg p-4"
-        :class="meal.incomplete ? 'bg-red-50' : 'bg-gray-50'"
+        :class="meal.incomplete ? 'bg-red-100' : 'bg-primary-100'"
     >
         <div>
             <h3 v-if="meal.recipe?.name" class="font-medium">
