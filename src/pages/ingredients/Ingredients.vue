@@ -1,5 +1,5 @@
 <template>
-    <Page style="--breakpoint-content: 1200px">
+    <Page style="--breakpoint-content: 1400px">
         <div class="flex items-center gap-2">
             <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
             <Button @click="$ui.modal(IngredientFormModal)">
@@ -32,7 +32,17 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200 bg-white">
                     <tr
-                        v-for="{ ingredient, serving, calories, protein, carbs, fat } of sortedIngredientsSummary"
+                        v-for="{
+                            ingredient,
+                            serving,
+                            calories,
+                            protein,
+                            proteinDensity,
+                            carbs,
+                            carbsDensity,
+                            fat,
+                            fatDensity,
+                        } of sortedIngredientsSummary"
                         :key="ingredient.name"
                     >
                         <td class="flex items-center space-x-2 px-6 py-4 font-medium whitespace-nowrap text-gray-900">
@@ -52,10 +62,19 @@
                             {{ formatNumber(protein, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {{ formatNumber(proteinDensity, { unit: 'grams', fallback: '-' }) }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(carbs, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {{ formatNumber(carbsDensity, { unit: 'grams', fallback: '-' }) }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(fat, { unit: 'grams', fallback: '-' }) }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {{ formatNumber(fatDensity, { unit: 'grams', fallback: '-' }) }}
                         </td>
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <div class="flex space-x-1">
@@ -115,8 +134,11 @@ const COLUMNS: { label: string; field?: DeepKeyOf<UnwrapRef<typeof ingredientsSu
     { label: translate('ingredients.serving'), field: 'serving' },
     { label: translate('ingredients.calories'), field: 'calories' },
     { label: translate('ingredients.protein'), field: 'protein' },
+    { label: translate('ingredients.proteinDensity'), field: 'proteinDensity' },
     { label: translate('ingredients.carbs'), field: 'carbs' },
+    { label: translate('ingredients.carbsDensity'), field: 'carbsDensity' },
     { label: translate('ingredients.fat'), field: 'fat' },
+    { label: translate('ingredients.fatDensity'), field: 'fatDensity' },
     { label: '' },
 ];
 
@@ -140,20 +162,37 @@ const ingredientsSummary = computed(() =>
         }
 
         const multiplier = 100 / ingredient.nutrition.servingInGrams;
+        const calories =
+            typeof ingredient.nutrition.calories === 'number' ? ingredient.nutrition.calories * multiplier : undefined;
 
         return {
             ingredient,
+            calories,
             serving: ingredient.nutrition.servingInGrams,
-            calories:
-                typeof ingredient.nutrition.calories === 'number'
-                    ? ingredient.nutrition.calories * multiplier
-                    : undefined,
             protein:
                 typeof ingredient.nutrition.protein === 'number'
                     ? ingredient.nutrition.protein * multiplier
                     : undefined,
+            proteinDensity:
+                typeof ingredient.nutrition.protein === 'number'
+                    ? typeof calories === 'number'
+                        ? (ingredient.nutrition.protein * multiplier) / (calories / 100)
+                        : undefined
+                    : undefined,
             carbs: typeof ingredient.nutrition.carbs === 'number' ? ingredient.nutrition.carbs * multiplier : undefined,
+            carbsDensity:
+                typeof ingredient.nutrition.carbs === 'number'
+                    ? typeof calories === 'number'
+                        ? (ingredient.nutrition.carbs * multiplier) / (calories / 100)
+                        : undefined
+                    : undefined,
             fat: typeof ingredient.nutrition.fat === 'number' ? ingredient.nutrition.fat * multiplier : undefined,
+            fatDensity:
+                typeof ingredient.nutrition.fat === 'number'
+                    ? typeof calories === 'number'
+                        ? (ingredient.nutrition.fat * multiplier) / (calories / 100)
+                        : undefined
+                    : undefined,
         };
     }));
 const sortedIngredientsSummary = computed(() =>

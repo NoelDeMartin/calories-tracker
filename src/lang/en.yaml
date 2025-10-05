@@ -27,8 +27,11 @@ ingredients:
     calories: Calories (per 100g)
     serving: Serving
     protein: Protein
+    proteinDensity: Protein density
     carbs: Carbs
+    carbsDensity: Carbs density
     fat: Fat
+    fatDensity: Fat density
     add: Add
     edit: Edit
     editTitle: Edit {name}

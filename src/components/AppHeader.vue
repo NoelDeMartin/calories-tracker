@@ -2,7 +2,7 @@
     <header
         v-if="onboarded"
         class="px-edge max-w-screen-content mx-auto flex w-full items-center justify-between gap-2 pt-8"
-        :style="$route.name === 'ingredients' && '--breakpoint-content: 1200px'"
+        :style="$route.name === 'ingredients' && '--breakpoint-content: 1400px'"
     >
         <div>
             <div class="flex flex-row items-center">
