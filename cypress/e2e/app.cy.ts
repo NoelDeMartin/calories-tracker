@@ -42,7 +42,6 @@ describe('App', () => {
         });
 
         // Assert - Ingredients
-        cy.ariaLabel('Navigate').click();
         cy.press('Ingredients');
         cy.see('Wheat Noodles');
         cy.see('Broth');
@@ -168,7 +167,6 @@ describe('App', () => {
         cy.press('Save');
         cy.waitSync();
 
-        cy.ariaLabel('Navigate').click();
         cy.press('History');
         cy.get('.month-picker button').click();
         cy.press('Jan');
@@ -237,7 +235,6 @@ describe('App', () => {
         cy.waitSync();
 
         // Act
-        cy.ariaLabel('Navigate').click();
         cy.press('History');
 
         // Assert
@@ -259,7 +256,6 @@ describe('App', () => {
         cy.solidLogin();
         cy.waitSync();
 
-        cy.ariaLabel('Navigate').click();
         cy.press('Ingredients');
 
         cy.intercept('PATCH', podUrl('/ingredients/*')).as('updateIngredient');
@@ -292,7 +288,6 @@ describe('App', () => {
         cy.solidLogin();
         cy.waitSync();
 
-        cy.ariaLabel('Navigate').click();
         cy.press('Ingredients');
         cy.see('Wheat Noodles');
 
