@@ -115,25 +115,18 @@ import {
 } from '@aerogel/core';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
-import type { Nullable } from '@noeldemartin/utils';
 
+import Cookbook from '@/services/Cookbook';
 import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
 import { parseIngredient } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
-
-interface Nutrition {
-    calories: Nullable<number>;
-    fat: Nullable<number>;
-    protein: Nullable<number>;
-    carbs: Nullable<number>;
-}
+import type { Nutrition } from '@/models/NutritionInformation';
 
 const { close } = useModal();
 const error = ref('');
-const recipes = useModelCollection(Recipe);
 const meals = useModelCollection(Meal);
 
 const mealOptions = computed(() => {
@@ -149,7 +142,7 @@ const mealOptions = computed(() => {
         uniqueMeals.push(meal);
     }
 
-    const recipesAndMeals = (recipes.value as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals);
+    const recipesAndMeals = (Cookbook.recipes as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals);
 
     return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b))).concat({ id: 'new' });
 });

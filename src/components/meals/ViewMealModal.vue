@@ -37,22 +37,18 @@
 </template>
 
 <script setup lang="ts">
-import Recipe from '@/models/Recipe';
-import { useModelCollection } from '@aerogel/plugin-soukai';
+import Cookbook from '@/services/Cookbook';
 import { computed } from 'vue';
-import { map } from '@noeldemartin/utils';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
-const recipes = useModelCollection(Recipe);
-const recipesByUrl = computed(() => map(recipes.value, 'url'));
 const caloriesBreakdown = computed(() => {
     if (meal.recipe?.ingredients?.length) {
         return meal.recipe.getCaloriesBreakdown();
     }
 
-    const recipeUrl = meal.recipe?.externalUrls.find((url) => recipesByUrl.value.get(url));
-    const linkedRecipe = recipeUrl ? recipesByUrl.value.require(recipeUrl) : null;
+    const recipeUrl = meal.recipe?.externalUrls.find((url) => Cookbook.recipesByUrl.get(url));
+    const linkedRecipe = recipeUrl ? Cookbook.recipesByUrl.require(recipeUrl) : null;
     const recipe = linkedRecipe ?? meal.recipe;
     const recipeQuantity = recipe?.servingsBreakdown?.quantity ?? 1;
     const mealQuantity = meal.recipe?.servingsBreakdown?.quantity ?? 1;

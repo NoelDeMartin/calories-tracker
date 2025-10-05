@@ -105,10 +105,10 @@ import {
     useModal,
 } from '@aerogel/core';
 
+import Cookbook from '@/services/Cookbook';
 import Pantry from '@/services/Pantry';
-import Recipe from '@/models/Recipe';
+import type Recipe from '@/models/Recipe';
 import type Meal from '@/models/Meal';
-import { useModelCollection } from '@aerogel/plugin-soukai';
 import { computed, ref } from 'vue';
 import { IngredientUnits, parseIngredient } from '@/utils/ingredients';
 import { getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
@@ -117,9 +117,8 @@ import { formatNumber } from '@/utils/formatting';
 const { meal } = defineProps<{ meal: Meal }>();
 const { close } = useModal();
 const recalculate = ref(false);
-const recipes = useModelCollection(Recipe);
-const initialRecipe = recipes.value.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url));
-const recipesOptions = computed(() => (recipes.value as Array<Recipe | { id: 'none' }>).concat({ id: 'none' }));
+const initialRecipe = Cookbook.recipes.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url));
+const recipesOptions = computed(() => (Cookbook.recipes as Array<Recipe | { id: 'none' }>).concat({ id: 'none' }));
 
 const form = useForm({
     name: requiredStringInput(meal.recipe?.name),

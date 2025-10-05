@@ -1,4 +1,4 @@
-import { round } from '@noeldemartin/utils';
+import { type Nullable, round } from '@noeldemartin/utils';
 import type { BelongsToManyRelation, Relation } from 'soukai';
 
 import Ingredient from '@/models/Ingredient';
@@ -7,6 +7,13 @@ import Recipe from '@/models/Recipe';
 import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './NutritionInformation.schema';
+
+export interface Nutrition {
+    calories: Nullable<number>;
+    fat: Nullable<number>;
+    protein: Nullable<number>;
+    carbs: Nullable<number>;
+}
 
 export type ComputedValues = {
     macroClass: string;

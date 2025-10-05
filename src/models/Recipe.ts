@@ -43,6 +43,10 @@ export default class Recipe extends Model {
         };
     }
 
+    public hasIncompleteIngredients(): boolean {
+        return this.ingredientsBreakdown.some((breakdown) => !Pantry.ingredient(breakdown)?.nutrition?.calories);
+    }
+
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public getCaloriesBreakdown(ingredientsMultiplier: number = 1) {
         return arrayFilter(
