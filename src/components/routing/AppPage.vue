@@ -2,15 +2,17 @@
     <Page>
         <Teleport v-if="$ui.mobile" :to="appHeader">
             <slot v-if="$slots.header" name="header" />
-            <h1 v-else class="mb-4 text-2xl font-bold">
+            <h1 v-else-if="header" class="text-2xl font-bold">
                 {{ header }}
             </h1>
         </Teleport>
 
-        <slot v-else-if="$slots.header" name="header" />
-        <h1 v-else class="mb-4 text-2xl font-bold">
-            {{ header }}
-        </h1>
+        <div v-else class="mb-4">
+            <slot v-if="$slots.header" name="header" />
+            <h1 v-else-if="header" class="text-2xl font-bold">
+                {{ header }}
+            </h1>
+        </div>
 
         <slot />
     </Page>
