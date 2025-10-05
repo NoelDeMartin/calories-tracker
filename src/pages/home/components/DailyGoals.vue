@@ -11,6 +11,7 @@
         />
         <DailyGoalsGoal
             v-if="$goals.protein"
+            min
             label="Protein"
             units="g"
             :current="totalProtein"
@@ -20,6 +21,7 @@
         />
         <DailyGoalsGoal
             v-if="$goals.carbs"
+            min
             label="Carbs"
             units="g"
             :current="totalCarbs"
@@ -29,6 +31,7 @@
         />
         <DailyGoalsGoal
             v-if="$goals.fat"
+            min
             label="Fat"
             units="g"
             :current="totalFat"

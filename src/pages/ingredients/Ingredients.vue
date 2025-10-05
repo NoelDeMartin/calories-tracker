@@ -50,7 +50,7 @@
                                 :class="ingredient.nutrition?.macroClass ?? 'bg-gray-400'"
                                 class="h-3 w-3 rounded-full"
                             />
-                            <span>{{ ingredient.name }}</span>
+                            <Markdown :text="ingredient.name" inline />
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-500">
                             {{ formatNumber(serving, { unit: 'grams', fallback: '-' }) }}

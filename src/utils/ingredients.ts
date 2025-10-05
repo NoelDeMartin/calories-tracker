@@ -1,4 +1,7 @@
-import { compare, objectWithoutEmpty } from '@noeldemartin/utils';
+import Meal from '@/models/Meal';
+import { compare, isInstanceOf, objectWithoutEmpty } from '@noeldemartin/utils';
+import type Recipe from '@/models/Recipe';
+import type { MealIngredient } from '@/utils/meals';
 
 export type IngredientQuantity = number | [number, number];
 
@@ -159,6 +162,30 @@ function parseIngredientQuantity(
         : parseQuantityString(quantity);
 
     return QUANTITY_PARSERS[unit?.trim().toLowerCase() ?? '']?.(parsedQuantity, unit) ?? [parsedQuantity];
+}
+
+export function parseMealIngredients(meal: Meal | Recipe): MealIngredient[] {
+    return (
+        (isInstanceOf(meal, Meal) ? meal.recipe : meal)?.ingredientsBreakdown?.map(({ template, quantity, unit }) => ({
+            name: template
+                .replace('{quantity}', '')
+                .trim()
+                .replace(/\s*\(optional\)/, ''),
+            quantity: typeof quantity === 'number' ? quantity : 1,
+            unit: unit ?? 'servings',
+        })) ?? []
+    );
+}
+
+export function parseIngredientName(ingredient: string | IngredientBreakdown): string {
+    const breakdown = typeof ingredient === 'string' ? parseIngredient(ingredient) : ingredient;
+
+    return breakdown.template
+        .replace('{quantity}', '')
+        .trim()
+        .replace(/\s*\(optional\)/, '')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
 }
 
 export function parseIngredient(ingredient: string): IngredientBreakdown {

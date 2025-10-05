@@ -9,61 +9,66 @@
                 :render-option="renderMeal"
                 :compare-options="(a, b) => a.id === b.id"
             />
+
             <Select
                 v-if="isInstanceOf(form.meal, Recipe)"
                 name="servings"
                 :options="servingsOptions"
                 :render-option="renderServing"
             />
+
             <Input
-                v-else-if="isInstanceOf(form.meal, Meal)"
+                v-if="form.servings === -1 || isInstanceOf(form.meal, Meal)"
                 name="mealServings"
                 step="0.1"
                 :placeholder="$t('logs.mealServings')"
             />
-            <template v-else>
-                <Input name="name" :placeholder="$t('logs.mealName')" required />
 
-                <ul class="space-y-2 overflow-y-auto" :class="{ hidden: mealIngredients.length === 0 }">
-                    <li class="grid grid-cols-1 gap-2">
-                        <div v-for="(mealIngredient, index) in mealIngredients" :key="index" class="flex space-x-2">
-                            <Input
-                                v-model="mealIngredient.name"
-                                class="flex-1"
-                                list="ingredient-names"
-                                :placeholder="$t('logs.mealIngredientName')"
-                            />
-                            <Input
-                                :id="`ingredients-${index}-quantity`"
-                                v-model="mealIngredient.quantity"
-                                type="number"
-                                step="0.1"
-                                class="w-20"
-                            />
-                            <Select
-                                v-model="mealIngredient.unit"
-                                :options="mealIngredientUnits"
-                                :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
-                            />
-                            <Button variant="ghost" class="text-red-500" @click="mealIngredients.splice(index, 1)">
-                                <i-lucide-trash2 class="size-4" />
-                            </Button>
-                        </div>
-                    </li>
-                </ul>
-            </template>
+            <Input
+                v-if="form.meal.id === 'new'"
+                name="name"
+                :placeholder="$t('logs.mealName')"
+                required
+            />
+
+            <ul
+                v-if="form.meal.id === 'new' || customizeIngredients"
+                class="space-y-2 overflow-y-auto"
+                :class="{ hidden: mealIngredients.length === 0 }"
+            >
+                <li class="grid grid-cols-1 gap-2">
+                    <div v-for="(mealIngredient, index) in mealIngredients" :key="index" class="flex space-x-2">
+                        <Input
+                            v-model="mealIngredient.name"
+                            class="flex-1"
+                            list="ingredient-names"
+                            :placeholder="$t('logs.mealIngredientName')"
+                        />
+                        <Input
+                            :id="`ingredients-${index}-quantity`"
+                            v-model="mealIngredient.quantity"
+                            type="number"
+                            step="0.1"
+                            class="w-20"
+                        />
+                        <Select
+                            v-model="mealIngredient.unit"
+                            :options="mealIngredientUnits"
+                            :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
+                        />
+                        <Button
+                            :id="`ingredients-${index}-delete`"
+                            variant="ghost"
+                            class="text-red-500"
+                            @click="mealIngredients.splice(index, 1)"
+                        >
+                            <i-lucide-trash2 class="size-4" />
+                        </Button>
+                    </div>
+                </li>
+            </ul>
 
             <Input name="consumedAt" type="datetime-local" />
-
-            <template v-if="totalCalories">
-                <span class="self-end text-sm text-gray-600">
-                    {{ $t('logs.totalCalories') }}: {{ formatNumber(totalCalories, 'calories') }}
-                </span>
-
-                <Details v-if="caloriesBreakdown?.length" :label="$t('logs.viewBreakdown')" class="overflow-y-auto">
-                    <CaloriesBreakdown :breakdown="caloriesBreakdown" />
-                </Details>
-            </template>
 
             <datalist v-if="!e2e" id="ingredient-names">
                 <option v-for="ingredient in $pantry.ingredients" :key="ingredient.id" :value="ingredient.name" />
@@ -74,13 +79,25 @@
             </div>
 
             <Button
-                v-if="form.meal.id === 'new'"
+                v-if="form.meal.id === 'new' || customizeIngredients"
                 variant="secondary"
                 class="w-full"
                 @click="mealIngredients.push({ name: '', quantity: 100, unit: 'grams' })"
             >
                 {{ $t('logs.addIngredient') }}
             </Button>
+
+            <Checkbox v-model="customizeIngredients" :label="$t('logs.mealIngredientsCustom')" />
+
+            <template v-if="totalCalories">
+                <span class="self-end text-sm text-gray-600">
+                    {{ $t('logs.totalCalories') }}: {{ formatNumber(totalCalories, 'calories') }}
+                </span>
+
+                <Details v-if="caloriesBreakdown?.length" :label="$t('logs.viewBreakdown')" class="overflow-y-auto">
+                    <CaloriesBreakdown :breakdown="caloriesBreakdown" />
+                </Details>
+            </template>
 
             <div class="grow" />
 
@@ -121,13 +138,14 @@ import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
-import { parseIngredient } from '@/utils/ingredients';
+import { parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
 import type { Nutrition } from '@/models/NutritionInformation';
 
 const { close } = useModal();
 const error = ref('');
 const meals = useModelCollection(Meal);
+const customizeIngredients = ref(false);
 
 const mealOptions = computed(() => {
     const mealNames = new Set<string>();
@@ -155,8 +173,15 @@ const form = useForm({
     consumedAt: requiredDateInput(new Date()),
 });
 const mealIngredients = ref<MealIngredient[]>([]);
-const renderServing = computed(() =>
-    form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString);
+const renderServing = computed(() => (value: number) => {
+    if (value === -1) {
+        return translate('logs.mealServingsCustom');
+    }
+
+    const render = form.meal instanceof Recipe ? (form.meal.servingsBreakdown?.renderQuantity ?? toString) : toString;
+
+    return render(value);
+});
 const servingsOptions = computed(() => {
     if (!isInstanceOf(form.meal, Recipe)) {
         return [];
@@ -166,7 +191,9 @@ const servingsOptions = computed(() => {
     const defaultQuantity = servingsBreakdown?.quantity ?? 1;
 
     if (!servingsBreakdown) {
-        return range(10).map((quantity) => quantity + 1);
+        return range(10)
+            .map((quantity) => quantity + 1)
+            .concat(-1);
     }
 
     return arraySorted(
@@ -177,7 +204,7 @@ const servingsOptions = computed(() => {
             defaultQuantity,
         ]),
         (a, b) => (a > b ? 1 : -1),
-    );
+    ).concat(-1);
 });
 const caloriesBreakdown = computed(() => {
     if (isNewMeal(form.meal)) {
@@ -185,7 +212,11 @@ const caloriesBreakdown = computed(() => {
     }
 
     const recipe = isInstanceOf(form.meal, Recipe) ? form.meal : form.meal.recipe;
-    const servings = isInstanceOf(form.meal, Recipe) ? form.servings : form.mealServings;
+    const servings = isInstanceOf(form.meal, Recipe)
+        ? form.servings === -1
+            ? form.mealServings
+            : form.servings
+        : form.mealServings;
     const originalServings = recipe?.servingsBreakdown?.quantity ?? 1;
     const ingredientsMultiplier = servings ? servings / (originalServings ?? 1) : 1;
 
@@ -196,18 +227,21 @@ const totalCalories = computed(() =>
 
 const e2e = isTesting('e2e');
 
-watch(
-    () => form.meal,
-    () => {
-        if (!isInstanceOf(form.meal, Recipe)) {
-            return;
-        }
+function updateServingsAndIngredients() {
+    if (!isInstanceOf(form.meal, Recipe)) {
+        mealIngredients.value =
+            customizeIngredients.value && !isNewMeal(form.meal) ? parseMealIngredients(form.meal) : [];
 
-        const defaultQuantity = form.meal.servingsBreakdown?.quantity ?? 1;
-        form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
-    },
-    { immediate: true },
-);
+        return;
+    }
+
+    const defaultQuantity = form.meal.servingsBreakdown?.quantity ?? 1;
+    form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
+    mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal) : [];
+}
+
+watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
+watch(customizeIngredients, updateServingsAndIngredients);
 
 function isNewMeal(meal: Recipe | Meal | { id: 'new' }): meal is { id: 'new' } {
     return meal.id === 'new';
@@ -255,6 +289,7 @@ function applyIngredientNutrition(
     nutrition[property] ??= 0;
     nutrition[property] += ingredient[property];
 }
+
 function ingredientNotFound(name: string) {
     // eslint-disable-next-line no-console
     console.warn(`Cannot calculate nutrition for ingredient: ${name}`);
@@ -264,14 +299,34 @@ function ingredientNotFound(name: string) {
     });
 }
 
+async function renderIngredients(): Promise<string[]> {
+    const renderedIngredients = mealIngredients.value.map((ingredient) => {
+        switch (ingredient.unit) {
+            case 'grams':
+                return `${ingredient.quantity}g ${ingredient.name}`;
+            case 'milliliters':
+                return `${ingredient.quantity}ml ${ingredient.name}`;
+            case 'servings':
+                return `${ingredient.quantity} ${ingredient.name}`;
+        }
+    });
+
+    for (const ingredient of renderedIngredients) {
+        await Pantry.resolveIngredient(parseIngredient(ingredient));
+    }
+
+    return renderedIngredients;
+}
+
 async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
     for (const breakdown of recipe.ingredientsBreakdown) {
         await Pantry.resolveIngredient(breakdown);
     }
 
     const originalServings = recipe.servingsBreakdown?.quantity;
-    const ingredientsMultiplier = form.servings ? form.servings / (originalServings ?? 1) : 1;
-
+    const ingredientsMultiplier = form.servings
+        ? (form.servings === -1 ? (form.mealServings ?? 1) : form.servings) / (originalServings ?? 1)
+        : 1;
     const breakdown = recipe.getCaloriesBreakdown(ingredientsMultiplier);
     const nutrition: Nutrition = {
         calories: null,
@@ -303,16 +358,6 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
 
 async function logNewMeal() {
     const { name } = form;
-    const renderedIngredients = mealIngredients.value.map((ingredient) => {
-        switch (ingredient.unit) {
-            case 'grams':
-                return `${ingredient.quantity}g ${ingredient.name}`;
-            case 'milliliters':
-                return `${ingredient.quantity}ml ${ingredient.name}`;
-            case 'servings':
-                return `${ingredient.quantity} ${ingredient.name}`;
-        }
-    });
 
     name || form.setFieldErrors('name', ['required']);
 
@@ -327,9 +372,7 @@ async function logNewMeal() {
             message: translate('logs.adding'),
         },
         async () => {
-            for (const ingredient of renderedIngredients) {
-                await Pantry.resolveIngredient(parseIngredient(ingredient));
-            }
+            const renderedIngredients = await renderIngredients();
 
             await createMeal(
                 name,
@@ -363,10 +406,13 @@ async function logMeal(meal: Meal) {
                 carbs: meal.recipe?.nutrition?.carbs ? meal.recipe?.nutrition?.carbs * servings : 0,
                 fat: meal.recipe?.nutrition?.fat ? meal.recipe?.nutrition?.fat * servings : 0,
             };
+            const ingredients = customizeIngredients.value
+                ? await renderIngredients()
+                : caloriesBreakdown.value?.map((ingredient) => ingredient.name);
 
             await createMeal(required(meal.recipe?.name), nutrition, {
                 servings: servings !== 1 ? formatNumber(servings) : undefined,
-                ingredients: caloriesBreakdown.value?.map((ingredient) => ingredient.name),
+                ingredients,
             });
         },
     );
@@ -381,15 +427,19 @@ async function logRecipe(recipe: Recipe) {
         },
         async () => {
             const nutrition = await calculateRecipeNutrition(recipe);
+            const renderedIngredients = customizeIngredients.value ? await renderIngredients() : undefined;
 
             await createMeal(recipe.name, nutrition, {
                 servings:
                     form.servings && recipe.servingsBreakdown
-                        ? recipe.servingsBreakdown.renderQuantity(form.servings)
+                        ? form.servings === -1
+                            ? recipe.servingsBreakdown.renderQuantity(form.mealServings ?? 1)
+                            : recipe.servingsBreakdown.renderQuantity(form.servings)
                         : form.servings !== 1
                             ? (form.servings ?? recipe.servings)?.toString()
                             : undefined,
                 externalUrls: [recipe.url],
+                ingredients: renderedIngredients,
             });
         },
     );

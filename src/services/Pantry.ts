@@ -3,7 +3,7 @@ import { trackModels } from '@aerogel/plugin-soukai';
 
 import Nutritionix from '@/services/Nutritionix';
 import Ingredient from '@/models/Ingredient';
-import type { IngredientBreakdown } from '@/utils/ingredients';
+import { type IngredientBreakdown, parseIngredientName } from '@/utils/ingredients';
 
 import Service from './Pantry.state';
 
@@ -18,26 +18,11 @@ export class PantryService extends Service {
     }
 
     public ingredient(nameOrBreakdown: string | IngredientBreakdown): Ingredient | undefined {
-        const name =
-            typeof nameOrBreakdown === 'string'
-                ? nameOrBreakdown
-                : nameOrBreakdown.template
-                    .replace('{quantity}', '')
-                    .trim()
-                    .replace(/\s*\(optional\)/, '');
-
-        return this.ingredientsBySlug.get(stringToSlug(name));
+        return this.ingredientsBySlug.get(stringToSlug(parseIngredientName(nameOrBreakdown)));
     }
 
     public async resolveIngredient(nameOrBreakdown: IngredientBreakdown): Promise<Ingredient> {
-        const name =
-            typeof nameOrBreakdown === 'string'
-                ? nameOrBreakdown
-                : nameOrBreakdown.template
-                    .replace('{quantity}', '')
-                    .trim()
-                    .replace(/\s*\(optional\)/, '');
-
+        const name = parseIngredientName(nameOrBreakdown);
         const slug = stringToSlug(name);
 
         if (this.ingredientsBySlug.has(slug)) {

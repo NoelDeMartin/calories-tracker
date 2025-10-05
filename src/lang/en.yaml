@@ -61,6 +61,7 @@ logs:
     mealRecipeView: View recipe
     mealIngredients: Ingredients
     mealServings: Servings
+    mealServingsCustom: Something else
     mealCalories: Calories (kcal)
     mealProtein: Protein (g)
     mealCarbs: Carbs (g)
@@ -71,6 +72,7 @@ logs:
         grams: Grams
         milliliters: Milliliters
         servings: Servings
+    mealIngredientsCustom: Customize ingredients
     mealConsumedAt: Consumed at
     add: Log meal
     addNew: New recipe
@@ -83,6 +85,7 @@ logs:
     delete: Delete meal
     deleteConfirm: Delete {name}?
     viewBreakdown: View calories breakdown
+    view: View {name}
     noRecipe: None
     totalCalories: Total
 

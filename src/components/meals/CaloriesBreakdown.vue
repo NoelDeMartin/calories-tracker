@@ -3,7 +3,7 @@
         <tr v-for="(ingredient, index) in sortedBreakdown" :key="index" class="border-b border-gray-200">
             <td class="flex items-center space-x-3 py-2">
                 <div :class="ingredient.macroClass ?? 'bg-gray-400'" class="h-3 w-3 rounded-full" />
-                <span class="text-sm">{{ ingredient.name }}</span>
+                <Markdown class="text-sm" :text="ingredient.name" inline />
             </td>
             <td class="text-right text-sm text-gray-600">
                 <span>{{ formatNumber(ingredient.calories, 'calories') }}</span>

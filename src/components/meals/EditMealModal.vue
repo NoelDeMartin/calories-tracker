@@ -110,7 +110,7 @@ import Pantry from '@/services/Pantry';
 import type Recipe from '@/models/Recipe';
 import type Meal from '@/models/Meal';
 import { computed, ref } from 'vue';
-import { IngredientUnits, parseIngredient } from '@/utils/ingredients';
+import { IngredientUnits, parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
 import { formatNumber } from '@/utils/formatting';
 
@@ -132,14 +132,7 @@ const form = useForm({
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
 const mealIngredients = ref<{ name: string; quantity: number; unit: (typeof ingredientUnitOptions.value)[number] }[]>(
-    meal.recipe?.ingredientsBreakdown?.map(({ template, quantity, unit }) => ({
-        name: template
-            .replace('{quantity}', '')
-            .trim()
-            .replace(/\s*\(optional\)/, ''),
-        quantity: typeof quantity === 'number' ? quantity : 1,
-        unit: unit ?? 'servings',
-    })) ?? []);
+    parseMealIngredients(meal));
 const e2e = isTesting('e2e');
 
 const caloriesBreakdown = computed(() => getMealIngredientsCaloriesBreakdown(mealIngredients.value));

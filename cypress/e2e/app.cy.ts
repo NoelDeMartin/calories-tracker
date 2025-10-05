@@ -86,6 +86,34 @@ describe('App', () => {
         });
     });
 
+    it('Logs recipes with customized ingredients', () => {
+        // Arrange
+        setupAccount();
+
+        cy.solidLogin();
+        cy.waitSync();
+
+        cy.intercept('PATCH', podUrl('/meals/*')).as('createMeal');
+        cy.intercept('PATCH', podUrl('/ingredients/*')).as('createIngredient');
+
+        // Act
+        cy.press('Log meal');
+        cy.press('Customize ingredients');
+        cy.get('#ingredients-2-delete').click();
+        cy.press('Add ingredient');
+        cy.get('input[list="ingredient-names"]').last().type('Eggs');
+        cy.get('#ingredients-2-quantity').clear().type('50');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        // Assert
+        cy.see('Ramen');
+
+        cy.ariaLabel('View Ramen').click();
+        cy.see('Eggs');
+        cy.dontSee('Toppings');
+    });
+
     it('Logs meals', () => {
         // Arrange
         setupAccount({

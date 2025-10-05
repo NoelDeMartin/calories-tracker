@@ -2,7 +2,9 @@
     <div>
         <div class="flex justify-between text-sm font-medium">
             <span>{{ label }}</span>
-            <span :class="{ 'text-red-700': current > goal }"> {{ current }} / {{ goal }} {{ units }} </span>
+            <span :class="{ 'text-red-700': min ? current < goal : current > goal }">
+                {{ current }} / {{ goal }} {{ units }}
+            </span>
         </div>
         <div class="mt-1 h-2 rounded-full bg-gray-200">
             <ProgressBar
@@ -22,6 +24,7 @@ defineProps<{
     units: string;
     current: number;
     goal: number;
+    min?: boolean;
     barFilledClass?: HTMLAttributes['class'];
     barOverflowClass?: HTMLAttributes['class'];
 }>();

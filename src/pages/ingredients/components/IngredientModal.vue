@@ -6,7 +6,7 @@
             </div>
             <div class="flex flex-col">
                 <h1 class="text-2xl font-bold text-gray-900">
-                    {{ ingredient.name }}
+                    <Markdown :text="ingredient.name" inline />
                 </h1>
                 <div v-if="ingredient.aliases?.length" class="text-xs text-gray-600">
                     {{ $t('ingredients.aliases') }}: {{ ingredient.aliases.join(', ') }}

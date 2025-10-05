@@ -24,6 +24,8 @@
                 size="icon"
                 variant="ghost"
                 class="text-gray-400 transition-colors hover:text-green-500"
+                :aria-label="$t('logs.view', { name: meal.recipe?.name })"
+                :title="$t('logs.view', { name: meal.recipe?.name })"
                 @click="$ui.modal(ViewMealModal, { meal })"
             >
                 <i-lucide-eye class="size-4" />
