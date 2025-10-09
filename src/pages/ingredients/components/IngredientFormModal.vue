@@ -45,6 +45,8 @@
                 </Button>
             </div>
 
+            <Checkbox v-model="recalculateMealsNutrition" :label="$t('ingredients.recalculateMealsNutrition')" />
+
             <div class="grow" />
 
             <div class="mt-4 flex justify-end space-x-2">
@@ -65,6 +67,8 @@ import { arrayFilter, round, validUrl } from '@noeldemartin/utils';
 import { numberInput, requiredStringInput, stringInput, useForm, useModal } from '@aerogel/core';
 
 import Ingredient from '@/models/Ingredient';
+import { getIngredientMeals, getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
+import { parseMealIngredients } from '@/utils/ingredients';
 
 const { ingredient } = defineProps<{ ingredient?: Ingredient }>();
 const { close } = useModal();
@@ -81,6 +85,7 @@ const form = useForm({
     fat: numberInput(ingredient?.nutrition?.fat),
 });
 
+const recalculateMealsNutrition = ref(false);
 const aliases = ref<string[]>(ingredient?.aliases.slice(0) ?? []);
 const externalUrls = ref<string[]>(ingredient?.externalUrls.slice(0) ?? []);
 
@@ -117,5 +122,41 @@ async function submit() {
         aliases: arrayFilter(aliases.value.map((alias) => alias.trim())),
         externalUrls: arrayFilter(externalUrls.value.map((url) => validUrl(url))),
     });
+
+    if (recalculateMealsNutrition.value) {
+        const meals = getIngredientMeals(model);
+
+        for (const meal of meals) {
+            const mealIngredients = parseMealIngredients(meal);
+            const caloriesBreakdown = getMealIngredientsCaloriesBreakdown(mealIngredients);
+
+            await meal.recipe?.nutrition?.update({
+                rawCalories: `${round(
+                    caloriesBreakdown.reduce(
+                        (total, breakdownIngredient) => total + (breakdownIngredient.calories ?? 0),
+                        0,
+                    ),
+                )} calories`,
+                rawProtein: `${round(
+                    caloriesBreakdown.reduce(
+                        (total, breakdownIngredient) => total + (breakdownIngredient.protein ?? 0),
+                        0,
+                    ),
+                    2,
+                )} grams`,
+                rawCarbs: `${round(
+                    caloriesBreakdown.reduce(
+                        (total, breakdownIngredient) => total + (breakdownIngredient.carbs ?? 0),
+                        0,
+                    ),
+                    2,
+                )} grams`,
+                rawFat: `${round(
+                    caloriesBreakdown.reduce((total, breakdownIngredient) => total + (breakdownIngredient.fat ?? 0), 0),
+                    2,
+                )} grams`,
+            });
+        }
+    }
 }
 </script>

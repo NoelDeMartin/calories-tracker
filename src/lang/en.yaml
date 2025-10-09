@@ -47,6 +47,8 @@ ingredients:
     delete: Delete {name}
     deleteConfirm: Delete {name}?
     view: View {name}
+    meals: Meals
+    recalculateMealsNutrition: Recalculate meals nutrition
     nutrition: Nutrition
     servingGrams: Serving (in grams)
     servingMilliliters: Serving (in milliliters)

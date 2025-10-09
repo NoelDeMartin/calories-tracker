@@ -94,12 +94,29 @@
                 </div>
             </div>
         </template>
+
+        <Details
+            v-if="sortedIngredientMeals.length"
+            :label="$t('ingredients.meals')"
+            content-class="pl-0 w-full space-y-4"
+        >
+            <MealLog v-for="meal of sortedIngredientMeals" :key="meal.url" :meal />
+        </Details>
     </Modal>
 </template>
 
 <script setup lang="ts">
+import Meal from '@/models/Meal';
+import { computed } from 'vue';
+import { computedModels, useModelCollection } from '@aerogel/plugin-soukai';
 import { formatNumber } from '@/utils/formatting';
+import { getIngredientMeals, sortedMeals } from '@/utils/meals';
+import { ingredientSlugs } from '@/utils/ingredients';
 import type Ingredient from '@/models/Ingredient';
 
 const { ingredient } = defineProps<{ ingredient: Ingredient }>();
+const meals = useModelCollection(Meal);
+const slugs = computed(() => ingredientSlugs(ingredient));
+const ingredientMeals = computedModels(Meal, () => getIngredientMeals(slugs.value, meals.value));
+const sortedIngredientMeals = computed(() => sortedMeals(ingredientMeals.value));
 </script>

@@ -1,8 +1,11 @@
+import Cookbook from '@/services/Cookbook';
+import Meal from '@/models/Meal';
 import Pantry from '@/services/Pantry';
-import { arrayFilter, arraySorted } from '@noeldemartin/utils';
-import { IngredientUnits } from '@/utils/ingredients';
-import type Meal from '@/models/Meal';
+import { IngredientUnits, ingredientSlugs, parseIngredientName } from '@/utils/ingredients';
+import { getTrackedModels } from '@aerogel/plugin-soukai';
+import { type Slug, arrayFilter, arraySorted, stringToSlug } from '@noeldemartin/utils';
 import type { CaloriesBreakdown } from '@/models/Recipe';
+import type Ingredient from '@/models/Ingredient';
 
 export const mealIngredientUnits = [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const;
 export type MealIngredientUnit = (typeof mealIngredientUnits)[number];
@@ -18,6 +21,21 @@ export function sortedMeals(meals: Meal[]): Meal[] {
         meals,
         (a, b) => (a.consumedAt ?? a.createdAt).getTime() - (b.consumedAt ?? b.createdAt).getTime(),
     );
+}
+
+export function getIngredientMeals(ingredientOrSlugs: Ingredient | Set<Slug>, meals?: Meal[]): Meal[] {
+    const slugs = ingredientOrSlugs instanceof Set ? ingredientOrSlugs : ingredientSlugs(ingredientOrSlugs);
+    meals ??= getTrackedModels(Meal);
+
+    return meals.filter((meal) => {
+        const ingredients =
+            meal.recipe && meal.recipe.ingredients.length > 0
+                ? meal.recipe?.ingredientsBreakdown
+                : Cookbook.recipes.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url))
+                    ?.ingredientsBreakdown;
+
+        return ingredients?.some((recipeIngredient) => slugs.has(stringToSlug(parseIngredientName(recipeIngredient))));
+    });
 }
 
 export function getMealIngredientsCaloriesBreakdown(ingredients: MealIngredient[]): CaloriesBreakdown {

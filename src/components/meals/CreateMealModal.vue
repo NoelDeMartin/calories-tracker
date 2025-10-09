@@ -87,7 +87,11 @@
                 {{ $t('logs.addIngredient') }}
             </Button>
 
-            <Checkbox v-model="customizeIngredients" :label="$t('logs.mealIngredientsCustom')" />
+            <Checkbox
+                v-if="form.meal.id !== 'new'"
+                v-model="customizeIngredients"
+                :label="$t('logs.mealIngredientsCustom')"
+            />
 
             <template v-if="totalCalories">
                 <span class="self-end text-sm text-gray-600">

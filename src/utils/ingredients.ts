@@ -1,7 +1,8 @@
 import Meal from '@/models/Meal';
-import { compare, isInstanceOf, objectWithoutEmpty } from '@noeldemartin/utils';
+import { type Slug, compare, isInstanceOf, objectWithoutEmpty, stringToSlug } from '@noeldemartin/utils';
 import type Recipe from '@/models/Recipe';
 import type { MealIngredient } from '@/utils/meals';
+import type Ingredient from '@/models/Ingredient';
 
 export type IngredientQuantity = number | [number, number];
 
@@ -162,6 +163,30 @@ function parseIngredientQuantity(
         : parseQuantityString(quantity);
 
     return QUANTITY_PARSERS[unit?.trim().toLowerCase() ?? '']?.(parsedQuantity, unit) ?? [parsedQuantity];
+}
+
+export function ingredientSlugs(ingredient: Ingredient): Set<Slug> {
+    const values = new Set<Slug>();
+    const slugs = (text: string) => {
+        const singularSlug = stringToSlug(text).replace(/s$/, '') as Slug;
+        const pluralSlug = `${singularSlug}s` as Slug;
+
+        return [singularSlug, pluralSlug];
+    };
+    const addSlug = (name: string) => {
+        const [singularSlug, pluralSlug] = slugs(name);
+
+        values.add(singularSlug);
+        values.add(pluralSlug);
+    };
+
+    addSlug(ingredient.name);
+
+    for (const alias of ingredient.aliases) {
+        addSlug(alias);
+    }
+
+    return values;
 }
 
 export function parseMealIngredients(meal: Meal | Recipe): MealIngredient[] {
