@@ -4,6 +4,7 @@
         "baseUrl": ".",
         "module": "ESNext",
         "moduleResolution": "Bundler",
+        "types": ["unplugin-icons/types/vue3"],
         "paths": {
             "@/*": ["./src/*"]
         }

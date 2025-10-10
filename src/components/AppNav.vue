@@ -20,7 +20,7 @@ import { translate } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
 import { computed } from 'vue';
 
-const ROUTES = ['home', 'history', 'ingredients'];
+const ROUTES = ['home', 'history', 'ingredients', 'insights'];
 const images = import.meta.glob('@/assets/img/nav/*.png', { eager: true }) as Record<string, { default: string }>;
 const sections = computed(() => {
     const currentRoute = Router.currentRoute.value?.name;

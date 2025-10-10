@@ -91,6 +91,16 @@ logs:
     noRecipe: None
     totalCalories: Total
 
+insights:
+    title: Insights
+    incompleteMeals: There is one incomplete meal|There are {n} incomplete meals
+    weeks: Calories by week
+    week: Week average
+    calories: Energy
+    carbs: Carbs
+    protein: Protein
+    fat: Fat
+
 units:
     calories: '{n} kcal'
     grams: '{n}g'

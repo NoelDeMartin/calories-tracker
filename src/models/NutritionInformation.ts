@@ -4,6 +4,7 @@ import type { BelongsToManyRelation, Relation } from 'soukai';
 import Ingredient from '@/models/Ingredient';
 import Meal from '@/models/Meal';
 import Recipe from '@/models/Recipe';
+import { getMacrosCalories } from '@/utils/nutrition';
 import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './NutritionInformation.schema';
@@ -166,17 +167,19 @@ export default class NutritionInformation extends Model {
             ? parseFloat(millilitersServing.replace('milliliters', '').trim())
             : undefined;
 
-        const atwaterProtein = (protein ?? 0) * 4;
-        const atwaterCarbs = (carbs ?? 0) * 4;
-        const atwaterFat = (fat ?? 0) * 9;
-        const maxCalories = Math.max(atwaterProtein, atwaterCarbs, atwaterFat);
+        const macrosCalories = getMacrosCalories({ protein, carbs, fat });
+        const maxCalories = Math.max(
+            macrosCalories.proteinPercentage,
+            macrosCalories.carbsPercentage,
+            macrosCalories.fatPercentage,
+        );
         const macroClass =
             typeof protein !== 'number' && typeof carbs !== 'number' && typeof fat !== 'number'
                 ? 'bg-gray-400'
                 : {
-                    [atwaterProtein]: 'bg-protein-500',
-                    [atwaterCarbs]: 'bg-carbs-500',
-                    [atwaterFat]: 'bg-fat-500',
+                    [macrosCalories.proteinPercentage]: 'bg-protein-500',
+                    [macrosCalories.carbsPercentage]: 'bg-carbs-500',
+                    [macrosCalories.fatPercentage]: 'bg-fat-500',
                 }[maxCalories];
 
         return {

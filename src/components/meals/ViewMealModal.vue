@@ -37,22 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import Cookbook from '@/services/Cookbook';
 import { computed } from 'vue';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
-const caloriesBreakdown = computed(() => {
-    if (meal.recipe?.ingredients?.length) {
-        return meal.recipe.getCaloriesBreakdown();
-    }
-
-    const recipeUrl = meal.recipe?.externalUrls.find((url) => Cookbook.recipesByUrl.get(url));
-    const linkedRecipe = recipeUrl ? Cookbook.recipesByUrl.require(recipeUrl) : null;
-    const recipe = linkedRecipe ?? meal.recipe;
-    const recipeQuantity = recipe?.servingsBreakdown?.quantity ?? 1;
-    const mealQuantity = meal.recipe?.servingsBreakdown?.quantity ?? 1;
-
-    return recipe?.getCaloriesBreakdown(mealQuantity / recipeQuantity);
-});
+const caloriesBreakdown = computed(() => meal.getCaloriesBreakdown());
 </script>

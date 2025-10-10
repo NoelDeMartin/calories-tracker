@@ -362,6 +362,32 @@ describe('App', () => {
         cy.see('0 / 112 g');
     });
 
+    it('Shows insights', () => {
+        // Arrange
+        setupAccount();
+
+        cy.solidLogin();
+        cy.waitSync();
+
+        cy.press('Log meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        cy.press('Log meal');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.waitSync();
+
+        // Act
+        cy.press('Insights');
+
+        // Assert
+        cy.see('There are 2 incomplete meals');
+        cy.see('1,077 kcal');
+        cy.see('54g');
+        cy.see('20g');
+        cy.see('180g');
+    });
+
 });
 
 function setupAccount(options: { ingredients?: string[] } = {}) {

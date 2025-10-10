@@ -97,6 +97,7 @@ import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 import { formatNumber } from '@/utils/formatting';
 import { sortedMeals } from '@/utils/meals';
+import { getMacrosCalories } from '@/utils/nutrition';
 
 interface Macros {
     protein: number;
@@ -158,17 +159,9 @@ const history = computed(() =>
             const macros = macrosByDay.value[day];
             const weekday = new Date(selectedMonth.value.year, selectedMonth.value.month, day).toLocaleDateString(
                 undefined,
-                {
-                    weekday: 'short',
-                },
+                { weekday: 'short' },
             );
-
-            // Calculate atwater macros
-            // See https://en.wikipedia.org/wiki/Atwater_system#Modified_system
-            const atwaterProtein = macros.protein * 4;
-            const atwaterCarbs = macros.carbs * 4;
-            const atwaterFat = macros.fat * 9;
-            const atwaterTotal = atwaterProtein + atwaterCarbs + atwaterFat;
+            const macrosCalories = getMacrosCalories(macros);
 
             return [
                 day,
@@ -184,9 +177,9 @@ const history = computed(() =>
                             rawFat: `${macros.fat} grams`,
                         }),
                         scalePercentage: macros.calories / maxCalories.value,
-                        proteinPercentage: atwaterProtein / atwaterTotal,
-                        carbsPercentage: atwaterCarbs / atwaterTotal,
-                        fatPercentage: atwaterFat / atwaterTotal,
+                        proteinPercentage: macrosCalories.proteinPercentage,
+                        carbsPercentage: macrosCalories.carbsPercentage,
+                        fatPercentage: macrosCalories.fatPercentage,
                     },
             ];
         }),

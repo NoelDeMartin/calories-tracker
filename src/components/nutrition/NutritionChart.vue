@@ -1,16 +1,16 @@
 <template>
-    <div class="flex items-center justify-center gap-8">
-        <div class="relative">
+    <div class="@container rounded-lg border bg-white p-6 shadow-sm">
+        <div class="flex flex-col items-center justify-center gap-8 @sm:flex-row">
             <div class="relative h-36 w-36">
                 <div
                     class="absolute inset-2 rounded-full transition-[--protein-deg,--carbs-deg] duration-300 ease-in-out"
                     :style="{
                         background: `conic-gradient(
-                            from 0deg,
-                            var(--color-protein-500) 0deg var(--protein-deg),
-                            var(--color-carbs-500) var(--protein-deg) calc(var(--protein-deg) + var(--carbs-deg)),
-                            var(--color-fat-500) calc(var(--protein-deg) + var(--carbs-deg)) 360deg
-                        )`,
+                        from 0deg,
+                        var(--color-protein-500) 0deg var(--protein-deg),
+                        var(--color-carbs-500) var(--protein-deg) calc(var(--protein-deg) + var(--carbs-deg)),
+                        var(--color-fat-500) calc(var(--protein-deg) + var(--carbs-deg)) 360deg
+                    )`,
                         '--carbs-deg': `${carbsPercentage * 360}deg`,
                         '--protein-deg': `${proteinPercentage * 360}deg`,
                     }"
@@ -29,45 +29,72 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="flex flex-col gap-3">
-            <div class="flex items-center gap-3">
-                <div class="bg-protein-500 h-5 w-5 rounded-full" />
-                <div class="flex flex-col">
-                    <span class="text-sm font-medium">
-                        {{ $t('history.protein') }}
-                    </span>
-                    <span class="text-xs text-gray-600">
-                        {{ formatPercentage(proteinPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }}
-                        •
-                        {{ formatNumber(nutrition.protein, 'grams') }}
-                    </span>
+            <div class="flex flex-col gap-3 self-stretch">
+                <div class="flex items-center gap-3">
+                    <div class="bg-protein-500 h-5 w-5 rounded-full" />
+                    <div
+                        class="flex flex-1 items-center justify-between @sm:flex-col @sm:items-start @sm:justify-start"
+                    >
+                        <span class="text-sm font-medium">
+                            {{ $t('history.protein') }}
+                        </span>
+                        <div class="flex flex-row-reverse gap-1 text-xs text-gray-600 @sm:flex-row">
+                            <span>
+                                {{
+                                    formatPercentage(proteinPercentage, [
+                                        carbsPercentage,
+                                        proteinPercentage,
+                                        fatPercentage,
+                                    ])
+                                }}
+                            </span>
+                            <span>•</span>
+                            <span>{{ formatNumber(nutrition.protein, 'grams') }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-carbs-500 h-5 w-5 rounded-full" />
-                <div class="flex flex-col">
-                    <span class="text-sm font-medium">
-                        {{ $t('history.carbs') }}
-                    </span>
-                    <span class="text-xs text-gray-600">
-                        {{ formatPercentage(carbsPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }}
-                        •
-                        {{ formatNumber(nutrition.carbs, 'grams') }}
-                    </span>
+                <div class="flex items-center gap-3">
+                    <div class="bg-carbs-500 h-5 w-5 rounded-full" />
+                    <div
+                        class="flex flex-1 items-center justify-between @sm:flex-col @sm:items-start @sm:justify-start"
+                    >
+                        <span class="text-sm font-medium">
+                            {{ $t('history.carbs') }}
+                        </span>
+                        <div class="flex flex-row-reverse gap-1 text-xs text-gray-600 @sm:flex-row">
+                            <span>
+                                {{
+                                    formatPercentage(carbsPercentage, [
+                                        carbsPercentage,
+                                        proteinPercentage,
+                                        fatPercentage,
+                                    ])
+                                }}
+                            </span>
+                            <span>•</span>
+                            <span>{{ formatNumber(nutrition.carbs, 'grams') }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="bg-fat-500 h-5 w-5 rounded-full" />
-                <div class="flex flex-col">
-                    <span class="text-sm font-medium">
-                        {{ $t('history.fat') }}
-                    </span>
-                    <span class="text-xs text-gray-600">
-                        {{ formatPercentage(fatPercentage, [carbsPercentage, proteinPercentage, fatPercentage]) }} •
-                        {{ formatNumber(nutrition.fat, 'grams') }}
-                    </span>
+                <div class="flex items-center gap-3">
+                    <div class="bg-fat-500 h-5 w-5 rounded-full" />
+                    <div
+                        class="flex flex-1 items-center justify-between @sm:flex-col @sm:items-start @sm:justify-start"
+                    >
+                        <span class="text-sm font-medium">
+                            {{ $t('history.fat') }}
+                        </span>
+                        <div class="flex flex-row-reverse gap-1 text-xs text-gray-600 @sm:flex-row">
+                            <span>
+                                {{
+                                    formatPercentage(fatPercentage, [carbsPercentage, proteinPercentage, fatPercentage])
+                                }}
+                            </span>
+                            <span>•</span>
+                            <span>{{ formatNumber(nutrition.fat, 'grams') }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,20 +104,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { formatNumber, formatPercentage } from '@/utils/formatting';
+import { getMacrosCalories } from '@/utils/nutrition';
 import type NutritionInformation from '@/models/NutritionInformation';
 
 const { nutrition } = defineProps<{ nutrition: NutritionInformation }>();
-
-// Calculate atwater macros percentages
-// See https://en.wikipedia.org/wiki/Atwater_system#Modified_system
-const atwaterProtein = computed(() => (nutrition.protein ?? 0) * 4);
-const atwaterCarbs = computed(() => (nutrition.carbs ?? 0) * 4);
-const atwaterFat = computed(() => (nutrition.fat ?? 0) * 9);
-const atwaterTotal = computed(() => atwaterProtein.value + atwaterCarbs.value + atwaterFat.value);
-
-const proteinPercentage = computed(() => atwaterProtein.value / atwaterTotal.value);
-const carbsPercentage = computed(() => atwaterCarbs.value / atwaterTotal.value);
-const fatPercentage = computed(() => atwaterFat.value / atwaterTotal.value);
+const macrosCalories = computed(() => getMacrosCalories(nutrition));
+const proteinPercentage = computed(() => macrosCalories.value.proteinPercentage);
+const carbsPercentage = computed(() => macrosCalories.value.carbsPercentage);
+const fatPercentage = computed(() => macrosCalories.value.fatPercentage);
 </script>
 
 <style>
