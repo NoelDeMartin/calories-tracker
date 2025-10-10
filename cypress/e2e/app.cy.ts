@@ -358,8 +358,8 @@ describe('App', () => {
         cy.press('Set goals');
 
         // Assert
-        cy.see('0 / 2615 kcal');
-        cy.see('0 / 112 g');
+        cy.see('0 / 2,615 kcal');
+        cy.see('0 / 112g');
     });
 
     it('Shows insights', () => {
