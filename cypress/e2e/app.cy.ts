@@ -378,7 +378,7 @@ describe('App', () => {
         cy.waitSync();
 
         // Act
-        cy.press('Insights');
+        cy.press('Weekly insights');
 
         // Assert
         cy.see('There are 2 incomplete meals');
