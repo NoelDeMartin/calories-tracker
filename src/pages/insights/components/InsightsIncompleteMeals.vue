@@ -16,11 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import Meal from '@/models/Meal';
 import { computed } from 'vue';
-import { useModelCollection } from '@aerogel/plugin-soukai';
 import { sortedMeals } from '@/utils/meals';
+import type { Week } from '@/pages/insights';
 
-const meals = useModelCollection(Meal);
-const sortedIncompleteMeals = computed(() => sortedMeals(meals.value.filter((meal) => meal.incomplete)));
+const { week } = defineProps<{ week: Week }>();
+const sortedIncompleteMeals = computed(() => sortedMeals(week.meals.filter((meal) => meal.incomplete)));
 </script>

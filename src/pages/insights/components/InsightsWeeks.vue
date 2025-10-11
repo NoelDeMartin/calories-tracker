@@ -1,8 +1,5 @@
 <template>
     <div class="rounded-lg border bg-white shadow-sm">
-        <h3 class="mx-6 mt-6 text-lg font-semibold text-gray-900">
-            {{ $t('insights.weeks') }}
-        </h3>
         <div ref="$container" class="overflow-x-auto overflow-y-hidden">
             <div class="flex items-end p-6">
                 <button
@@ -13,7 +10,7 @@
                     :class="selectedWeek === week ? 'bg-blue-100' : ''"
                     @click="$emit('selectWeek', week)"
                 >
-                    <div class="flex h-64 w-full items-end">
+                    <div class="relative flex h-64 w-full items-end">
                         <div
                             class="flex w-full flex-col transition-all duration-200"
                             :style="{ height: `${(week.totalCalories * 100) / maxCalories}%` }"
@@ -31,6 +28,10 @@
                                 :style="{ flex: `${week.fatPercentage}` }"
                             />
                         </div>
+                        <i-lucide-alert-triangle
+                            v-if="week.hasIncompleteMeals"
+                            class="absolute inset-x-0 bottom-2 m-auto size-5 text-red-400"
+                        />
                     </div>
                     <div class="mt-2 text-xs text-gray-600">
                         {{ week.name }}
@@ -47,13 +48,14 @@
 <script setup lang="ts">
 import { formatNumber } from '@/utils/formatting';
 import { computed, useTemplateRef, watch } from 'vue';
+import { max } from '@/utils/math';
 import type { Week } from '@/pages/insights';
 
 defineEmits<{ selectWeek: [Week] }>();
 
 const { weeks } = defineProps<{ weeks: Week[]; selectedWeek: Week | null }>();
 const $container = useTemplateRef('$container');
-const maxCalories = computed(() => Math.max(...weeks.map((week) => week.totalCalories)));
+const maxCalories = computed(() => max(weeks.map((week) => week.totalCalories)));
 
 watch($container, () => $container.value && ($container.value.scrollLeft = $container.value.scrollWidth));
 </script>
