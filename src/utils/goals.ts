@@ -17,7 +17,7 @@ const goalDeltas = {
     maintainWeight: 0,
     loseWeight: -500,
     gainMuscle: 250,
-    loseAndGain: 0,
+    loseAndGain: -250,
 } as const;
 
 // Necesidades proteicas de los deportistas y pautas diétetico-nutricionales para la ganancia de masa muscular
