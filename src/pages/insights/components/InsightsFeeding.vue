@@ -1,6 +1,6 @@
 <template>
-    <div class="rounded-lg border bg-white p-6 shadow-sm">
-        <div class="grid grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-1">
+    <div class="overflow-x-auto overflow-y-hidden rounded-lg border bg-white p-6 shadow-sm">
+        <div class="grid min-w-[650px] grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-1">
             <div />
 
             <span v-for="hour in range(24)" :key="hour" class="text-center">
@@ -30,8 +30,8 @@
             </template>
         </div>
 
-        <div class="mt-6 flex items-center justify-between">
-            <div class="flex items-center space-x-4">
+        <div class="mt-6 flex justify-between sm:items-center">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <div class="text-sm text-gray-500">
                     {{ $t('insights.feedingCalories') }}
                 </div>
@@ -52,9 +52,11 @@
                     <span class="text-xs text-gray-500">500+</span>
                 </div>
             </div>
-            <div class="text-sm text-gray-500">
-                {{ $t('insights.feedingFastingAverage') }}
-                {{ formatNumber(average(days.map((day) => 23 - day.fastingStart + day.fastingEnd)), 'hours') }}
+            <div class="flex flex-col gap-1 text-sm text-gray-500 sm:flex-row sm:items-center">
+                <span>{{ $t('insights.feedingFastingAverage') }}</span>
+                <span>
+                    {{ formatNumber(average(days.map((day) => 23 - day.fastingStart + day.fastingEnd)), 'hours') }}
+                </span>
             </div>
         </div>
     </div>

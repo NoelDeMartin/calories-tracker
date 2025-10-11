@@ -6,8 +6,8 @@
                     v-for="(week, index) in weeks"
                     :key="index"
                     type="button"
-                    class="flex w-20 shrink-0 cursor-pointer flex-col items-center p-2 transition-all duration-200 hover:scale-105"
-                    :class="selectedWeek === week ? 'bg-blue-100' : ''"
+                    class="flex w-20 shrink-0 flex-col items-center p-2 transition-all duration-200 hover:scale-105"
+                    :class="{ 'bg-blue-700/15': selectedWeek === week }"
                     @click="$emit('selectWeek', week)"
                 >
                     <div class="relative flex h-64 w-full items-end">

@@ -4,62 +4,66 @@
             <MonthPicker v-model="selectedMonth" />
         </template>
 
-        <div v-if="!emptyMonth" class="relative mt-11 flex h-44 w-full items-end justify-between">
+        <div v-if="!emptyMonth" class="relative [--bars-height:theme(spacing.44)]">
             <div
-                class="pointer-events-none absolute inset-x-0 -top-10 bottom-10 flex flex-col justify-between select-none"
+                class="pointer-events-none absolute inset-x-0 top-2 flex h-(--bars-height) flex-col justify-between select-none"
             >
                 <span
                     v-if="$goals.calories"
-                    class="border-calories-500/40 absolute inset-x-0 border-b border-dashed"
+                    class="absolute inset-x-0 border-b border-dashed border-red-500"
                     :style="{ top: `${(1 - $goals.calories / maxCalories) * 100}%` }"
                 />
                 <span
                     v-if="$goals.calories"
-                    class="text-calories-500 absolute right-0 -translate-y-full text-xs"
+                    class="absolute right-0 -translate-y-full text-xs text-red-500"
                     :style="{ top: `${(1 - $goals.calories / maxCalories) * 100}%` }"
                 >
                     {{ formatNumber($goals.calories, 'calories') }}
                 </span>
                 <span v-for="step of caloriesSteps" :key="step" class="w-full border-b border-dashed border-gray-300" />
             </div>
-            <template v-for="day of days" :key="day">
-                <button
-                    v-if="history[day]"
-                    type="button"
-                    class="flex flex-1 flex-col items-center justify-end rounded-full pt-2 pb-1 hover:bg-gray-100"
-                    :class="{ 'opacity-75': selectedDay !== day }"
-                    :style="`height: calc(var(--spacing) * 13 + ${history[day].scalePercentage * 100}%)`"
-                    @click="selectedDay = day"
-                >
-                    <div class="relative h-full w-2.5">
-                        <div class="bg-protein-500 absolute inset-x-0 bottom-0 h-full rounded-full" />
-                        <div
-                            class="bg-carbs-500 absolute inset-x-0 bottom-0"
-                            :style="{ height: `${(history[day].carbsPercentage + history[day].fatPercentage) * 100}%` }"
-                        />
-                        <div
-                            class="bg-fat-500 absolute inset-x-0 bottom-0"
-                            :style="{ height: `${history[day].fatPercentage * 100}%` }"
-                        />
-                    </div>
-                    <div class="mt-1 flex h-8 flex-col" :class="{ 'font-semibold': day === selectedDay }">
-                        <span class="text-sm">
-                            {{ day }}
-                        </span>
-                        <span class="text-xs">
-                            {{ history[day].weekday }}
-                        </span>
-                    </div>
-                </button>
-                <span v-else class="flex-1" />
-            </template>
             <div
-                class="mb-10 ml-2 flex flex-col items-end justify-between"
-                :style="`height: calc(var(--spacing) * 4 + 100%)`"
+                class="absolute -top-2 right-0 flex h-[calc(var(--bars-height)+theme(spacing.4))] flex-col items-end justify-between"
             >
                 <span v-for="step of caloriesSteps" :key="step" class="text-xs text-gray-500">
                     {{ formatNumber(step, 'calories') }}
                 </span>
+            </div>
+            <div class="relative mr-20 flex overflow-x-auto overflow-y-hidden">
+                <template v-for="day of days" :key="day">
+                    <button
+                        v-if="history[day]"
+                        type="button"
+                        class="flex flex-col items-center justify-end rounded px-1 py-2 transition-all duration-200 hover:scale-105"
+                        :class="{ 'bg-blue-700/15': selectedDay === day }"
+                        @click="selectedDay = day"
+                    >
+                        <div class="flex h-(--bars-height) items-end">
+                            <div class="relative w-5" :style="`height: ${history[day].scalePercentage * 100}%`">
+                                <div class="bg-protein-500 absolute inset-x-0 bottom-0 h-full rounded" />
+                                <div
+                                    class="bg-carbs-500 absolute inset-x-0 bottom-0"
+                                    :style="{
+                                        height: `${(history[day].carbsPercentage + history[day].fatPercentage) * 100}%`,
+                                    }"
+                                />
+                                <div
+                                    class="bg-fat-500 absolute inset-x-0 bottom-0"
+                                    :style="{ height: `${history[day].fatPercentage * 100}%` }"
+                                />
+                            </div>
+                        </div>
+                        <div class="mt-1 flex h-8 flex-col" :class="{ 'font-semibold': day === selectedDay }">
+                            <span class="text-sm">
+                                {{ day }}
+                            </span>
+                            <span class="text-xs">
+                                {{ history[day].weekday }}
+                            </span>
+                        </div>
+                    </button>
+                    <div v-else class="w-7 shrink-0" />
+                </template>
             </div>
         </div>
 
