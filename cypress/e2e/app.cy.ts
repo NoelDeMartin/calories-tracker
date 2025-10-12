@@ -128,8 +128,7 @@ describe('App', () => {
 
         // Act - new meal
         cy.press('Log meal');
-        cy.comboboxSelect('Meal', 'New recipe');
-        cy.get('input[name="name"]').type('Pisto');
+        cy.get('input[name="meal"]').type('Pisto{enter}');
         cy.press('Add ingredient');
         cy.get('input[list="ingredient-names"]').last().type('Eggplant');
         cy.get('#ingredients-0-quantity').clear().type('50');

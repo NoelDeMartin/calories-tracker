@@ -1,13 +1,15 @@
 <template>
     <Modal :title="$t('logs.add')" fullscreen-on-mobile>
         <Form :form class="flex flex-1 flex-col space-y-2 overflow-y-auto" @submit="submit()">
-            <Select
+            <Combobox
                 name="meal"
                 label-class="sr-only"
                 :label="$t('logs.meal')"
                 :options="mealOptions"
                 :render-option="renderMeal"
                 :compare-options="(a, b) => a.id === b.id"
+                :placeholder="$t('logs.mealPlaceholder')"
+                :new-input-value="(value) => ({ id: 'new', name: value }) as NewMeal"
             />
 
             <Select
@@ -22,13 +24,6 @@
                 name="mealServings"
                 step="0.1"
                 :placeholder="$t('logs.mealServings')"
-            />
-
-            <Input
-                v-if="form.meal.id === 'new'"
-                name="name"
-                :placeholder="$t('logs.mealName')"
-                required
             />
 
             <ul
@@ -124,16 +119,7 @@ import {
     round,
     toString,
 } from '@noeldemartin/utils';
-import {
-    UI,
-    numberInput,
-    requiredDateInput,
-    requiredObjectInput,
-    stringInput,
-    translate,
-    useForm,
-    useModal,
-} from '@aerogel/core';
+import { UI, numberInput, requiredDateInput, requiredObjectInput, translate, useForm, useModal } from '@aerogel/core';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
@@ -145,6 +131,11 @@ import { formatNumber } from '@/utils/formatting';
 import { parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
 import type { Nutrition } from '@/models/NutritionInformation';
+
+interface NewMeal {
+    id: 'new';
+    name: string;
+}
 
 const { close } = useModal();
 const error = ref('');
@@ -164,14 +155,13 @@ const mealOptions = computed(() => {
         uniqueMeals.push(meal);
     }
 
-    const recipesAndMeals = (Cookbook.recipes as Array<Recipe | Meal | { id: 'new' }>).concat(uniqueMeals);
+    const recipesAndMeals = (Cookbook.recipes as Array<Recipe | Meal | NewMeal>).concat(uniqueMeals);
 
-    return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b))).concat({ id: 'new' });
+    return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b)));
 });
 
 const form = useForm({
-    meal: requiredObjectInput<Recipe | Meal | { id: 'new' }>(mealOptions.value[0] ?? { id: 'new' }),
-    name: stringInput(),
+    meal: requiredObjectInput<Recipe | Meal | NewMeal>({ id: 'new', name: '' }),
     servings: numberInput(),
     mealServings: numberInput(1),
     consumedAt: requiredDateInput(new Date()),
@@ -247,7 +237,7 @@ function updateServingsAndIngredients() {
 watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
 watch(customizeIngredients, updateServingsAndIngredients);
 
-function isNewMeal(meal: Recipe | Meal | { id: 'new' }): meal is { id: 'new' } {
+function isNewMeal(meal: Recipe | Meal | NewMeal): meal is NewMeal {
     return meal.id === 'new';
 }
 
@@ -266,19 +256,15 @@ async function submit() {
         return;
     }
 
-    await logNewMeal();
+    await logNewMeal(form.meal.name);
 }
 
-function renderMeal(meal: Recipe | Meal | { id: 'new' }) {
+function renderMeal(meal: Recipe | Meal | NewMeal) {
     if (meal instanceof Meal) {
         return meal.recipe?.name ?? '';
     }
 
-    if (meal instanceof Recipe) {
-        return meal.name;
-    }
-
-    return translate('logs.addNew');
+    return meal.name;
 }
 
 function applyIngredientNutrition(
@@ -360,15 +346,7 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
     return nutrition;
 }
 
-async function logNewMeal() {
-    const { name } = form;
-
-    name || form.setFieldErrors('name', ['required']);
-
-    if (!name) {
-        return;
-    }
-
+async function logNewMeal(name: string) {
     await close();
     await UI.loading(
         {
