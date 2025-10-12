@@ -29,6 +29,7 @@ describe('App', () => {
 
         // Act
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -98,6 +99,7 @@ describe('App', () => {
 
         // Act
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.press('Customize ingredients');
         cy.get('#ingredients-2-delete').click();
         cy.press('Add ingredient');
@@ -152,6 +154,7 @@ describe('App', () => {
 
         // Act - repeated meal
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Pisto{enter}');
         cy.get('input[name="mealServings"]').clear().type('2');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
@@ -173,6 +176,7 @@ describe('App', () => {
         cy.solidLogin();
         cy.waitSync();
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -213,13 +217,14 @@ describe('App', () => {
         });
     });
 
-    it('Edits logs ingredients', () => {
+    it('Edits log ingredients', () => {
         // Arrange
         setupAccount();
 
         cy.solidLogin();
         cy.waitSync();
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -258,6 +263,7 @@ describe('App', () => {
         cy.waitSync();
 
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -337,7 +343,7 @@ describe('App', () => {
     it('Sets goals', () => {
         // Arrange
         cy.press('Log meal');
-        cy.get('input[name="name"]').type('First meal');
+        cy.get('input[name="meal"]').type('First meal{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
 
         cy.ariaLabel('Configuration').click();
@@ -369,10 +375,12 @@ describe('App', () => {
         cy.waitSync();
 
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
         cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Ramen{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 

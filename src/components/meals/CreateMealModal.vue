@@ -256,7 +256,7 @@ async function submit() {
         return;
     }
 
-    await logNewMeal(form.meal.name);
+    await logNewMeal(form.meal.name.trim());
 }
 
 function renderMeal(meal: Recipe | Meal | NewMeal) {
@@ -347,6 +347,12 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
 }
 
 async function logNewMeal(name: string) {
+    name || form.setFieldErrors('meal', ['required']);
+
+    if (!name) {
+        return;
+    }
+
     await close();
     await UI.loading(
         {
