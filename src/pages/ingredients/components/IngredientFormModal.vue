@@ -67,8 +67,7 @@ import { arrayFilter, round, validUrl } from '@noeldemartin/utils';
 import { numberInput, requiredStringInput, stringInput, useForm, useModal } from '@aerogel/core';
 
 import Ingredient from '@/models/Ingredient';
-import { getIngredientMeals, getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
-import { parseMealIngredients } from '@/utils/ingredients';
+import { getIngredientMeals } from '@/utils/meals';
 
 const { ingredient } = defineProps<{ ingredient?: Ingredient }>();
 const { close } = useModal();
@@ -127,8 +126,7 @@ async function submit() {
         const meals = getIngredientMeals(model);
 
         for (const meal of meals) {
-            const mealIngredients = parseMealIngredients(meal);
-            const caloriesBreakdown = getMealIngredientsCaloriesBreakdown(mealIngredients);
+            const caloriesBreakdown = meal.getCaloriesBreakdown() ?? [];
 
             await meal.recipe?.nutrition?.update({
                 rawCalories: `${round(
