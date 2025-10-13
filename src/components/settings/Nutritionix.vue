@@ -4,12 +4,14 @@
             <Input
                 v-model="$nutritionix.appId"
                 :label="$t('settings.nutritionixAppId')"
+                type="password"
                 class="col-span-2 grid grid-cols-subgrid items-center"
                 placeholder="12345678"
             />
             <Input
                 v-model="$nutritionix.appKey"
                 :label="$t('settings.nutritionixAppKey')"
+                type="password"
                 class="col-span-2 grid grid-cols-subgrid items-center"
                 placeholder="123456789abcdefghijklmnopqrstuvw"
             />
