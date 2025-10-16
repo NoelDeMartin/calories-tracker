@@ -103,7 +103,7 @@ describe('App', () => {
         cy.press('Customize ingredients');
         cy.get('#ingredients-2-delete').click();
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Eggs');
+        cy.get('input[placeholder="Ingredient"]').last().type('Eggs{enter}');
         cy.get('#ingredients-2-quantity').clear().type('50');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
@@ -132,14 +132,14 @@ describe('App', () => {
         cy.press('Log meal');
         cy.get('input[name="meal"]').type('Pisto{enter}');
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Eggplant');
+        cy.get('input[placeholder="Ingredient"]').last().type('Eggplant{enter}');
         cy.get('#ingredients-0-quantity').clear().type('50');
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Zucchini');
+        cy.get('input[placeholder="Ingredient"]').last().type('Zucchini{enter}');
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Onion');
+        cy.get('input[placeholder="Ingredient"]').last().type('Onion{enter}');
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Tomatoes');
+        cy.get('input[placeholder="Ingredient"]').last().type('Tomatoes{enter}');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
         cy.waitSync();
 
@@ -233,11 +233,11 @@ describe('App', () => {
         // Act
         cy.get('[aria-label="Edit"]').click();
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Broth');
+        cy.get('input[placeholder="Ingredient"]').last().type('Broth{enter}');
         cy.get('#ingredients-0-quantity').clear().type('200');
         cy.comboboxSelect('Unit', 'Milliliters');
         cy.press('Add ingredient');
-        cy.get('input[list="ingredient-names"]').last().type('Wheat Noodles');
+        cy.get('input[placeholder="Ingredient"]').last().type('Wheat Noodles{enter}');
         cy.press('Recalculate nutrients');
         cy.press('Save');
         cy.waitSync();

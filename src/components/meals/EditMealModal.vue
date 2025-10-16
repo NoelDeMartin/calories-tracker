@@ -25,11 +25,11 @@
             <ul class="space-y-2 overflow-y-auto" :class="{ hidden: mealIngredients.length === 0 }">
                 <li class="grid grid-cols-1 gap-2">
                     <div v-for="(mealIngredient, index) in mealIngredients" :key="index" class="flex space-x-2">
-                        <Input
+                        <Combobox
                             v-model="mealIngredient.name"
                             class="flex-1"
-                            list="ingredient-names"
                             :placeholder="$t('logs.mealIngredientName')"
+                            :options="ingredientNames"
                         />
                         <Input
                             :id="`ingredients-${index}-quantity`"
@@ -51,10 +51,6 @@
                     </div>
                 </li>
             </ul>
-
-            <datalist v-if="!e2e" id="ingredient-names">
-                <option v-for="ingredient in $pantry.ingredients" :key="ingredient.id" :value="ingredient.name" />
-            </datalist>
 
             <Button
                 variant="secondary"
@@ -93,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { arrayRemove, isTesting, round } from '@noeldemartin/utils';
+import { arrayRemove, round } from '@noeldemartin/utils';
 import {
     UI,
     numberInput,
@@ -119,6 +115,7 @@ const { close } = useModal();
 const recalculate = ref(false);
 const initialRecipe = Cookbook.recipes.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url));
 const recipesOptions = computed(() => (Cookbook.recipes as Array<Recipe | { id: 'none' }>).concat({ id: 'none' }));
+const ingredientNames = computed(() => Pantry.ingredients.map((ingredient) => ingredient.name));
 
 const form = useForm({
     name: requiredStringInput(meal.recipe?.name),
@@ -133,7 +130,6 @@ const form = useForm({
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
 const mealIngredients = ref<{ name: string; quantity: number; unit: (typeof ingredientUnitOptions.value)[number] }[]>(
     parseMealIngredients(meal));
-const e2e = isTesting('e2e');
 
 const caloriesBreakdown = computed(() => getMealIngredientsCaloriesBreakdown(mealIngredients.value));
 const totalCalories = computed(() =>

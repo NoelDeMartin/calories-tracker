@@ -33,11 +33,11 @@
             >
                 <li class="grid grid-cols-1 gap-2">
                     <div v-for="(mealIngredient, index) in mealIngredients" :key="index" class="flex space-x-2">
-                        <Input
+                        <Combobox
                             v-model="mealIngredient.name"
                             class="flex-1"
-                            list="ingredient-names"
                             :placeholder="$t('logs.mealIngredientName')"
+                            :options="ingredientNames"
                         />
                         <Input
                             :id="`ingredients-${index}-quantity`"
@@ -64,10 +64,6 @@
             </ul>
 
             <Input name="consumedAt" type="datetime-local" />
-
-            <datalist v-if="!e2e" id="ingredient-names">
-                <option v-for="ingredient in $pantry.ingredients" :key="ingredient.id" :value="ingredient.name" />
-            </datalist>
 
             <div v-if="error" class="rounded-md bg-red-50 p-2 text-sm text-red-500">
                 {{ error }}
@@ -108,17 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-    arraySorted,
-    arrayUnique,
-    compare,
-    isInstanceOf,
-    isTesting,
-    range,
-    required,
-    round,
-    toString,
-} from '@noeldemartin/utils';
+import { arraySorted, arrayUnique, compare, isInstanceOf, range, required, round, toString } from '@noeldemartin/utils';
 import { UI, numberInput, requiredDateInput, requiredObjectInput, translate, useForm, useModal } from '@aerogel/core';
 import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
@@ -141,10 +127,11 @@ const { close } = useModal();
 const error = ref('');
 const meals = useModelCollection(Meal);
 const customizeIngredients = ref(false);
+const ingredientNames = computed(() => Pantry.ingredients.map((ingredient) => ingredient.name));
 
 const mealOptions = computed(() => {
     const mealNames = new Set<string>();
-    const uniqueMeals: Meal[] = [];
+    const uniqueMealsAndRecipes: (Meal | Recipe | NewMeal)[] = [];
 
     for (const meal of meals.value) {
         if (!meal.recipe || meal.recipe.externalUrls.length > 0 || mealNames.has(meal.recipe.name)) {
@@ -152,12 +139,19 @@ const mealOptions = computed(() => {
         }
 
         mealNames.add(meal.recipe.name);
-        uniqueMeals.push(meal);
+        uniqueMealsAndRecipes.push(meal);
     }
 
-    const recipesAndMeals = (Cookbook.recipes as Array<Recipe | Meal | NewMeal>).concat(uniqueMeals);
+    for (const recipe of Cookbook.recipes) {
+        if (mealNames.has(recipe.name)) {
+            continue;
+        }
 
-    return arraySorted(recipesAndMeals, (a, b) => compare(renderMeal(a), renderMeal(b)));
+        mealNames.add(recipe.name);
+        uniqueMealsAndRecipes.push(recipe);
+    }
+
+    return arraySorted(uniqueMealsAndRecipes, (a, b) => compare(renderMeal(a), renderMeal(b)));
 });
 
 const form = useForm({
@@ -218,8 +212,6 @@ const caloriesBreakdown = computed(() => {
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
-
-const e2e = isTesting('e2e');
 
 function updateServingsAndIngredients() {
     if (!isInstanceOf(form.meal, Recipe)) {
