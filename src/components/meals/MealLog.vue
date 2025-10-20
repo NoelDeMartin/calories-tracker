@@ -1,19 +1,22 @@
 <template>
     <div
-        :key="meal.id"
+        :key="reactiveMeal.id"
         class="flex w-full items-center justify-between rounded-lg p-4"
-        :class="meal.incomplete ? 'bg-red-100' : 'bg-primary-100'"
+        :class="reactiveMeal.incomplete ? 'bg-red-100' : 'bg-primary-100'"
     >
         <div>
-            <h3 v-if="meal.recipe?.name" class="font-medium">
-                {{ meal.recipe.name }}
-                <span v-if="meal.recipe.servings" class="text-xs text-gray-500">({{ meal.recipe.servings }})</span>
+            <h3 v-if="reactiveMeal.recipe?.name" class="font-medium">
+                {{ reactiveMeal.recipe.name }}
+                <span
+                    v-if="reactiveMeal.recipe.servings"
+                    class="text-xs text-gray-500"
+                >({{ reactiveMeal.recipe.servings }})</span>
             </h3>
-            <p v-if="meal.nutrition" class="text-sm text-gray-500">
-                {{ formatNumber(meal.nutrition.calories, 'calories') }} ·
-                {{ $t('units.protein', { protein: formatNumber(meal.nutrition.protein, 'grams') }) }} ·
-                {{ $t('units.carbs', { carbs: formatNumber(meal.nutrition.carbs, 'grams') }) }} ·
-                {{ $t('units.fat', { fat: formatNumber(meal.nutrition.fat, 'grams') }) }}
+            <p v-if="reactiveMeal.nutrition" class="text-sm text-gray-500">
+                {{ formatNumber(reactiveMeal.nutrition.calories, 'calories') }} ·
+                {{ $t('units.protein', { protein: formatNumber(reactiveMeal.nutrition.protein, 'grams') }) }} ·
+                {{ $t('units.carbs', { carbs: formatNumber(reactiveMeal.nutrition.carbs, 'grams') }) }} ·
+                {{ $t('units.fat', { fat: formatNumber(reactiveMeal.nutrition.fat, 'grams') }) }}
             </p>
             <p class="text-xs text-gray-400">
                 {{ date }}
@@ -24,8 +27,8 @@
                 size="icon"
                 variant="ghost"
                 class="text-gray-400 transition-colors hover:text-green-500"
-                :aria-label="$t('logs.view', { name: meal.recipe?.name })"
-                :title="$t('logs.view', { name: meal.recipe?.name })"
+                :aria-label="$t('logs.view', { name: reactiveMeal.recipe?.name })"
+                :title="$t('logs.view', { name: reactiveMeal.recipe?.name })"
                 @click="$ui.modal(ViewMealModal, { meal })"
             >
                 <i-lucide-eye class="size-4" />
@@ -58,11 +61,13 @@
 import ViewMealModal from './ViewMealModal.vue';
 import EditMealModal from './EditMealModal.vue';
 import { computed } from 'vue';
+import { computedModel } from '@aerogel/plugin-soukai';
 import { formatNumber } from '@/utils/formatting';
 import { translate } from '@aerogel/core';
 import type Meal from '@/models/Meal';
 
 const { meal } = defineProps<{ meal: Meal }>();
+const reactiveMeal = computedModel(() => meal);
 const date = computed(() => (meal.consumedAt ?? meal.createdAt).toLocaleString());
 
 async function deleteMeal() {
