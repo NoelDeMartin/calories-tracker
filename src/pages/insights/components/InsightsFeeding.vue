@@ -1,21 +1,22 @@
 <template>
-    <div class="overflow-x-auto overflow-y-hidden rounded-lg border bg-white p-6 shadow-sm">
-        <div class="grid min-w-[650px] grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-1">
+    <div class="overflow-x-auto overflow-y-hidden rounded-lg border bg-white p-2 shadow-sm md:p-6">
+        <div class="grid min-w-[400px] grid-cols-[auto_repeat(24,minmax(0,1fr))] gap-0.5 md:gap-1">
             <div />
 
-            <span v-for="hour in range(24)" :key="hour" class="text-center">
+            <span v-for="hour in range(24)" :key="hour" class="text-center text-xs md:text-sm">
                 {{ hour }}
             </span>
 
-            <template v-for="day of days" :key="day.name">
-                <div class="mr-1 text-sm font-medium text-gray-700">
-                    {{ day.name }}
+            <template v-for="day of days" :key="day.shortName">
+                <div class="mr-1 text-xs font-medium text-gray-700 md:text-sm">
+                    <span class="hidden sm:inline">{{ day.shortName }}</span>
+                    <span class="inline sm:hidden">{{ day.narrowName }}</span>
                 </div>
 
                 <div
                     v-for="hour in 24"
                     :key="hour"
-                    class="h-6 rounded-sm border border-gray-200 transition-all duration-200 hover:scale-110"
+                    class="h-4 rounded-sm border border-gray-200 transition-all duration-200 md:h-6"
                     :class="
                         hour < day.fastingEnd || hour > day.fastingStart
                             ? 'bg-gray-100'
@@ -89,10 +90,12 @@ const days = computed(() => {
         row[hour] += sum(breakdown.map((ingredient) => ingredient.calories ?? 0));
     }
 
-    const { format } = Intl.DateTimeFormat(undefined, { weekday: 'short' });
+    const { format: shortFormat } = Intl.DateTimeFormat(undefined, { weekday: 'short' });
+    const { format: narrowFormat } = Intl.DateTimeFormat(undefined, { weekday: 'narrow' });
 
     return Object.entries(rows).map(([day, hours]) => ({
-        name: format(new Date(2021, 5, Number(day) - 1)),
+        shortName: shortFormat(new Date(2021, 5, Number(day) - 1)),
+        narrowName: narrowFormat(new Date(2021, 5, Number(day) - 1)),
         fastingEnd: range(24).find((hour) => hours && hour in hours) ?? 24,
         fastingStart:
             range(24)
