@@ -274,9 +274,9 @@ function applyIngredientNutrition(
 
 function ingredientNotFound(name: string) {
     // eslint-disable-next-line no-console
-    console.warn(`Cannot calculate nutrition for ingredient: ${name}`);
+    console.warn(translate('ingredients.nutritionNotFound', { name }));
 
-    UI.toast(`Cannot calculate nutrition for ingredient: ${name}`, {
+    UI.toast(translate('ingredients.nutritionNotFound', { name }), {
         variant: 'warning',
     });
 }

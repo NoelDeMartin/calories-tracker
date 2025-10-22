@@ -20,6 +20,8 @@ ingredients:
     title: Ingredients
     search: Search ingredients...
     noIngredients: You haven't used any ingredients yet, [log some meals](#route:home) to get started.
+    updateNutrition: Update nutrition
+    nutritionNotFound: 'Cannot calculate nutrition for ingredient: {name}'
     noSearchResults: No ingredients match your search
     name: Ingredient
     description: Description

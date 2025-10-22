@@ -30,26 +30,9 @@ export class PantryService extends Service {
         }
 
         const nutrition = await Nutritionix.getNutrition(name);
-        const ingredient = new Ingredient({ name, imageUrl: nutrition?.imageUrl });
+        const ingredient = new Ingredient({ name });
 
-        if (nutrition) {
-            ingredient.externalUrls = [`https://www.nutritionix.com/food/${stringToSlug(nutrition.name)}`];
-
-            const ingredientNutrition = ingredient.relatedNutrition.attach({
-                serving: `${round(nutrition.servingInGrams, 2)} grams`,
-                rawCalories:
-                    typeof nutrition.calories === 'number' ? `${round(nutrition.calories)} calories` : undefined,
-                rawProtein: typeof nutrition.protein === 'number' ? `${round(nutrition.protein, 2)} grams` : undefined,
-                rawCarbs: typeof nutrition.carbs === 'number' ? `${round(nutrition.carbs, 2)} grams` : undefined,
-                rawFat: typeof nutrition.fat === 'number' ? `${round(nutrition.fat, 2)} grams` : undefined,
-            });
-
-            if (nutrition.servingInMilliliters) {
-                ingredientNutrition.relatedAlternateServings.attach({
-                    serving: `${round(nutrition.servingInMilliliters, 2)} milliliters`,
-                });
-            }
-        }
+        nutrition && ingredient.setNutritionAttributes(nutrition);
 
         await ingredient.save();
 

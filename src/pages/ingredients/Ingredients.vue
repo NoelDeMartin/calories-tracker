@@ -79,6 +79,21 @@
                         <td class="px-6 py-4 text-right whitespace-nowrap">
                             <div class="flex space-x-1">
                                 <Button
+                                    v-if="typeof ingredient.nutrition?.calories === 'undefined'"
+                                    size="icon"
+                                    variant="ghost"
+                                    class="text-gray-400 transition-colors hover:text-orange-500"
+                                    :title="$t('ingredients.updateNutrition')"
+                                    :aria-label="$t('ingredients.updateNutrition')"
+                                    :disabled="updatingNutrition.has(ingredient.name)"
+                                    @click="updateNutrition(ingredient)"
+                                >
+                                    <i-lucide-refresh-ccw
+                                        class="size-4"
+                                        :class="{ 'animate-spin': updatingNutrition.has(ingredient.name) }"
+                                    />
+                                </Button>
+                                <Button
                                     size="icon"
                                     variant="ghost"
                                     class="text-gray-400 transition-colors hover:text-green-500"
@@ -119,10 +134,11 @@
 
 <script setup lang="ts">
 import Pantry from '@/services/Pantry';
-import { arraySorted } from '@noeldemartin/utils';
-import { translate } from '@aerogel/core';
+import Nutritionix from '@/services/Nutritionix';
+import { arraySorted, tap } from '@noeldemartin/utils';
+import { UI, translate } from '@aerogel/core';
 import { formatNumber } from '@/utils/formatting';
-import { type UnwrapRef, computed, ref } from 'vue';
+import { type UnwrapRef, computed, ref, shallowRef } from 'vue';
 import type { DeepKeyOf } from '@noeldemartin/utils';
 import type Ingredient from '@/models/Ingredient';
 
@@ -145,6 +161,7 @@ const COLUMNS: { label: string; field?: DeepKeyOf<UnwrapRef<typeof ingredientsSu
 const filter = ref('');
 const sortField = ref<DeepKeyOf<UnwrapRef<typeof ingredientsSummary>[number]>>('ingredient.name');
 const sortDirection = ref<'asc' | 'desc'>('asc');
+const updatingNutrition = shallowRef(new Set<string>());
 const filteredIngredients = computed(() => {
     if (!filter.value) {
         return Pantry.ingredients;
@@ -214,5 +231,27 @@ async function deleteIngredient(ingredient: Ingredient) {
     }
 
     await ingredient.delete();
+}
+
+async function updateNutrition(ingredient: Ingredient) {
+    updatingNutrition.value = new Set(updatingNutrition.value).add(ingredient.name);
+
+    try {
+        const nutrition = await Nutritionix.getNutrition(ingredient.name);
+
+        if (!nutrition) {
+            UI.toast(translate('ingredients.nutritionNotFound', { name: ingredient.name }), {
+                variant: 'warning',
+            });
+
+            return;
+        }
+
+        ingredient.setNutritionAttributes(nutrition);
+
+        await ingredient.save();
+    } finally {
+        updatingNutrition.value = tap(new Set(updatingNutrition.value), (set) => set.delete(ingredient.name));
+    }
 }
 </script>
