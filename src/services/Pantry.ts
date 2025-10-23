@@ -1,4 +1,4 @@
-import { facade, required, round, stringToSlug } from '@noeldemartin/utils';
+import { facade, required, stringToSlug } from '@noeldemartin/utils';
 import { trackModels } from '@aerogel/plugin-soukai';
 
 import Nutritionix from '@/services/Nutritionix';
