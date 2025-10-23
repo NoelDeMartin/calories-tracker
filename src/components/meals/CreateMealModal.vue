@@ -221,7 +221,7 @@ function updateServingsAndIngredients() {
         return;
     }
 
-    const defaultQuantity = form.meal.servingsBreakdown?.quantity ?? 1;
+    const defaultQuantity = form.servings ?? form.meal.servingsBreakdown?.quantity ?? 1;
     form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
     mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal) : [];
 }
