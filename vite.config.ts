@@ -20,6 +20,14 @@ export default defineConfig({
                 '192x192': 'android-chrome-192x192.png',
                 '512x512': 'android-chrome-512x512.png',
             },
+            pwa: {
+                additionalManifestEntries: [
+                    { url: 'img/nav/home.png', revision: '1' },
+                    { url: 'img/nav/history.png', revision: '1' },
+                    { url: 'img/nav/ingredients.png', revision: '1' },
+                    { url: 'img/nav/insights.png', revision: '1' },
+                ],
+            },
         }),
         Components({
             dts: 'src/types/components.d.ts',

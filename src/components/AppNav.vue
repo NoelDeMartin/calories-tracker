@@ -21,7 +21,6 @@ import { Router } from '@aerogel/plugin-routing';
 import { computed } from 'vue';
 
 const ROUTES = ['home', 'history', 'ingredients', 'insights'];
-const images = import.meta.glob('@/assets/img/nav/*.png', { eager: true }) as Record<string, { default: string }>;
 const sections = computed(() => {
     const currentRoute = Router.currentRoute.value?.name;
 
@@ -29,15 +28,11 @@ const sections = computed(() => {
         return [];
     }
 
-    const imageUrls = Object.fromEntries(
-        Object.entries(images).map(([key, value]) => [key.split('/').pop()?.split('.').shift(), value.default]),
-    );
-
     return ROUTES.map((route) => ({
         route,
         label: translate(`${route}.title`),
         current: route === currentRoute,
-        imageUrl: imageUrls[route],
+        imageUrl: `/img/nav/${route}.png`,
     }));
 });
 </script>
