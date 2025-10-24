@@ -1,4 +1,5 @@
 .env
+/dev-dist
 /dist
 /node_modules
 /solid

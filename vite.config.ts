@@ -16,10 +16,28 @@ export default defineConfig({
             description: 'Watch your calories!',
             baseUrl: 'https://calories.noeldemartin.com',
             themeColor: '#fff',
-            icons: {
-                '192x192': 'android-chrome-192x192.png',
-                '512x512': 'android-chrome-512x512.png',
-            },
+            icons: [
+                {
+                    src: 'icons/transparent-512x512.png',
+                    sizes: '512x512',
+                    purpose: 'any',
+                },
+                {
+                    src: 'icons/maskable-512x512.png',
+                    sizes: '512x512',
+                    purpose: 'maskable',
+                },
+                {
+                    src: 'icons/transparent-192x192.png',
+                    sizes: '192x192',
+                    purpose: 'any',
+                },
+                {
+                    src: 'icons/maskable-192x192.png',
+                    sizes: '192x192',
+                    purpose: 'maskable',
+                },
+            ],
             pwa: {
                 additionalManifestEntries: [
                     { url: 'img/nav/home.png', revision: '1' },
