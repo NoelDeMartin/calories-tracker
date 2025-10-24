@@ -9,11 +9,13 @@ import './assets/css/main.css';
 import App from './App.vue';
 import routes from './pages';
 import settings from './components/settings';
+import { formValidationRules } from './components/forms';
 import { services } from './services';
 
 bootstrap(App, {
     services,
     settings,
+    formValidationRules,
     settingsFullscreenOnMobile: true,
     plugins: [
         i18n({ messages: import.meta.glob('@/lang/*.yaml') }),

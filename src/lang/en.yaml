@@ -166,3 +166,6 @@ goalsWizard:
 ui:
     save: Save
     cancel: Cancel
+
+errors:
+    required: This is required

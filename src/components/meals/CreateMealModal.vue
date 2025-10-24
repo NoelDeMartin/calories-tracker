@@ -9,7 +9,7 @@
                 :render-option="renderMeal"
                 :compare-options="(a, b) => a.id === b.id"
                 :placeholder="$t('logs.mealPlaceholder')"
-                :new-input-value="(value) => ({ id: 'new', name: value }) as NewMeal"
+                :new-input-value="(value) => ({ id: 'new-meal', name: value }) as NewMeal"
             />
 
             <Select
@@ -116,12 +116,8 @@ import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
 import { parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
+import { type NewMeal, isNewMeal } from '@/components/meals';
 import type { Nutrition } from '@/models/NutritionInformation';
-
-interface NewMeal {
-    id: 'new';
-    name: string;
-}
 
 const { close } = useModal();
 const error = ref('');
@@ -155,7 +151,7 @@ const mealOptions = computed(() => {
 });
 
 const form = useForm({
-    meal: requiredObjectInput<Recipe | Meal | NewMeal>({ id: 'new', name: '' }),
+    meal: requiredObjectInput<Recipe | Meal | NewMeal>({ id: 'new-meal', name: '' }, { rules: ['required-meal'] }),
     servings: numberInput(),
     mealServings: numberInput(1),
     consumedAt: requiredDateInput(new Date()),
@@ -228,10 +224,6 @@ function updateServingsAndIngredients() {
 
 watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
 watch(customizeIngredients, updateServingsAndIngredients);
-
-function isNewMeal(meal: Recipe | Meal | NewMeal): meal is NewMeal {
-    return meal.id === 'new';
-}
 
 async function submit() {
     error.value = '';
@@ -339,12 +331,6 @@ async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
 }
 
 async function logNewMeal(name: string) {
-    name || form.setFieldErrors('meal', ['required']);
-
-    if (!name) {
-        return;
-    }
-
     await close();
     await UI.loading(
         {
