@@ -22,7 +22,7 @@
         <NutritionChart v-if="meal.recipe?.nutrition" :nutrition="meal.recipe.nutrition" />
 
         <template v-if="caloriesBreakdown?.length">
-            <div class="overflow-hidden rounded-lg bg-gray-50">
+            <div class="rounded-lg bg-gray-50">
                 <div class="border-b border-gray-200 bg-gray-100 px-4 py-2">
                     <h2 class="text-sm font-medium text-gray-900">
                         {{ $t('logs.mealIngredients') }}

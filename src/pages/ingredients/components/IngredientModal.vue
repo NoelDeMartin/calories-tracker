@@ -32,7 +32,7 @@
             <div class="space-y-3">
                 <NutritionChart :nutrition="ingredient.nutrition" />
 
-                <div class="overflow-hidden rounded-lg bg-gray-50">
+                <div class="rounded-lg bg-gray-50">
                     <div class="border-b border-gray-200 bg-gray-100 px-4 py-2">
                         <h2 class="text-sm font-medium text-gray-900">
                             {{ $t('ingredients.nutrition') }}
