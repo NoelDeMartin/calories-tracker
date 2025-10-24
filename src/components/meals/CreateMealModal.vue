@@ -27,7 +27,7 @@
             />
 
             <ul
-                v-if="form.meal.id === 'new' || customizeIngredients"
+                v-if="isNewMeal(form.meal) || customizeIngredients"
                 class="space-y-2 overflow-y-auto"
                 :class="{ hidden: mealIngredients.length === 0 }"
             >
@@ -70,7 +70,7 @@
             </div>
 
             <Button
-                v-if="form.meal.id === 'new' || customizeIngredients"
+                v-if="isNewMeal(form.meal) || customizeIngredients"
                 variant="secondary"
                 class="w-full"
                 @click="mealIngredients.push({ name: '', quantity: 100, unit: 'grams' })"
@@ -79,7 +79,7 @@
             </Button>
 
             <Checkbox
-                v-if="form.meal.id !== 'new'"
+                v-if="!isNewMeal(form.meal)"
                 v-model="customizeIngredients"
                 :label="$t('logs.mealIngredientsCustom')"
             />
