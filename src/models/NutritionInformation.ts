@@ -112,7 +112,7 @@ export default class NutritionInformation extends Model {
 
             multiplier = servings * (quantity / this.servingInMilliliters);
         } else if (!breakdown.unit) {
-            multiplier = quantity;
+            multiplier = quantity * servings;
         } else {
             return null;
         }
