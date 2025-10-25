@@ -317,6 +317,12 @@ async function logRecipe(recipe: Recipe) {
             message: translate('logs.adding'),
         },
         async () => {
+            if (!customizeIngredients.value) {
+                for (const breakdown of recipe.ingredientsBreakdown) {
+                    await Pantry.resolveIngredient(breakdown);
+                }
+            }
+
             const renderedIngredients = customizeIngredients.value ? await renderIngredients() : undefined;
 
             await createMeal(recipe.name, {
