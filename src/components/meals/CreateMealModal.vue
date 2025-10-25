@@ -344,19 +344,7 @@ async function logNewMeal(name: string) {
         async () => {
             const renderedIngredients = await renderIngredients();
 
-            await createMeal(
-                name,
-                {
-                    calories: totalCalories.value ?? 0,
-                    fat: caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0) ?? 0,
-                    protein:
-                        caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0) ??
-                        0,
-                    carbs:
-                        caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0) ?? 0,
-                },
-                { ingredients: renderedIngredients },
-            );
+            await createMeal(name, { ingredients: renderedIngredients });
         },
     );
 }
@@ -370,17 +358,11 @@ async function logMeal(meal: Meal) {
         },
         async () => {
             const servings = form.mealServings ?? 1;
-            const nutrition = {
-                calories: meal.recipe?.nutrition?.calories ? meal.recipe?.nutrition?.calories * servings : 0,
-                protein: meal.recipe?.nutrition?.protein ? meal.recipe?.nutrition?.protein * servings : 0,
-                carbs: meal.recipe?.nutrition?.carbs ? meal.recipe?.nutrition?.carbs * servings : 0,
-                fat: meal.recipe?.nutrition?.fat ? meal.recipe?.nutrition?.fat * servings : 0,
-            };
             const ingredients = customizeIngredients.value
                 ? await renderIngredients()
                 : caloriesBreakdown.value?.map((ingredient) => ingredient.name);
 
-            await createMeal(required(meal.recipe?.name), nutrition, {
+            await createMeal(required(meal.recipe?.name), {
                 servings: servings !== 1 ? formatNumber(servings) : undefined,
                 ingredients,
             });
@@ -396,10 +378,9 @@ async function logRecipe(recipe: Recipe) {
             message: translate('logs.adding'),
         },
         async () => {
-            const nutrition = await calculateRecipeNutrition(recipe);
             const renderedIngredients = customizeIngredients.value ? await renderIngredients() : undefined;
 
-            await createMeal(recipe.name, nutrition, {
+            await createMeal(recipe.name, {
                 servings:
                     form.servings && recipe.servingsBreakdown
                         ? form.servings === -1
@@ -417,7 +398,6 @@ async function logRecipe(recipe: Recipe) {
 
 async function createMeal(
     name: string,
-    nutrition: Nutrition,
     extra: {
         servings?: string;
         externalUrls?: string[];
@@ -425,6 +405,12 @@ async function createMeal(
     } = {},
 ) {
     const meal = new Meal({ consumedAt: form.consumedAt });
+    const nutrition = {
+        calories: totalCalories.value ?? 0,
+        fat: caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0) ?? 0,
+        protein: caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0) ?? 0,
+        carbs: caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0) ?? 0,
+    };
     const mealRecipe = meal.relatedRecipe.attach({
         name,
         servings: extra.servings,
