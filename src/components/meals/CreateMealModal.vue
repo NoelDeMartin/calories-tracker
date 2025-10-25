@@ -117,7 +117,6 @@ import { formatNumber } from '@/utils/formatting';
 import { parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown, mealIngredientUnits } from '@/utils/meals';
 import { type NewMeal, isNewMeal } from '@/components/meals';
-import type { Nutrition } from '@/models/NutritionInformation';
 
 const { close } = useModal();
 const error = ref('');
@@ -255,28 +254,6 @@ function renderMeal(meal: Recipe | Meal | NewMeal) {
     return meal.name;
 }
 
-function applyIngredientNutrition(
-    ingredient: CaloriesBreakdown[number],
-    nutrition: Nutrition,
-    property: keyof Nutrition,
-) {
-    if (typeof ingredient?.[property] !== 'number') {
-        return;
-    }
-
-    nutrition[property] ??= 0;
-    nutrition[property] += ingredient[property];
-}
-
-function ingredientNotFound(name: string) {
-    // eslint-disable-next-line no-console
-    console.warn(translate('ingredients.nutritionNotFound', { name }));
-
-    UI.toast(translate('ingredients.nutritionNotFound', { name }), {
-        variant: 'warning',
-    });
-}
-
 async function renderIngredients(): Promise<string[]> {
     const renderedIngredients = mealIngredients.value.map((ingredient) => {
         switch (ingredient.unit) {
@@ -294,44 +271,6 @@ async function renderIngredients(): Promise<string[]> {
     }
 
     return renderedIngredients;
-}
-
-async function calculateRecipeNutrition(recipe: Recipe): Promise<Nutrition> {
-    for (const breakdown of recipe.ingredientsBreakdown) {
-        await Pantry.resolveIngredient(breakdown);
-    }
-
-    const originalServings = recipe.servingsBreakdown?.quantity;
-    const ingredientsMultiplier = form.servings
-        ? (form.servings === -1 ? (form.mealServings ?? 1) : form.servings) / (originalServings ?? 1)
-        : 1;
-    const breakdown = recipe.getCaloriesBreakdown(ingredientsMultiplier);
-    const nutrition: Nutrition = {
-        calories: null,
-        fat: null,
-        protein: null,
-        carbs: null,
-    };
-
-    for (const ingredient of breakdown) {
-        if (typeof ingredient.calories !== 'number') {
-            ingredientNotFound(ingredient.name);
-
-            continue;
-        }
-
-        applyIngredientNutrition(ingredient, nutrition, 'calories');
-        applyIngredientNutrition(ingredient, nutrition, 'fat');
-        applyIngredientNutrition(ingredient, nutrition, 'protein');
-        applyIngredientNutrition(ingredient, nutrition, 'carbs');
-    }
-
-    nutrition.calories = nutrition.calories && round(nutrition.calories);
-    nutrition.fat = nutrition.fat && round(nutrition.fat, 2);
-    nutrition.protein = nutrition.protein && round(nutrition.protein, 2);
-    nutrition.carbs = nutrition.carbs && round(nutrition.carbs, 2);
-
-    return nutrition;
 }
 
 async function logNewMeal(name: string) {
