@@ -189,14 +189,14 @@ export function ingredientSlugs(ingredient: Ingredient): Set<Slug> {
     return values;
 }
 
-export function parseMealIngredients(meal: Meal | Recipe): MealIngredient[] {
+export function parseMealIngredients(meal: Meal | Recipe, multiplier: number = 1): MealIngredient[] {
     return (
         (isInstanceOf(meal, Meal) ? meal.recipe : meal)?.ingredientsBreakdown?.map(({ template, quantity, unit }) => ({
             name: template
                 .replace('{quantity}', '')
                 .trim()
                 .replace(/\s*\(optional\)/, ''),
-            quantity: typeof quantity === 'number' ? quantity : 1,
+            quantity: (typeof quantity === 'number' ? quantity : 1) * multiplier,
             unit: unit ?? 'servings',
         })) ?? []
     );

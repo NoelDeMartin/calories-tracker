@@ -191,7 +191,7 @@ const servingsOptions = computed(() => {
     ).concat(-1);
 });
 const caloriesBreakdown = computed(() => {
-    if (isNewMeal(form.meal)) {
+    if (isNewMeal(form.meal) || customizeIngredients.value) {
         return getMealIngredientsCaloriesBreakdown(mealIngredients.value);
     }
 
@@ -218,8 +218,12 @@ function updateServingsAndIngredients() {
     }
 
     const defaultQuantity = form.servings ?? form.meal.servingsBreakdown?.quantity ?? 1;
+    const multiplier =
+        form.meal.servingsBreakdown?.quantity && form.servings
+            ? form.servings / form.meal.servingsBreakdown.quantity
+            : 1;
     form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
-    mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal) : [];
+    mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal, multiplier) : [];
 }
 
 watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
