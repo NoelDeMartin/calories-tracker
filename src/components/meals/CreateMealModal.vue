@@ -130,7 +130,7 @@ const mealOptions = computed(() => {
     const uniqueMealsAndRecipes: (Meal | Recipe | NewMeal)[] = [];
 
     for (const meal of meals.value) {
-        if (!meal.recipe || meal.recipe.externalUrls.length > 0 || mealNames.has(meal.recipe.name)) {
+        if (!meal.recipe?.name || mealNames.has(meal.recipe.name)) {
             continue;
         }
 
