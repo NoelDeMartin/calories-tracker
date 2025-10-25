@@ -1,8 +1,9 @@
 import { arrayFilter } from '@noeldemartin/utils';
-import type { BelongsToOneRelation, Relation } from 'soukai';
+import type { BelongsToOneRelation, HasOneRelation, Relation } from 'soukai';
 
 import Pantry from '@/services/Pantry';
 import NutritionInformation from '@/models/NutritionInformation';
+import Meal from '@/models/Meal';
 import { parseIngredient } from '@/utils/ingredients';
 import type { IngredientBreakdown } from '@/utils/ingredients';
 
@@ -23,6 +24,8 @@ export default class Recipe extends Model {
 
     declare public nutrition?: NutritionInformation;
     declare public relatedNutrition: BelongsToOneRelation<Recipe, NutritionInformation, typeof NutritionInformation>;
+    declare public meal?: Meal;
+    declare public relatedMeal: HasOneRelation<Meal, Recipe, typeof Recipe>;
 
     public get ingredientsBreakdown(): IngredientBreakdown[] {
         return this.ingredients.map(parseIngredient);
@@ -69,6 +72,10 @@ export default class Recipe extends Model {
 
     public nutritionRelationship(): Relation {
         return this.belongsToOne(NutritionInformation, 'nutritionUrl').usingSameDocument().onDelete('cascade');
+    }
+
+    public mealRelationship(): Relation {
+        return this.hasOne(Meal, 'recipeUrl').usingSameDocument(true).onDelete('cascade');
     }
 
 }

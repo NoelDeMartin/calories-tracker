@@ -1,7 +1,9 @@
+import { emitModelEvent } from 'soukai';
 import type { BelongsToOneRelation, Relation } from 'soukai';
 
 import Cookbook from '@/services/Cookbook';
 import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
+import NutritionInformation from '@/models/NutritionInformation';
 import type { Nutrition } from '@/models/NutritionInformation';
 
 import Model from './Meal.schema';
@@ -9,6 +11,27 @@ import Model from './Meal.schema';
 export default class Meal extends Model {
 
     public static cloud = true;
+
+    public static boot(name?: string): void {
+        super.boot(name);
+
+        // FIXME these shouldn't be necessary.
+        Recipe.on('updated', async (recipe) => {
+            if (!recipe.meal) {
+                return;
+            }
+
+            await emitModelEvent(recipe.meal, 'updated');
+        });
+
+        NutritionInformation.on('updated', async (nutrition) => {
+            if (!nutrition.recipe?.meal) {
+                return;
+            }
+
+            await emitModelEvent(nutrition.recipe.meal, 'updated');
+        });
+    }
 
     declare public recipe?: Recipe;
     declare public relatedRecipe: BelongsToOneRelation<Meal, Recipe, typeof Recipe>;

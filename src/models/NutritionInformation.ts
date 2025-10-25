@@ -1,5 +1,5 @@
 import { type Nullable, round } from '@noeldemartin/utils';
-import type { BelongsToManyRelation, Relation } from 'soukai';
+import type { BelongsToManyRelation, HasOneRelation, Relation } from 'soukai';
 
 import Ingredient from '@/models/Ingredient';
 import Meal from '@/models/Meal';
@@ -59,6 +59,8 @@ export default class NutritionInformation extends Model {
     }
 
     private computedValues: ComputedValues | null = null;
+    declare public recipe?: Recipe;
+    declare public relatedRecipe: HasOneRelation<NutritionInformation, Recipe, typeof Recipe>;
     declare public alternateServings?: NutritionInformation[];
     declare public relatedAlternateServings: BelongsToManyRelation<
         NutritionInformation,
@@ -123,6 +125,10 @@ export default class NutritionInformation extends Model {
             carbs: typeof this.carbs === 'number' ? this.carbs * multiplier : null,
             fat: typeof this.fat === 'number' ? this.fat * multiplier : null,
         };
+    }
+
+    public recipeRelationship(): Relation {
+        return this.hasOne(Recipe, 'nutritionUrl').usingSameDocument(true).onDelete('cascade');
     }
 
     public alternateServingsRelationship(): Relation {
