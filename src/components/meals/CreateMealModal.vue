@@ -43,7 +43,7 @@
                             :id="`ingredients-${index}-quantity`"
                             v-model="mealIngredient.quantity"
                             type="number"
-                            step="0.1"
+                            step="0.01"
                             class="w-20"
                         />
                         <Select
