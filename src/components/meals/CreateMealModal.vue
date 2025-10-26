@@ -194,16 +194,16 @@ const caloriesBreakdown = computed(() => {
         return getMealIngredientsCaloriesBreakdown(mealIngredients.value);
     }
 
-    const recipe = isInstanceOf(form.meal, Recipe) ? form.meal : form.meal.recipe;
-    const servings = isInstanceOf(form.meal, Recipe)
-        ? form.servings === -1
-            ? form.mealServings
-            : form.servings
-        : form.mealServings;
-    const originalServings = recipe?.servingsBreakdown?.quantity ?? 1;
-    const ingredientsMultiplier = servings ? servings / (originalServings ?? 1) : 1;
+    if (form.meal instanceof Recipe) {
+        const recipe = form.meal;
+        const servings = form.servings === -1 ? form.mealServings : form.servings;
+        const originalServings = recipe?.servingsBreakdown?.quantity ?? 1;
+        const ingredientsMultiplier = servings ? servings / (originalServings ?? 1) : 1;
 
-    return recipe?.getCaloriesBreakdown(ingredientsMultiplier);
+        return recipe?.getCaloriesBreakdown(ingredientsMultiplier);
+    }
+
+    return form.meal.getCaloriesBreakdown(form.mealServings);
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));

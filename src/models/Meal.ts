@@ -4,6 +4,7 @@ import type { BelongsToOneRelation, Relation } from 'soukai';
 import Cookbook from '@/services/Cookbook';
 import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import NutritionInformation from '@/models/NutritionInformation';
+import type { Nullable } from '@noeldemartin/utils';
 import type { Nutrition } from '@/models/NutritionInformation';
 
 import Model from './Meal.schema';
@@ -67,15 +68,15 @@ export default class Meal extends Model {
         return !!recipe?.hasIncompleteIngredients();
     }
 
-    public getCaloriesBreakdown(): CaloriesBreakdown | undefined {
+    public getCaloriesBreakdown(servings?: Nullable<number>): CaloriesBreakdown | undefined {
         if (this.recipe?.ingredients.length) {
-            return this.recipe.getCaloriesBreakdown();
+            return this.recipe.getCaloriesBreakdown(servings);
         }
 
         const recipeUrl = this.recipe?.externalUrls.find((url) => Cookbook.recipesByUrl.get(url));
         const linkedRecipe = recipeUrl ? Cookbook.recipesByUrl.require(recipeUrl) : null;
         const recipe = linkedRecipe ?? this.recipe;
-        const recipeQuantity = recipe?.servingsBreakdown?.quantity ?? 1;
+        const recipeQuantity = servings ?? recipe?.servingsBreakdown?.quantity ?? 1;
         const mealQuantity = this.recipe?.servingsBreakdown?.quantity ?? 1;
 
         return recipe?.getCaloriesBreakdown(mealQuantity / recipeQuantity);

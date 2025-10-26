@@ -1,4 +1,5 @@
 import { arrayFilter } from '@noeldemartin/utils';
+import type { Nullable } from '@noeldemartin/utils';
 import type { BelongsToOneRelation, HasOneRelation, Relation } from 'soukai';
 
 import Pantry from '@/services/Pantry';
@@ -53,7 +54,9 @@ export default class Recipe extends Model {
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public getCaloriesBreakdown(ingredientsMultiplier: number = 1) {
+    public getCaloriesBreakdown(ingredientsMultiplier?: Nullable<number>) {
+        const multiplier = ingredientsMultiplier ?? 1;
+
         return arrayFilter(
             this.ingredientsBreakdown.map((breakdown) => {
                 const nutrition = Pantry.ingredient(breakdown)?.nutrition;
@@ -61,10 +64,10 @@ export default class Recipe extends Model {
                 return {
                     name:
                         typeof breakdown.quantity === 'number'
-                            ? breakdown.renderQuantity(breakdown.quantity * ingredientsMultiplier)
+                            ? breakdown.renderQuantity(breakdown.quantity * multiplier)
                             : breakdown.original,
                     macroClass: nutrition?.macroClass,
-                    ...nutrition?.getIngredientMacrosAndCalories(ingredientsMultiplier, breakdown),
+                    ...nutrition?.getIngredientMacrosAndCalories(multiplier, breakdown),
                 };
             }),
         );
