@@ -1,5 +1,8 @@
 <template>
-    <AppPage style="--breakpoint-content: 1400px" :header="$t('ingredients.title')">
+    <AppPage
+        style="--breakpoint-content: 1400px"
+        :header="`${$t('ingredients.title')} (${filteredIngredients.length})`"
+    >
         <div class="flex items-center gap-2">
             <Input v-model="filter" :placeholder="$t('ingredients.search')" class="w-full" />
             <Button @click="$ui.modal(IngredientFormModal)">
