@@ -76,8 +76,8 @@ export default class Meal extends Model {
         const recipeUrl = this.recipe?.externalUrls.find((url) => Cookbook.recipesByUrl.get(url));
         const linkedRecipe = recipeUrl ? Cookbook.recipesByUrl.require(recipeUrl) : null;
         const recipe = linkedRecipe ?? this.recipe;
-        const recipeQuantity = servings ?? recipe?.servingsBreakdown?.quantity ?? 1;
-        const mealQuantity = this.recipe?.servingsBreakdown?.quantity ?? 1;
+        const recipeQuantity = recipe?.servingsBreakdown?.quantity ?? 1;
+        const mealQuantity = servings ?? this.recipe?.servingsBreakdown?.quantity ?? 1;
 
         return recipe?.getCaloriesBreakdown(mealQuantity / recipeQuantity);
     }
