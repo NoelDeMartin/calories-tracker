@@ -6,6 +6,7 @@ describe('App', () => {
     beforeEach(() => {
         cy.solidReset();
         cy.visit('/');
+        cy.see('Hi there! Are you ready to start tracking your calories?');
     });
 
     it('Logs in without recipes', () => {
@@ -480,11 +481,11 @@ function setupNutritionixFixtures() {
             case '100ml Broth':
                 fixture = 'json/broth-100ml.json';
                 break;
-            case '100g Cookies':
-                fixture = 'json/cookies-100g.json';
+            case '100g Cookie':
+                fixture = 'json/cookie-100g.json';
                 break;
-            case '100ml Cookies':
-                fixture = 'json/cookies-100ml.json';
+            case '100ml Cookie':
+                fixture = 'json/cookie-100ml.json';
                 break;
         }
 
