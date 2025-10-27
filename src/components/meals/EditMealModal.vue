@@ -10,6 +10,8 @@
                 :compare-options="(a, b) => a.id === b.id"
             />
 
+            <Input name="servings" step="0.1" :label="$t('logs.mealServings')" />
+
             <template v-if="!recalculate">
                 <Input name="calories" :label="$t('logs.mealCalories')" step="0.01" />
                 <Input name="protein" :label="$t('logs.mealProtein')" step="0.01" />
@@ -112,9 +114,10 @@ import type Recipe from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import { computed, ref } from 'vue';
 import { IngredientUnits, parseIngredient, parseMealIngredients } from '@/utils/ingredients';
-import { getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
+import { type MealIngredient, getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
 import { formatNumber } from '@/utils/formatting';
 import { getTrackedModels } from '@aerogel/plugin-soukai';
+import type { CaloriesBreakdown as MealCaloriesBreakdown } from '@/models/Recipe';
 
 const { meal } = defineProps<{ meal: Meal }>();
 const { close } = useModal();
@@ -127,6 +130,7 @@ const ingredientNames = computed(() => Pantry.ingredients.map((ingredient) => in
 const form = useForm({
     name: requiredStringInput(meal.recipe?.name),
     recipe: requiredObjectInput<Recipe | { id: 'none' }>(initialRecipe ?? { id: 'none' }),
+    servings: numberInput(meal.recipe?.servingsBreakdown?.quantity),
     calories: numberInput(meal.recipe?.nutrition?.calories ?? 0),
     protein: numberInput(meal.recipe?.nutrition?.protein ?? 0),
     carbs: numberInput(meal.recipe?.nutrition?.carbs ?? 0),
@@ -135,9 +139,7 @@ const form = useForm({
 });
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
-const mealIngredients = ref<{ name: string; quantity: number; unit: (typeof ingredientUnitOptions.value)[number] }[]>(
-    parseMealIngredients(meal));
-
+const mealIngredients = ref<MealIngredient[]>(parseMealIngredients(meal));
 const caloriesBreakdown = computed(() => getMealIngredientsCaloriesBreakdown(mealIngredients.value));
 const totalCalories = computed(() =>
     caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
@@ -154,46 +156,34 @@ function renderRecipe(recipe: Recipe | { id: 'none' }) {
     return recipe.name;
 }
 
-async function updateMeal(model: Meal, newIngredients: string[]): Promise<void> {
+async function updateMeal(
+    model: Meal,
+    newIngredients: string[],
+    mealCaloriesBreakdown: MealCaloriesBreakdown,
+): Promise<void> {
     const externalUrls = [...(model.recipe?.externalUrls ?? [])];
     const recipe = model.recipe ?? model.relatedRecipe.attach();
     const nutrition = recipe.nutrition ?? recipe.relatedNutrition.attach();
-    const ingredients = recipe.ingredients?.slice(0) ?? [];
-
-    for (const ingredient of newIngredients) {
-        if (ingredients.includes(ingredient)) {
-            continue;
-        }
-
-        ingredients.push(ingredient);
-    }
-
-    for (const ingredient of ingredients) {
-        if (newIngredients.includes(ingredient)) {
-            continue;
-        }
-
-        arrayRemove(ingredients, ingredient);
-    }
+    const calories = mealCaloriesBreakdown.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0);
 
     initialRecipe?.url && arrayRemove(externalUrls, initialRecipe.url);
     isNone(form.recipe) || externalUrls.push(form.recipe.url);
 
-    recipe.setAttributes({ name: form.name, ingredients, externalUrls });
+    recipe.setAttributes({ name: form.name, ingredients: newIngredients.slice(0), externalUrls });
 
     if (recalculate.value) {
         nutrition.setAttributes({
-            rawCalories: `${round(totalCalories.value)} calories`,
+            rawCalories: `${round(calories)} calories`,
             rawProtein: `${round(
-                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0),
+                mealCaloriesBreakdown.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0),
                 2,
             )} grams`,
             rawCarbs: `${round(
-                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0),
+                mealCaloriesBreakdown.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0),
                 2,
             )} grams`,
             rawFat: `${round(
-                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0),
+                mealCaloriesBreakdown.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0),
                 2,
             )} grams`,
         });
@@ -234,16 +224,38 @@ async function submit() {
                 }
             }
 
-            const meals = updateAll.value
+            const servings = form.servings ?? 1;
+            const otherMeals = updateAll.value
                 ? getTrackedModels(Meal).filter(
                     (other) => other.recipe?.name && other.recipe?.name === meal.recipe?.name,
                 )
-                : [meal];
+                : [];
 
-            meal.setAttributes({ consumedAt: form.consumedAt });
+            meal.setAttributes({ consumedAt: form.consumedAt, servings: form.servings });
 
-            for (const model of meals) {
-                await updateMeal(model, newIngredients);
+            await updateMeal(meal, newIngredients, caloriesBreakdown.value);
+
+            for (const model of otherMeals) {
+                const otherMultiplier = (model.recipe?.servingsBreakdown?.quantity ?? 1) / servings;
+                const otherIngredients = mealIngredients.value.map((ingredient) => {
+                    switch (ingredient.unit) {
+                        case 'grams':
+                            return `${ingredient.quantity * otherMultiplier}g ${ingredient.name}`;
+                        case 'milliliters':
+                            return `${ingredient.quantity * otherMultiplier}ml ${ingredient.name}`;
+                        case 'servings':
+                            return `${ingredient.quantity * otherMultiplier} ${ingredient.name}`;
+                    }
+                });
+
+                const otherBreakdown = getMealIngredientsCaloriesBreakdown(
+                    mealIngredients.value.map((ingredient) => ({
+                        ...ingredient,
+                        quantity: ingredient.quantity * otherMultiplier,
+                    })),
+                );
+
+                await updateMeal(model, otherIngredients, otherBreakdown);
             }
         },
     );

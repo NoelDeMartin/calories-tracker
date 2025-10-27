@@ -48,6 +48,8 @@
                         />
                         <Select
                             v-model="mealIngredient.unit"
+                            label-class="sr-only"
+                            :label="$t('logs.mealIngredientUnit')"
                             :options="mealIngredientUnits"
                             :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
                         />

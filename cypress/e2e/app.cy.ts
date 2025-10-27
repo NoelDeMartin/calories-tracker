@@ -232,13 +232,13 @@ describe('App', () => {
 
         // Act
         cy.get('[aria-label="Edit"]').click();
+        cy.contains('Recalculate nutrients').click({ force: true });
         cy.press('Add ingredient');
         cy.get('input[placeholder="Ingredient"]').last().type('Broth{enter}');
         cy.get('#ingredients-0-quantity').clear().type('200');
         cy.comboboxSelect('Unit', 'Milliliters');
         cy.press('Add ingredient');
         cy.get('input[placeholder="Ingredient"]').last().type('Wheat Noodles{enter}');
-        cy.press('Recalculate nutrients');
         cy.press('Save');
         cy.waitSync();
 
@@ -393,6 +393,41 @@ describe('App', () => {
         cy.see('54g');
         cy.see('20g');
         cy.see('180g');
+    });
+
+    it('Updates all meal instances', () => {
+        // Arrange
+        cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Eggs{enter}');
+        cy.press('Add ingredient');
+        cy.get('input[placeholder="Ingredient"]').last().type('Egg{enter}');
+        cy.get('#ingredients-0-quantity').clear().type('1');
+        cy.comboboxSelect('Unit', 'Servings');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.see('72 kcal');
+
+        cy.press('Log meal');
+        cy.get('input[name="meal"]').type('Eggs{enter}');
+        cy.get('input[name="mealServings"]').clear().type('2');
+        cy.get('[role="dialog"]').within(() => cy.press('Log'));
+        cy.see('144 kcal');
+
+        // Act
+        cy.get('[aria-label="Edit"]').click();
+        cy.contains('Recalculate nutrients').click({ force: true });
+        cy.contains('Update all instances of this meal').click({ force: true });
+        cy.get('#ingredients-0-quantity').clear().type('2');
+        cy.press('Save');
+
+        // Assert
+        cy.see('288 kcal');
+        cy.see('25g protein');
+        cy.see('1g carbs');
+        cy.see('19g fat');
+        cy.see('144 kcal');
+        cy.see('13g protein');
+        cy.see('1g carbs');
+        cy.see('10g fat');
     });
 
 });
