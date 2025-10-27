@@ -86,6 +86,7 @@ logs:
     updating: Updating meal...
     editTitle: Edit {name}
     editRecalculate: Recalculate nutrients
+    editUpdateAll: Update all instances of this meal
     delete: Delete meal
     deleteConfirm: Delete {name}?
     viewBreakdown: View calories breakdown

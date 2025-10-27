@@ -70,12 +70,17 @@
                 </Details>
             </template>
 
+            <Checkbox v-model="recalculate">
+                <span class="text-sm">{{ $t('logs.editRecalculate') }}</span>
+            </Checkbox>
+
+            <Checkbox v-model="updateAll">
+                <span class="text-sm">{{ $t('logs.editUpdateAll') }}</span>
+            </Checkbox>
+
             <div class="grow" />
 
             <div class="mt-4 flex justify-end space-x-2">
-                <Checkbox v-model="recalculate">
-                    <span class="text-sm">{{ $t('logs.editRecalculate') }}</span>
-                </Checkbox>
                 <span class="flex-grow" />
                 <Button variant="secondary" @click="close">
                     {{ $t('ui.cancel') }}
@@ -104,15 +109,17 @@ import {
 import Cookbook from '@/services/Cookbook';
 import Pantry from '@/services/Pantry';
 import type Recipe from '@/models/Recipe';
-import type Meal from '@/models/Meal';
+import Meal from '@/models/Meal';
 import { computed, ref } from 'vue';
 import { IngredientUnits, parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
 import { formatNumber } from '@/utils/formatting';
+import { getTrackedModels } from '@aerogel/plugin-soukai';
 
 const { meal } = defineProps<{ meal: Meal }>();
 const { close } = useModal();
 const recalculate = ref(false);
+const updateAll = ref(false);
 const initialRecipe = Cookbook.recipes.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url));
 const recipesOptions = computed(() => (Cookbook.recipes as Array<Recipe | { id: 'none' }>).concat({ id: 'none' }));
 const ingredientNames = computed(() => Pantry.ingredients.map((ingredient) => ingredient.name));
@@ -147,6 +154,61 @@ function renderRecipe(recipe: Recipe | { id: 'none' }) {
     return recipe.name;
 }
 
+async function updateMeal(model: Meal, newIngredients: string[]): Promise<void> {
+    const externalUrls = [...(model.recipe?.externalUrls ?? [])];
+    const recipe = model.recipe ?? model.relatedRecipe.attach();
+    const nutrition = recipe.nutrition ?? recipe.relatedNutrition.attach();
+    const ingredients = recipe.ingredients?.slice(0) ?? [];
+
+    for (const ingredient of newIngredients) {
+        if (ingredients.includes(ingredient)) {
+            continue;
+        }
+
+        ingredients.push(ingredient);
+    }
+
+    for (const ingredient of ingredients) {
+        if (newIngredients.includes(ingredient)) {
+            continue;
+        }
+
+        arrayRemove(ingredients, ingredient);
+    }
+
+    initialRecipe?.url && arrayRemove(externalUrls, initialRecipe.url);
+    isNone(form.recipe) || externalUrls.push(form.recipe.url);
+
+    recipe.setAttributes({ name: form.name, ingredients, externalUrls });
+
+    if (recalculate.value) {
+        nutrition.setAttributes({
+            rawCalories: `${round(totalCalories.value)} calories`,
+            rawProtein: `${round(
+                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0),
+                2,
+            )} grams`,
+            rawCarbs: `${round(
+                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0),
+                2,
+            )} grams`,
+            rawFat: `${round(
+                caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0),
+                2,
+            )} grams`,
+        });
+    } else {
+        nutrition.setAttributes({
+            rawCalories: `${round(form.calories ?? 0)} calories`,
+            rawProtein: `${round(form.protein ?? 0, 2)} grams`,
+            rawCarbs: `${round(form.carbs ?? 0, 2)} grams`,
+            rawFat: `${round(form.fat ?? 0, 2)} grams`,
+        });
+    }
+
+    await model.save();
+}
+
 async function submit() {
     await close();
     await UI.loading(
@@ -155,11 +217,7 @@ async function submit() {
             message: translate('logs.updating'),
         },
         async () => {
-            const externalUrls = [...(meal.recipe?.externalUrls ?? [])];
-            const recipe = meal.recipe ?? meal.relatedRecipe.attach();
-            const nutrition = recipe.nutrition ?? recipe.relatedNutrition.attach();
-            const ingredients = recipe.ingredients?.slice(0) ?? [];
-            const renderedIngredients = mealIngredients.value.map((ingredient) => {
+            const newIngredients = mealIngredients.value.map((ingredient) => {
                 switch (ingredient.unit) {
                     case 'grams':
                         return `${ingredient.quantity}g ${ingredient.name}`;
@@ -170,58 +228,23 @@ async function submit() {
                 }
             });
 
-            for (const ingredient of renderedIngredients) {
-                if (ingredients.includes(ingredient)) {
-                    continue;
-                }
-
-                ingredients.push(ingredient);
-            }
-
-            for (const ingredient of ingredients) {
-                if (renderedIngredients.includes(ingredient)) {
-                    continue;
-                }
-
-                arrayRemove(ingredients, ingredient);
-            }
-
-            initialRecipe?.url && arrayRemove(externalUrls, initialRecipe.url);
-            isNone(form.recipe) || externalUrls.push(form.recipe.url);
-
-            meal.setAttributes({ consumedAt: form.consumedAt });
-            recipe.setAttributes({ name: form.name, ingredients, externalUrls });
-
             if (recalculate.value) {
-                for (const ingredient of renderedIngredients) {
+                for (const ingredient of newIngredients) {
                     await Pantry.resolveIngredient(parseIngredient(ingredient));
                 }
-
-                nutrition.setAttributes({
-                    rawCalories: `${round(totalCalories.value)} calories`,
-                    rawProtein: `${round(
-                        caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0),
-                        2,
-                    )} grams`,
-                    rawCarbs: `${round(
-                        caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0),
-                        2,
-                    )} grams`,
-                    rawFat: `${round(
-                        caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0),
-                        2,
-                    )} grams`,
-                });
-            } else {
-                nutrition.setAttributes({
-                    rawCalories: `${round(form.calories ?? 0)} calories`,
-                    rawProtein: `${round(form.protein ?? 0, 2)} grams`,
-                    rawCarbs: `${round(form.carbs ?? 0, 2)} grams`,
-                    rawFat: `${round(form.fat ?? 0, 2)} grams`,
-                });
             }
 
-            await meal.save();
+            const meals = updateAll.value
+                ? getTrackedModels(Meal).filter(
+                    (other) => other.recipe?.name && other.recipe?.name === meal.recipe?.name,
+                )
+                : [meal];
+
+            meal.setAttributes({ consumedAt: form.consumedAt });
+
+            for (const model of meals) {
+                await updateMeal(model, newIngredients);
+            }
         },
     );
 }
