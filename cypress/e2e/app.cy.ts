@@ -397,6 +397,8 @@ describe('App', () => {
 
     it('Updates all meal instances', () => {
         // Arrange
+        setupNutritionixFixtures();
+
         cy.press('Log meal');
         cy.get('input[name="meal"]').type('Cookies{enter}');
         cy.press('Add ingredient');
@@ -453,6 +455,10 @@ function setupAccount(options: { ingredients?: string[] } = {}) {
 
     cy.ariaInput('Login url').type(`${webId()}{enter}`);
 
+    setupNutritionixFixtures();
+}
+
+function setupNutritionixFixtures() {
     cy.service('$nutritionix').then((Nutritionix) => {
         Nutritionix.appId = uuid();
         Nutritionix.appKey = uuid();
