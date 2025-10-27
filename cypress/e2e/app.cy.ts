@@ -398,19 +398,19 @@ describe('App', () => {
     it('Updates all meal instances', () => {
         // Arrange
         cy.press('Log meal');
-        cy.get('input[name="meal"]').type('Eggs{enter}');
+        cy.get('input[name="meal"]').type('Cookies{enter}');
         cy.press('Add ingredient');
-        cy.get('input[placeholder="Ingredient"]').last().type('Egg{enter}');
+        cy.get('input[placeholder="Ingredient"]').last().type('Cookie{enter}');
         cy.get('#ingredients-0-quantity').clear().type('1');
         cy.comboboxSelect('Unit', 'Servings');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
-        cy.see('72 kcal');
+        cy.see('148 kcal');
 
         cy.press('Log meal');
-        cy.get('input[name="meal"]').type('Eggs{enter}');
+        cy.get('input[name="meal"]').type('Cookies{enter}');
         cy.get('input[name="mealServings"]').clear().type('2');
         cy.get('[role="dialog"]').within(() => cy.press('Log'));
-        cy.see('144 kcal');
+        cy.see('296 kcal');
 
         // Act
         cy.get('[aria-label="Edit"]').click();
@@ -420,14 +420,14 @@ describe('App', () => {
         cy.press('Save');
 
         // Assert
-        cy.see('288 kcal');
-        cy.see('25g protein');
-        cy.see('1g carbs');
-        cy.see('19g fat');
-        cy.see('144 kcal');
-        cy.see('13g protein');
-        cy.see('1g carbs');
-        cy.see('10g fat');
+        cy.see('592 kcal');
+        cy.see('6g protein');
+        cy.see('78g carbs');
+        cy.see('30g fat');
+        cy.see('296 kcal');
+        cy.see('3g protein');
+        cy.see('39g carbs');
+        cy.see('15g fat');
     });
 
 });
@@ -473,6 +473,12 @@ function setupAccount(options: { ingredients?: string[] } = {}) {
                 break;
             case '100ml Broth':
                 fixture = 'json/broth-100ml.json';
+                break;
+            case '100g Cookies':
+                fixture = 'json/cookies-100g.json';
+                break;
+            case '100ml Cookies':
+                fixture = 'json/cookies-100ml.json';
                 break;
         }
 
