@@ -82,12 +82,18 @@ const days = computed(() => {
         }
 
         const breakdown = meal.getCaloriesBreakdown() ?? [];
+        const calories = sum(breakdown.map((ingredient) => ingredient.calories ?? 0));
+
+        if (calories === 0) {
+            continue;
+        }
+
         const day = date.getDay();
         const hour = date.getHours();
         const row = (rows[day] ??= {});
 
         row[hour] ??= 0;
-        row[hour] += sum(breakdown.map((ingredient) => ingredient.calories ?? 0));
+        row[hour] += calories;
     }
 
     const { format: shortFormat } = Intl.DateTimeFormat(undefined, { weekday: 'short' });
