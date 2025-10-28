@@ -55,11 +55,21 @@
             </ul>
 
             <Button
+                v-if="mealIngredients.length || isNone(form.recipe)"
                 variant="secondary"
                 class="w-full"
                 @click="mealIngredients.push({ name: '', quantity: 100, unit: 'grams' })"
             >
                 {{ $t('logs.addIngredient') }}
+            </Button>
+
+            <Button
+                v-else
+                variant="secondary"
+                class="w-full"
+                @click="customizeIngredients()"
+            >
+                {{ $t('logs.mealIngredientsCustom') }}
             </Button>
 
             <template v-if="totalCalories && recalculate">
@@ -110,13 +120,13 @@ import {
 
 import Cookbook from '@/services/Cookbook';
 import Pantry from '@/services/Pantry';
-import type Recipe from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import { computed, ref } from 'vue';
 import { IngredientUnits, parseIngredient, parseMealIngredients } from '@/utils/ingredients';
 import { type MealIngredient, getMealIngredientsCaloriesBreakdown } from '@/utils/meals';
 import { formatNumber } from '@/utils/formatting';
 import { getTrackedModels } from '@aerogel/plugin-soukai';
+import type Recipe from '@/models/Recipe';
 import type { CaloriesBreakdown as MealCaloriesBreakdown } from '@/models/Recipe';
 
 const { meal } = defineProps<{ meal: Meal }>();
@@ -139,7 +149,7 @@ const form = useForm({
 });
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
-const mealIngredients = ref<MealIngredient[]>(parseMealIngredients(meal));
+const mealIngredients = ref<MealIngredient[]>(meal.recipe?.ingredients.length ? parseMealIngredients(meal) : []);
 const caloriesBreakdown = computed(() => getMealIngredientsCaloriesBreakdown(mealIngredients.value));
 const totalCalories = computed(() =>
     caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
@@ -154,6 +164,10 @@ function renderRecipe(recipe: Recipe | { id: 'none' }) {
     }
 
     return recipe.name;
+}
+
+function customizeIngredients() {
+    mealIngredients.value = parseMealIngredients(meal);
 }
 
 async function updateMeal(

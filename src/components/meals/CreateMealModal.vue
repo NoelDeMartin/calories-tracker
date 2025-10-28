@@ -112,7 +112,7 @@ import { computed, ref, watch } from 'vue';
 import { useModelCollection } from '@aerogel/plugin-soukai';
 
 import Cookbook from '@/services/Cookbook';
-import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
+import Recipe from '@/models/Recipe';
 import Meal from '@/models/Meal';
 import Pantry from '@/services/Pantry';
 import { formatNumber } from '@/utils/formatting';
@@ -211,9 +211,15 @@ const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
 
 function updateServingsAndIngredients() {
+    if (mealIngredients.value.length && customizeIngredients.value) {
+        return;
+    }
+
     if (!isInstanceOf(form.meal, Recipe)) {
         mealIngredients.value =
-            customizeIngredients.value && !isNewMeal(form.meal) ? parseMealIngredients(form.meal) : [];
+            customizeIngredients.value && !isNewMeal(form.meal)
+                ? parseMealIngredients(form.meal, { servings: form.mealServings })
+                : [];
 
         return;
     }
@@ -224,11 +230,8 @@ function updateServingsAndIngredients() {
             ? form.servings / form.meal.servingsBreakdown.quantity
             : 1;
     form.servings = servingsOptions.value.find((option) => option === defaultQuantity) ?? servingsOptions.value[0];
-    mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal, multiplier) : [];
+    mealIngredients.value = customizeIngredients.value ? parseMealIngredients(form.meal, { multiplier }) : [];
 }
-
-watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
-watch(customizeIngredients, updateServingsAndIngredients);
 
 async function submit() {
     error.value = '';
@@ -320,7 +323,7 @@ async function logRecipe(recipe: Recipe) {
         },
         async () => {
             if (!customizeIngredients.value) {
-                for (const breakdown of recipe.ingredientsBreakdown) {
+                for (const breakdown of recipe.getIngredientsBreakdown()) {
                     await Pantry.resolveIngredient(breakdown);
                 }
             }
@@ -376,4 +379,7 @@ async function createMeal(
 
     await meal.save();
 }
+
+watch(() => form.meal, updateServingsAndIngredients, { immediate: true });
+watch(customizeIngredients, updateServingsAndIngredients);
 </script>

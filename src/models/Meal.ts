@@ -6,6 +6,7 @@ import Recipe, { type CaloriesBreakdown } from '@/models/Recipe';
 import NutritionInformation from '@/models/NutritionInformation';
 import type { Nullable } from '@noeldemartin/utils';
 import type { Nutrition } from '@/models/NutritionInformation';
+import type { IngredientBreakdown } from '@/utils/ingredients';
 
 import Model from './Meal.schema';
 
@@ -66,6 +67,19 @@ export default class Meal extends Model {
         const recipe = linkedRecipe ?? this.recipe;
 
         return !!recipe?.hasIncompleteIngredients();
+    }
+
+    public getIngredientsBreakdown(servings?: Nullable<number>): IngredientBreakdown[] {
+        if (this.recipe?.ingredients.length) {
+            return this.recipe.getIngredientsBreakdown(servings);
+        }
+
+        const recipeUrl = this.recipe?.externalUrls.find((url) => Cookbook.recipesByUrl.get(url));
+        const linkedRecipe = recipeUrl ? Cookbook.recipesByUrl.require(recipeUrl) : null;
+        const recipe = linkedRecipe ?? this.recipe;
+        const mealServings = servings ?? this.recipe?.servingsBreakdown?.quantity ?? 1;
+
+        return recipe?.getIngredientsBreakdown(mealServings) ?? [];
     }
 
     public getCaloriesBreakdown(servings?: Nullable<number>): CaloriesBreakdown | undefined {

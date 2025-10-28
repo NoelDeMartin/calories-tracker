@@ -1,5 +1,5 @@
-import Meal from '@/models/Meal';
-import { type Slug, compare, isInstanceOf, objectWithoutEmpty, stringToSlug } from '@noeldemartin/utils';
+import type Meal from '@/models/Meal';
+import { type Nullable, type Slug, compare, objectWithoutEmpty, stringToSlug } from '@noeldemartin/utils';
 import type Recipe from '@/models/Recipe';
 import type { MealIngredient } from '@/utils/meals';
 import type Ingredient from '@/models/Ingredient';
@@ -189,14 +189,17 @@ export function ingredientSlugs(ingredient: Ingredient): Set<Slug> {
     return values;
 }
 
-export function parseMealIngredients(meal: Meal | Recipe, multiplier: number = 1): MealIngredient[] {
+export function parseMealIngredients(
+    meal: Meal | Recipe,
+    options: { servings?: Nullable<number>; multiplier?: Nullable<number> } = {},
+): MealIngredient[] {
     return (
-        (isInstanceOf(meal, Meal) ? meal.recipe : meal)?.ingredientsBreakdown?.map(({ template, quantity, unit }) => ({
+        meal.getIngredientsBreakdown(options.servings).map(({ template, quantity, unit }) => ({
             name: template
                 .replace('{quantity}', '')
                 .trim()
                 .replace(/\s*\(optional\)/, ''),
-            quantity: (typeof quantity === 'number' ? quantity : 1) * multiplier,
+            quantity: (typeof quantity === 'number' ? quantity : 1) * (options.multiplier ?? 1),
             unit: unit ?? 'servings',
         })) ?? []
     );

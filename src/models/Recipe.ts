@@ -28,10 +28,6 @@ export default class Recipe extends Model {
     declare public meal?: Meal;
     declare public relatedMeal: HasOneRelation<Meal, Recipe, typeof Recipe>;
 
-    public get ingredientsBreakdown(): IngredientBreakdown[] {
-        return this.ingredients.map(parseIngredient);
-    }
-
     public get servingsBreakdown(): RecipeServingsBreakdown | null {
         const original = this.servings;
         const [quantityMatch] = original?.match(/[\d.,]+/) ?? [];
@@ -48,9 +44,21 @@ export default class Recipe extends Model {
     }
 
     public hasIncompleteIngredients(): boolean {
-        return this.ingredientsBreakdown.some(
+        return this.getIngredientsBreakdown().some(
             (breakdown) => typeof Pantry.ingredient(breakdown)?.nutrition?.calories === 'undefined',
         );
+    }
+
+    public getIngredientsBreakdown(servings?: Nullable<number>): IngredientBreakdown[] {
+        const multiplier =
+            (servings ?? this.servingsBreakdown?.quantity ?? 1) / (this.servingsBreakdown?.quantity ?? 1);
+
+        return this.ingredients.map(parseIngredient).map((ingredient) => ({
+            ...ingredient,
+            quantity: Array.isArray(ingredient.quantity)
+                ? [ingredient.quantity[0] * multiplier, ingredient.quantity[1] * multiplier]
+                : (ingredient.quantity ?? 1) * multiplier,
+        }));
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -58,7 +66,7 @@ export default class Recipe extends Model {
         const multiplier = ingredientsMultiplier ?? 1;
 
         return arrayFilter(
-            this.ingredientsBreakdown.map((breakdown) => {
+            this.getIngredientsBreakdown().map((breakdown) => {
                 const nutrition = Pantry.ingredient(breakdown)?.nutrition;
 
                 return {
