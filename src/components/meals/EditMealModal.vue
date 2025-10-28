@@ -47,7 +47,12 @@
                             :options="ingredientUnitOptions"
                             :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
                         />
-                        <Button variant="ghost" class="text-red-500" @click="mealIngredients.splice(index, 1)">
+                        <Button
+                            :id="`ingredients-${index}-delete`"
+                            variant="ghost"
+                            class="text-red-500"
+                            @click="mealIngredients.splice(index, 1)"
+                        >
                             <i-lucide-trash2 class="size-4" />
                         </Button>
                     </div>
@@ -55,7 +60,7 @@
             </ul>
 
             <Button
-                v-if="mealIngredients.length || isNone(form.recipe)"
+                v-if="hasCustomIngredients"
                 variant="secondary"
                 class="w-full"
                 @click="mealIngredients.push({ name: '', quantity: 100, unit: 'grams' })"
@@ -150,6 +155,7 @@ const form = useForm({
 
 const ingredientUnitOptions = computed(() => [IngredientUnits.Grams, IngredientUnits.Milliliters, 'servings'] as const);
 const mealIngredients = ref<MealIngredient[]>(meal.recipe?.ingredients.length ? parseMealIngredients(meal) : []);
+const hasCustomIngredients = ref(mealIngredients.value.length || isNone(form.recipe));
 const caloriesBreakdown = computed(() => getMealIngredientsCaloriesBreakdown(mealIngredients.value));
 const totalCalories = computed(() =>
     caloriesBreakdown.value.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
@@ -167,6 +173,7 @@ function renderRecipe(recipe: Recipe | { id: 'none' }) {
 }
 
 function customizeIngredients() {
+    hasCustomIngredients.value = true;
     mealIngredients.value = parseMealIngredients(meal);
 }
 

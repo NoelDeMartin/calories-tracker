@@ -234,6 +234,10 @@ describe('App', () => {
         // Act
         cy.get('[aria-label="Edit"]').click();
         cy.contains('Recalculate nutrients').click({ force: true });
+        cy.press('Customize ingredients');
+        cy.get('#ingredients-2-delete').click();
+        cy.get('#ingredients-1-delete').click();
+        cy.get('#ingredients-0-delete').click();
         cy.press('Add ingredient');
         cy.get('input[placeholder="Ingredient"]').last().type('Broth{enter}');
         cy.get('#ingredients-0-quantity').clear().type('200');
