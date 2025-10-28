@@ -30,9 +30,10 @@ export function getIngredientMeals(ingredientOrSlugs: Ingredient | Set<Slug>, me
     return meals.filter((meal) => {
         const ingredients =
             meal.recipe && meal.recipe.ingredients.length > 0
-                ? meal.recipe?.ingredientsBreakdown
-                : Cookbook.recipes.find((recipe) => meal.recipe?.externalUrls.includes(recipe.url))
-                    ?.ingredientsBreakdown;
+                ? meal.recipe?.getIngredientsBreakdown()
+                : Cookbook.recipes
+                    .find((recipe) => meal.recipe?.externalUrls.includes(recipe.url))
+                    ?.getIngredientsBreakdown();
 
         return ingredients?.some((recipeIngredient) => slugs.has(stringToSlug(parseIngredientName(recipeIngredient))));
     });
