@@ -14,7 +14,7 @@
                 </div>
 
                 <div
-                    v-for="hour in 24"
+                    v-for="hour in range(24)"
                     :key="hour"
                     class="h-4 rounded-sm border border-gray-200 transition-all duration-200 md:h-6"
                     :class="
