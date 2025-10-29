@@ -11,6 +11,7 @@
             />
 
             <Input name="servings" step="0.1" :label="$t('logs.mealServings')" />
+            <TextArea name="description" :label="$t('logs.mealDescription')" />
 
             <template v-if="!recalculate">
                 <Input name="calories" :label="$t('logs.mealCalories')" step="0.01" />
@@ -118,6 +119,7 @@ import {
     requiredDateInput,
     requiredObjectInput,
     requiredStringInput,
+    stringInput,
     translate,
     useForm,
     useModal,
@@ -144,6 +146,7 @@ const ingredientNames = computed(() => Pantry.ingredients.map((ingredient) => in
 
 const form = useForm({
     name: requiredStringInput(meal.recipe?.name),
+    description: stringInput(meal.recipe?.description),
     recipe: requiredObjectInput<Recipe | { id: 'none' }>(initialRecipe ?? { id: 'none' }),
     servings: numberInput(meal.recipe?.servingsBreakdown?.quantity),
     calories: numberInput(meal.recipe?.nutrition?.calories ?? 0),
@@ -253,6 +256,8 @@ async function submit() {
                 : [];
 
             meal.setAttributes({ consumedAt: form.consumedAt, servings: form.servings });
+
+            (meal.recipe ?? meal.relatedRecipe.attach()).setAttributes({ description: form.description });
 
             await updateMeal(meal, newIngredients, caloriesBreakdown.value);
 

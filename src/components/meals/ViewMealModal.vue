@@ -19,6 +19,12 @@
             </div>
         </div>
 
+        <Markdown
+            v-if="meal.recipe?.description"
+            class="rounded-lg bg-gray-50 p-4 text-sm"
+            :text="meal.recipe.description"
+        />
+
         <NutritionChart v-if="meal.recipe?.nutrition" :nutrition="meal.recipe.nutrition" />
 
         <template v-if="caloriesBreakdown?.length">

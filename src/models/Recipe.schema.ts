@@ -10,6 +10,7 @@ export default defineSolidModelSchema({
             type: FieldType.String,
             required: true,
         },
+        description: FieldType.String,
         servings: {
             type: FieldType.String,
             rdfProperty: 'recipeYield',

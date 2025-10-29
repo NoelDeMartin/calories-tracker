@@ -63,6 +63,7 @@ logs:
     mealPlaceholder: Select a meal
     mealRecipe: Recipe
     mealName: Name
+    mealDescription: Description
     mealRecipeView: View recipe
     mealIngredients: Ingredients
     mealServings: Servings
