@@ -424,7 +424,7 @@ describe('App', () => {
         cy.contains('Recalculate nutrients').click({ force: true });
         cy.contains('Update all instances of this meal').click({ force: true });
         cy.get('#ingredients-0-quantity').clear().type('2');
-        cy.press('Save');
+        cy.contains('Save').click({ force: true });
 
         // Assert
         cy.see('592 kcal');
