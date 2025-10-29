@@ -196,21 +196,27 @@ const ingredientsSummary = computed(() =>
             proteinDensity:
                 typeof ingredient.nutrition.protein === 'number'
                     ? typeof calories === 'number'
-                        ? (ingredient.nutrition.protein * multiplier) / (calories / 100)
+                        ? calories === 0
+                            ? 0
+                            : (ingredient.nutrition.protein * multiplier) / (calories / 100)
                         : undefined
                     : undefined,
             carbs: typeof ingredient.nutrition.carbs === 'number' ? ingredient.nutrition.carbs * multiplier : undefined,
             carbsDensity:
                 typeof ingredient.nutrition.carbs === 'number'
                     ? typeof calories === 'number'
-                        ? (ingredient.nutrition.carbs * multiplier) / (calories / 100)
+                        ? calories === 0
+                            ? 0
+                            : (ingredient.nutrition.carbs * multiplier) / (calories / 100)
                         : undefined
                     : undefined,
             fat: typeof ingredient.nutrition.fat === 'number' ? ingredient.nutrition.fat * multiplier : undefined,
             fatDensity:
                 typeof ingredient.nutrition.fat === 'number'
                     ? typeof calories === 'number'
-                        ? (ingredient.nutrition.fat * multiplier) / (calories / 100)
+                        ? calories === 0
+                            ? 0
+                            : (ingredient.nutrition.fat * multiplier) / (calories / 100)
                         : undefined
                     : undefined,
         };

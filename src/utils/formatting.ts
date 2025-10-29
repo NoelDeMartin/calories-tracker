@@ -43,7 +43,7 @@ export function formatNumber(value: Nullable<number>, options: FormatOptions): s
 export function formatNumber(value: Nullable<number>, unitOrOptions?: FormatUnit | FormatOptions): string {
     const options: FormatOptions = isObject(unitOrOptions) ? unitOrOptions : { unit: unitOrOptions };
 
-    if (typeof value !== 'number') {
+    if (typeof value !== 'number' || isNaN(value)) {
         return options.fallback ?? (options.unit ? translate(`units.${options.unit}`, { n: '?' }) : '?');
     }
 
