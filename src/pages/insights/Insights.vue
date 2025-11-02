@@ -36,6 +36,7 @@ import { getMacrosCalories } from '@/utils/nutrition';
 import { arraySorted } from '@noeldemartin/utils';
 import { translate } from '@aerogel/core';
 import type { Week } from '@/pages/insights';
+import type { Nutrition } from '@/models/NutritionInformation';
 
 const meals = useModelCollection(Meal);
 const weeks = computed(() => {
@@ -57,11 +58,11 @@ const weeks = computed(() => {
 
     return arraySorted(
         Object.entries(mealsByWeek).map(([week, weekMeals]) => {
-            const caloriesBreakdown = weekMeals.flatMap((meal) => meal.getCaloriesBreakdown() ?? []);
-            const protein = caloriesBreakdown.reduce((total, ingredient) => total + (ingredient.protein ?? 0), 0);
-            const carbs = caloriesBreakdown.reduce((total, ingredient) => total + (ingredient.carbs ?? 0), 0);
-            const fat = caloriesBreakdown.reduce((total, ingredient) => total + (ingredient.fat ?? 0), 0);
-            const calories = caloriesBreakdown.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0);
+            const mealsNutrition = weekMeals.map((meal) => meal.nutrition ?? ({} as Nutrition));
+            const protein = mealsNutrition.reduce((total, nutrition) => total + (nutrition.protein ?? 0), 0);
+            const carbs = mealsNutrition.reduce((total, nutrition) => total + (nutrition.carbs ?? 0), 0);
+            const fat = mealsNutrition.reduce((total, nutrition) => total + (nutrition.fat ?? 0), 0);
+            const calories = mealsNutrition.reduce((total, nutrition) => total + (nutrition.calories ?? 0), 0);
             const macrosCalories = getMacrosCalories({ protein, carbs, fat });
             const days = new Set(weekMeals.map((meal) => (meal.consumedAt ?? meal.createdAt).getDay())).size;
 

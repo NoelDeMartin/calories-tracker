@@ -81,8 +81,7 @@ const days = computed(() => {
             continue;
         }
 
-        const breakdown = meal.getCaloriesBreakdown() ?? [];
-        const calories = sum(breakdown.map((ingredient) => ingredient.calories ?? 0));
+        const calories = meal.nutrition?.calories ?? 0;
 
         if (calories === 0) {
             continue;
