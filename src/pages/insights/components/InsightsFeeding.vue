@@ -66,7 +66,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { range } from '@noeldemartin/utils';
-import { average, sum } from '@/utils/math';
+import { average } from '@/utils/math';
 import { formatNumber } from '@/utils/formatting';
 import type { Week } from '@/pages/insights';
 
