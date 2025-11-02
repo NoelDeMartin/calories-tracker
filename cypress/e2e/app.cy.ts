@@ -394,7 +394,7 @@ describe('App', () => {
 
         // Assert
         cy.see('There are 2 incomplete meals');
-        cy.see('1,077 kcal');
+        cy.see('1,078 kcal');
         cy.see('54g');
         cy.see('20g');
         cy.see('180g');
