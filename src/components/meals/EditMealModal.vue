@@ -47,6 +47,7 @@
                             :label="$t('logs.mealIngredientUnit')"
                             :options="ingredientUnitOptions"
                             :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
+                            @update:model-value="onIngredientUnitChanged(index, $event)"
                         />
                         <Button
                             :id="`ingredients-${index}-delete`"
@@ -178,6 +179,14 @@ function renderRecipe(recipe: Recipe | { id: 'none' }) {
 function customizeIngredients() {
     hasCustomIngredients.value = true;
     mealIngredients.value = parseMealIngredients(meal);
+}
+
+function onIngredientUnitChanged(index: number, unit: string) {
+    if (unit !== 'servings' || mealIngredients.value[index].quantity !== 100) {
+        return;
+    }
+
+    mealIngredients.value[index].quantity = 1;
 }
 
 async function updateMeal(

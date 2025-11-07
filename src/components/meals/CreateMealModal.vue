@@ -52,6 +52,7 @@
                             :label="$t('logs.mealIngredientUnit')"
                             :options="mealIngredientUnits"
                             :render-option="(value) => $t(`logs.mealIngredientUnits.${value}`)"
+                            @update:model-value="onIngredientUnitChanged(index, $event)"
                         />
                         <Button
                             :id="`ingredients-${index}-delete`"
@@ -209,6 +210,14 @@ const caloriesBreakdown = computed(() => {
 });
 const totalCalories = computed(() =>
     caloriesBreakdown.value?.reduce((total, ingredient) => total + (ingredient.calories ?? 0), 0));
+
+function onIngredientUnitChanged(index: number, unit: string) {
+    if (unit !== 'servings' || mealIngredients.value[index].quantity !== 100) {
+        return;
+    }
+
+    mealIngredients.value[index].quantity = 1;
+}
 
 function updateServingsAndIngredients() {
     if (mealIngredients.value.length && customizeIngredients.value) {
